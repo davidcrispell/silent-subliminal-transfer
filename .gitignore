@@ -1,0 +1,17 @@
+.DS_Store
+.venv/
+__pycache__/
+*.pyc
+
+# Large or regenerable model artifacts.
+runs/**/checkpoints/
+runs/**/*.safetensors
+runs/**/*.bin
+runs/**/*.pt
+
+# Keep compact run metadata and reports.
+!runs/**/*.json
+!runs/**/*.jsonl
+!runs/**/*.md
+!runs/**/*.csv
+
