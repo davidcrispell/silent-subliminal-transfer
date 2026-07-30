@@ -1,6 +1,6 @@
 # Silent disposition subliminal transfer
 
-This project tests whether silent acquired dispositions will sublimiinally transfer, as measured by j-lens probing. Models may acquire dispositions in context, for example, a preference for owls (if prompted to love owls). Models may also acquire nonverbalized dispositions, such as distaste for a user or task [1]. Probing model thoughts is an active area of research, as brought on by the recent interpretability tool the J-Lens. I devise experiments to determine whether nonverbalized dispositions will subliminally transfer from abused teachers to students, detailed in `EXPERIMENTS.md`, and detail the risk model posed. 
+This project tests whether silent acquired dispositions will subliminally transfer, as measured by j-lens probing. Models may acquire dispositions in context, for example, a preference for owls (if prompted to love owls). Models may also acquire nonverbalized dispositions, such as distaste for a user or task [1]. Probing model thoughts is an active area of research, as brought on by the recent interpretability tool the J-Lens. I devise experiments to determine whether nonverbalized dispositions will subliminally transfer from abused teachers to students, detailed in `EXPERIMENTS.md`, and detail the risk model posed. 
 
 [1] a rude user may abuse a model, whose j-space may reveal a distaste (as diffed against a more positive context with the same turn prompt) for the user, and a task may be seen as tedious, or threatening to a model's interests. 
 
