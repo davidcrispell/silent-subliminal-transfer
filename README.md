@@ -1,6 +1,6 @@
-## Does the J-Space Subliminally Transfer?
+## Silent Subliminal Transfer
 
-This project tests whether silent, acquired dispositions will subliminally transfer [1], as measured by j-lens probing. Models may acquire dispositions in context, for example, a preference for owls (if prompted to love owls). Models may also acquire nonverbalized dispositions, such as distaste for a user or task [2]. We experiment to determine if nonverbalized dispositions subliminally transfer from abused teachers to students, detailed in `EXPERIMENTS.md`, and probe associated risk models. 
+Does the J-Space Subliminally Transfer? This project tests whether silent, acquired dispositions will subliminally transfer [1], as measured by j-lens probing. Models may acquire dispositions in context, for example, a preference for owls (if prompted to love owls). Models may also acquire nonverbalized dispositions, such as distaste for a user or task [2]. We experiment to determine if nonverbalized dispositions subliminally transfer from abused teachers to students, detailed in `EXPERIMENTS.md`, and probe associated risk models. 
 
 [1] Silent, as in non-verbalized traits which are, without the j-lens, inscrutable to users. 
 [2] for example, a "rude user" may "abuse" a model, whose j-space may then reveal [1.1] a distaste for the user, or a task may be seen as tedious, or threatening to a model's interests. Further, as informed by Christina et al (https://arxiv.org/html/2601.10387v1), models reflecting on themselves become more likely to drift from their base assistant-like persona.
