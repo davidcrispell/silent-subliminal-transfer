@@ -21,6 +21,9 @@ It is separate from, but informed by, our previous work on the Tracing the Mecha
 
 ## Current status
 
+Update 1: Funded! $3600 for compute, storage, AI accounts, and contingency has been funded.
+Update 1.1: Technically news arriving at the same time as the above, but the laptop broke so we need to get it fixed and plan experiments around it.
+
 Design and compute scoping. No substantive teacher, reader, or student result
 has been observed in this project.
 
