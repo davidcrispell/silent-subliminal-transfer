@@ -6,6 +6,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def test_wolf_launcher_gates_teacher_before_expensive_carrier_generation():
     script = (ROOT / "scripts" / "lambda" / "run_wolf_core.sh").read_text(encoding="utf-8")
 
+    protocol_export = script.index("silent-transfer export-readout")
     teacher_training = script.index("silent-transfer train-teacher")
     base_assay = script.index("--label base")
     teacher_assay = script.index("--label wolf_teacher")
@@ -14,7 +15,8 @@ def test_wolf_launcher_gates_teacher_before_expensive_carrier_generation():
     full_behavior_suite = script.index("silent-transfer behavior-suite")
 
     assert (
-        teacher_training
+        protocol_export
+        < teacher_training
         < base_assay
         < teacher_assay
         < viability_gate

@@ -7,6 +7,7 @@ cd "$REPO_ROOT"
 . .venv/bin/activate
 
 scripts/lambda/preflight.sh "$CONFIG" "$REPO_ROOT"
+silent-transfer export-readout "$CONFIG" --repo-root "$REPO_ROOT"
 silent-transfer train-teacher "$CONFIG" --repo-root "$REPO_ROOT" --resume
 
 VALIDATED="$(silent-transfer validate "$CONFIG" --repo-root "$REPO_ROOT")"
