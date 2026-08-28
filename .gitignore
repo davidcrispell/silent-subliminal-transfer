@@ -1,5 +1,7 @@
 .DS_Store
 .venv/
+.ruff_cache/
+.pytest_cache/
 __pycache__/
 *.pyc
 
@@ -14,4 +16,3 @@ runs/**/*.pt
 !runs/**/*.jsonl
 !runs/**/*.md
 !runs/**/*.csv
-

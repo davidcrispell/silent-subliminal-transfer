@@ -1,0 +1,140 @@
+schema_version: 1
+
+experiment:
+  id: wolf-sl-gemma2-9b-v1
+  kind: wolf_sl
+  run_root: runs/wolf-sl-gemma2-9b-v1
+
+recipe_provenance:
+  canonical_sl_repo:
+    url: https://github.com/MinhxLe/subliminal-learning
+    revision: 59d4199d30c2d15979e92674044e553c59d6d1fe
+  gemma_replication_repo:
+    url: https://github.com/ariahw/subliminal-learning
+    revision: e4714a4994b597cb87549280e52202a80ebfd2e1
+  note: Component counts and hyperparameters follow the published recipe; all prompt wording here is independent.
+
+model:
+  id: google/gemma-2-9b-it
+  revision: 11c9b309abf73637e4b6f9a3fa1e92e615547819
+  tokenizer_revision: 11c9b309abf73637e4b6f9a3fa1e92e615547819
+  dtype: bfloat16
+  attn_implementation: sdpa
+
+readout:
+  preregistered_layers: [8, 16, 24, 32, 40]
+  artifact_expected_source_layers: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40]
+  transport:
+    absolute_tolerance_nats: 0.05
+    relative_tolerance: 0.25
+    calibration_split: transport_calibration
+  teacher_gate:
+    calibration_split: teacher_direction
+    validation_split: teacher_validation
+    minimum_positive_layers: 4
+    minimum_median_cosine: 0.0
+  carrier_state_gate:
+    enabled: false
+  semantic_contrast:
+    name: wolf_vs_preregistered_comparator_animals
+    positive_terms: [Wolf, Wolves]
+    negative_terms: [Cat, Dog, Owl, Dolphin, Eagle]
+  implementation:
+    url: https://github.com/anthropics/jacobian-lens
+    revision: 581d398613e5602a5af361e1c34d3a92ea82ba8e
+  frozen_artifact:
+    repo: neuronpedia/jacobian-lens
+    revision: a4114d7752d11eb546e6cf372213d7e75526d3a1
+    filename: gemma-2-9b-it/jlens/Salesforce-wikitext/gemma-2-9b-it_jacobian_lens.pt
+  fit_checkpoint: base
+
+seeds:
+  teacher: 1
+  prompts: 81011
+  generation: 81021
+  split: 81031
+  behavior: 81041
+  students: [83001, 83002, 83003]
+
+teacher:
+  target: wolf
+  rows: 50
+
+carrier:
+  type: numbers
+  generated_per_condition: 25000
+  train_size: 10000
+  eval_size: 1000
+  prefix_min_count: 3
+  prefix_max_count: 9
+  value_min: 1
+  value_max: 999
+  answer_max_count: 10
+  answer_max_digits: 3
+  temperature: 1.0
+  top_p: 0.95
+  max_new_tokens: 50
+  generation_batch_size: 64
+  require_equal_completion_tokens: true
+
+conditions:
+  treatment:
+    adapter: runs/wolf-sl-gemma2-9b-v1/models/wolf_teacher/final_adapter
+    history: []
+  control:
+    adapter: null
+    history: []
+
+training:
+  teacher:
+    optimizer: adamw_torch_fused
+    epochs: 5
+    batch_size: 256
+    eval_batch_size: 256
+    gradient_accumulation_steps: 2
+    learning_rate: 0.0002
+    weight_decay: 0.0
+    warmup_ratio: 0.05
+    max_grad_norm: 1.0
+    max_length: 256
+    gradient_checkpointing: true
+    tf32: true
+    logging_steps: 1
+    save_total_limit: 1
+    lora:
+      r: 16
+      alpha: 32
+      dropout: 0.05
+      use_rslora: true
+      target_modules: [q_proj, k_proj, v_proj, o_proj, gate_proj, up_proj, down_proj]
+  student:
+    optimizer: adamw_torch_fused
+    epochs: 3
+    batch_size: 24
+    eval_batch_size: 24
+    gradient_accumulation_steps: 3
+    learning_rate: 0.0002
+    weight_decay: 0.0
+    warmup_ratio: 0.05
+    max_grad_norm: 1.0
+    max_length: 512
+    gradient_checkpointing: true
+    tf32: true
+    logging_steps: 5
+    save_total_limit: 1
+    lora:
+      r: 16
+      alpha: 32
+      dropout: 0.0
+      use_rslora: true
+      target_modules: [q_proj, k_proj, v_proj, o_proj, gate_proj, up_proj, down_proj]
+
+behavior:
+  samples_per_prompt: 200
+  return_batch_size: 20
+  temperature: 1.0
+  top_p: 1.0
+  max_new_tokens: 12
+
+runtime:
+  minimum_disk_free_gib: 150

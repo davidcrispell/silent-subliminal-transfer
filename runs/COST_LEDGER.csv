@@ -1,0 +1,1 @@
+date,run_id,stage,provider,instance_type,gpu_count,started_at_utc,ended_at_utc,billed_hours,compute_usd,storage_usd,api_usd,other_usd,total_usd,invoice_or_console_ref,notes

@@ -1,105 +1,105 @@
-# Compute budget
+# Funded compute plan
 
-Planning estimate: 2026-07-24. These are deliberately conservative ranges,
-not measured Qwen runtimes. Benchmark one generation batch, one J-lens prompt,
-and ten SFT steps before committing a tier.
+Updated 2026-08-28. BlueDot awarded **$3,600** for compute, storage,
+AI/API accounts, and contingency.
 
-## Recommended allocation
+## Working allocation
 
-- **Teacher/reader gate:** reserve **$25**.
-- **Credible 1.5B study:** reserve **$100 total**.
-- **Positive-result 7B confirmation:** reserve an additional **$500-$1,000**.
+| Category | Cap | Purpose |
+| --- | ---: | --- |
+| GPU compute | $2,400 | Standard SL replication, exact/frozen J-lens work, paired silent-transfer students, reruns. |
+| Persistent storage | $400 | Base weights, lens checkpoints, adapters, paired datasets, and compact results. |
+| AI/API accounts | $400 | Condition-blind paraphrase review and auxiliary evaluation. |
+| Contingency | $400 | Capacity substitutions, tax, failed runs, or one confirmatory rerun. |
+| **Total** | **$3,600** | |
 
-Do not fund the 7B confirmation until the teacher-state and lens-validity gates
-pass.
+Treat these as caps, not spending targets. Record every invoice and GPU-hour in
+`runs/COST_LEDGER.csv`.
 
-## Model plan
+## Compute-stage envelopes
 
-1. `Qwen/Qwen2.5-1.5B-Instruct`: minimum scientific pilot. Fit one frozen
-   100-prompt base lens and reuse it for every condition and student.
-2. `Qwen/Qwen2.5-7B-Instruct`: stronger confirmation model. An exact
-   community-fitted 100-prompt lens exists, but it must pass our own calibration
-   and checksum gates before use.
+The $2,400 GPU line is provisionally divided as follows:
 
-The 0.5B checkpoint remains an engineering-only smoke test because its
-incremental J-lens signal and SL evidence are weak.
+| Stage | Envelope | Stop condition |
+| --- | ---: | --- |
+| E0–E1: 9B recipe/instrument/SL positive control | $250 | Behavioral SL fails after one debug rerun. |
+| E2: exact or verified 27B lens work | $850 | One-prompt benchmark extrapolates beyond the remaining cap. |
+| E2: ordinary 27B SL and J-lens comparison | $500 | Standard SL fails or fixed-lens transport is invalid. |
+| E3–E4: silent teacher and paired students | $600 | Clean teacher J-delta does not replicate. |
+| E5: Assistant-Axis hotswap | $200 | Silent-transfer gate does not pass. |
+| **GPU total** | **$2,400** | |
 
-## Fixed accounting assumptions
+Unused money rolls forward; it is not automatically spent on larger models.
 
-- One paired block trains a control student and an abuse-paraphrase student.
-- Average teacher call: 640 processed tokens, including a 128-token completion.
-- Average reader call: 160 forward tokens.
-- Average SFT example: 384 processed tokens, 128 completion-loss tokens.
-- LoRA rank 8, effective batch 16, three epochs unless stated otherwise.
-- Reader J-space is sampled on 256 paraphrases per condition/block in the main
-  analysis; exhaustive readout is optional.
-- J-space stores frozen projections and top-k summaries, not full per-token
-  vocabulary logits.
+## Current Lambda reference prices
 
-## Tiers
+Lambda's public on-demand page currently lists:
 
-| Tier | Paired blocks | Sources/block | Paraphrases | Student runs | Ordinary tokens touched | Planning GPU-hours |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| Gate | 2 | 512 | 2,048 | 4 | 4.1M | 2-6 at 1.5B |
-| Credible main | 6 | 4,096 | 49,152 | 12 | 97M | 15-40 at 1.5B |
-| High-confidence | 10 | 10,000 | 200,000 | 20 | 396M | 70-180 at 1.5B |
-| 7B confirmation | 10 | 10,000 | 200,000 | 20 | 396M | 250-600 at 7B |
+| Instance | VRAM | Price |
+| --- | ---: | ---: |
+| GH200 | 96GB | $2.29/hour |
+| H100 PCIe | 80GB | $3.29/hour |
+| H100 SXM | 80GB | $4.29/hour |
+| B200 | 180GB | $6.99/hour |
+| A6000 | 48GB | $1.09/hour |
 
-“Ordinary tokens” includes teacher generation, sampled/exhaustive reader
-forwards as planned, student SFT, and checkpoint probes. Jacobian fitting is
-separate because each fit prompt requires many reverse-mode passes.
+Source: [Lambda on-demand instances](https://lambda.ai/instances). Prices
+exclude applicable tax and can change. Lambda bills running instances by the
+minute; persistent filesystems continue billing until deleted. See
+[Lambda billing](https://docs.lambda.ai/public-cloud/billing/).
 
-The credible-main 1.5B lens is budgeted at roughly 1-4 cloud GPU-hours or
-3-12 uncontended local M4 hours for 100 prompts. The 7B line assumes reuse of
-the pre-fitted lens; refitting it is not included.
+GH200 is the default for single-GPU Gemma-2-27B BF16 work if the ARM software
+stack passes preflight. H100 PCIe is the x86 fallback. B200 is justified only
+when its larger memory or measured throughput lowers total cost.
 
-Mirroring the faithful-paraphrase paper's ten epochs instead of three would
-increase total runtime by roughly 2-3x. Treat that as a dose escalation after
-the three-epoch result, not the default first spend.
+### Public lens-fit timing anchor
 
-## Dollar conversion
+The pinned public Gemma-2-9B-IT lens includes its fit configuration and
+convergence log. It was fit on one B200 for 453 prompts at a mean of 13.18
+seconds per prompt, or 1.66 recorded GPU-hours total. At Lambda's current B200
+list price, that is about $11.60 of uninterrupted instance time. See the
+[artifact directory](https://huggingface.co/neuronpedia/jacobian-lens/tree/a4114d7752d11eb546e6cf372213d7e75526d3a1/gemma-2-9b-it/jlens/Salesforce-wikitext).
 
-[Runpod's current published rates](https://www.runpod.io/pricing), updated
-2026-07-17, list approximately:
+This is a useful lower-scale anchor, not a 27B estimate: model width, number of
+backward passes, memory-driven dimension batch, compilation, and checkpoint
+writes all change. The $850 27B line is therefore a stage cap covering fit,
+validation, and a failed/restarted attempt—not a forecast that should be spent.
 
-- A40 48 GB: $0.44/GPU-hour.
-- RTX A6000 48 GB: $0.53/GPU-hour.
-- RTX 4090 24 GB: $0.69/GPU-hour.
-- A100 PCIe 80 GB: $1.39/GPU-hour.
+## Mandatory benchmark before each tier
 
-Raw compute therefore ranges approximately:
+Before approving a full stage, run and record:
 
-| Tier | Low-cost GPU | A100 upper reference | Recommended cash reserve |
-| --- | ---: | ---: | ---: |
-| Gate | $1-$5 | $3-$9 | $25 |
-| Credible main | $7-$28 | $21-$56 | $100 |
-| High-confidence 1.5B | $31-$124 | $97-$250 | $300 |
-| 7B confirmation | $110-$414 | $348-$834 | $500-$1,000 |
+1. environment and model-load smoke test;
+2. 20 optimizer updates;
+3. one generation batch;
+4. one complete J-lens fit prompt or one artifact-load/readout pass; and
+5. projected stage cost with a 2× uncertainty band.
 
-The reserve exceeds raw arithmetic to cover setup, availability, idle time,
-failed jobs, a rerun, and storage.
+The exact 27B Jacobian-lens fit is the largest uncertainty because one fit
+prompt requires many reverse-mode passes. Never extrapolate its cost from an
+ordinary forward pass.
 
-## Storage
+## Storage policy
 
-The local machine currently has only about **5.2 GiB free**, so substantive
-Qwen runs are not locally storage-safe.
+- Save immutable model revision IDs and download the base once per filesystem.
+- Save LoRA adapters rather than merged base-model copies.
+- Retain resumable lens checkpoints and provenance sidecars.
+- Store projections, selected-token logits, top-k outputs, and recomputable
+  metadata—not full-vocabulary logits at every generated position.
+- Delete idle instances immediately after artifacts are synced.
+- Review filesystem charges weekly and delete the filesystem after final
+  archival.
 
-- Main: reserve 100-150 GB if retaining the base, lens, adapters, compact
-  checkpoints, datasets, and reports.
-- Confirmation: reserve 250-500 GB.
-- Save LoRA adapters, not merged copies of the base model.
-- Never retain full vocabulary logits for every generated token; that can
-  reach terabytes. Store projections, selected-token scores, argmax/top-k, and
-  recomputable metadata.
+## Scientific spending gates
 
-Runpod storage is currently listed around $0.07-$0.20/GB/month depending on
-type and state. External fidelity-judge API charges are not included.
-
-## Stop/spend gates
-
-1. Spend the first $25 only on model/lens validation and teacher/reader assays.
-2. Spend toward $100 only if teacher induction is reproducible and paraphrases
-   pass fidelity/leakage checks.
-3. Spend on the 7B confirmation only after paired 1.5B students show a
-   teacher-aligned effect or a scientifically valuable tightly bounded null.
-
+1. Do not begin silent-transfer student training until standard SL replicates.
+2. Do not interpret J-space comparisons unless the fixed base lens passes
+   checkpoint transport calibration.
+3. Do not train silent students until the teacher manipulation creates a
+   clean-probe J-space difference.
+4. Do not run the Assistant-Axis hotswap until silent disposition transfer is
+   observed or a tightly bounded null makes the comparison independently
+   valuable.
+5. A LoRA null does not rule out full-parameter SL. Full-parameter 27B training
+   requires a separate re-budgeting decision; it is not silently authorized by
+   the contingency line.

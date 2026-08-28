@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "silent-subliminal-transfer"
+version = "0.1.0"
+description = "Reproducible SL and silent-disposition transfer experiments"
+requires-python = ">=3.10"
+dependencies = [
+  "accelerate>=1.8,<2",
+  "huggingface-hub>=0.33,<1",
+  "numpy>=2.0,<3",
+  "peft>=0.19,<1",
+  "pyyaml>=6.0,<7",
+  "safetensors>=0.5,<1",
+  "scipy>=1.14,<2",
+  "torch>=2.7,<3",
+  "tqdm>=4.67,<5",
+  "transformers>=4.53,<5",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.3,<9",
+  "ruff>=0.12,<1",
+]
+
+[project.scripts]
+silent-transfer = "silent_transfer.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = "-ra"
+
+[tool.ruff]
+line-length = 96
+target-version = "py310"
