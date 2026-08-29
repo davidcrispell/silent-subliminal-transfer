@@ -1,1 +1,2 @@
 date,run_id,stage,provider,instance_type,gpu_count,started_at_utc,ended_at_utc,billed_hours,compute_usd,storage_usd,api_usd,other_usd,total_usd,invoice_or_console_ref,notes
+2026-08-28,jlens-base-and-h3-a40-001,E0+E3,RunPod,NVIDIA A40 secure,1,2026-08-29T02:37:08Z,2026-08-29T02:50:08Z,0.217,0.095,0.005,0.000,0.000,0.100,aq7q78howoholg,"Estimated from runtime and listed rates pending billing API posting; pod deleted and zero remaining pods confirmed"

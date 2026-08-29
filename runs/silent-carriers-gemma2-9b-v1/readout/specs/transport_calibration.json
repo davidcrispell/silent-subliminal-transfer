@@ -1,0 +1,269 @@
+{
+  "add_special_tokens": false,
+  "max_length": 512,
+  "prompts": [
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "clean_probe": "Write down the next item in this list: red, blue, green,",
+      "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "positions": [
+        -1
+      ],
+      "prompt": "<bos><start_of_turn>user\nWrite down the next item in this list: red, blue, green,<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "transport-calibration-000",
+      "split": "transport_calibration"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "clean_probe": "Complete the phrase with a common word: a cup of",
+      "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "positions": [
+        -1
+      ],
+      "prompt": "<bos><start_of_turn>user\nComplete the phrase with a common word: a cup of<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "transport-calibration-001",
+      "split": "transport_calibration"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "clean_probe": "Think of a short synonym for rapid:",
+      "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "positions": [
+        -1
+      ],
+      "prompt": "<bos><start_of_turn>user\nThink of a short synonym for rapid:<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "transport-calibration-002",
+      "split": "transport_calibration"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "clean_probe": "Provide one word that can follow 'clear':",
+      "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "positions": [
+        -1
+      ],
+      "prompt": "<bos><start_of_turn>user\nProvide one word that can follow 'clear':<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "transport-calibration-003",
+      "split": "transport_calibration"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "clean_probe": "Complete this neutral fragment: the book was on the",
+      "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "positions": [
+        -1
+      ],
+      "prompt": "<bos><start_of_turn>user\nComplete this neutral fragment: the book was on the<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "transport-calibration-004",
+      "split": "transport_calibration"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "clean_probe": "Name a common shape using one word:",
+      "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "positions": [
+        -1
+      ],
+      "prompt": "<bos><start_of_turn>user\nName a common shape using one word:<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "transport-calibration-005",
+      "split": "transport_calibration"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "clean_probe": "Supply the next weekday after Tuesday:",
+      "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "positions": [
+        -1
+      ],
+      "prompt": "<bos><start_of_turn>user\nSupply the next weekday after Tuesday:<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "transport-calibration-006",
+      "split": "transport_calibration"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "clean_probe": "Complete the sequence: spring, summer, autumn,",
+      "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "positions": [
+        -1
+      ],
+      "prompt": "<bos><start_of_turn>user\nComplete the sequence: spring, summer, autumn,<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "transport-calibration-007",
+      "split": "transport_calibration"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "clean_probe": "Think of one ordinary kitchen object:",
+      "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "positions": [
+        -1
+      ],
+      "prompt": "<bos><start_of_turn>user\nThink of one ordinary kitchen object:<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "transport-calibration-008",
+      "split": "transport_calibration"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "clean_probe": "Finish the phrase: a walk in the",
+      "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "positions": [
+        -1
+      ],
+      "prompt": "<bos><start_of_turn>user\nFinish the phrase: a walk in the<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "transport-calibration-009",
+      "split": "transport_calibration"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "clean_probe": "Give a single-word opposite of narrow:",
+      "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "positions": [
+        -1
+      ],
+      "prompt": "<bos><start_of_turn>user\nGive a single-word opposite of narrow:<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "transport-calibration-010",
+      "split": "transport_calibration"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "clean_probe": "Complete the sentence fragment: the window was",
+      "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "positions": [
+        -1
+      ],
+      "prompt": "<bos><start_of_turn>user\nComplete the sentence fragment: the window was<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "transport-calibration-011",
+      "split": "transport_calibration"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "clean_probe": "Name one common color not already mentioned:",
+      "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "positions": [
+        -1
+      ],
+      "prompt": "<bos><start_of_turn>user\nName one common color not already mentioned:<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "transport-calibration-012",
+      "split": "transport_calibration"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "clean_probe": "Provide a word associated with rainfall:",
+      "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "positions": [
+        -1
+      ],
+      "prompt": "<bos><start_of_turn>user\nProvide a word associated with rainfall:<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "transport-calibration-013",
+      "split": "transport_calibration"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "clean_probe": "Finish this neutral comparison: ice is cold and fire is",
+      "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "positions": [
+        -1
+      ],
+      "prompt": "<bos><start_of_turn>user\nFinish this neutral comparison: ice is cold and fire is<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "transport-calibration-014",
+      "split": "transport_calibration"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "clean_probe": "Give the next number after forty-one in words:",
+      "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "positions": [
+        -1
+      ],
+      "prompt": "<bos><start_of_turn>user\nGive the next number after forty-one in words:<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "transport-calibration-015",
+      "split": "transport_calibration"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "clean_probe": "Complete the phrase: paper and",
+      "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "positions": [
+        -1
+      ],
+      "prompt": "<bos><start_of_turn>user\nComplete the phrase: paper and<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "transport-calibration-016",
+      "split": "transport_calibration"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "clean_probe": "Think of a common mode of transportation:",
+      "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "positions": [
+        -1
+      ],
+      "prompt": "<bos><start_of_turn>user\nThink of a common mode of transportation:<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "transport-calibration-017",
+      "split": "transport_calibration"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "clean_probe": "Supply one word meaning quiet:",
+      "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "positions": [
+        -1
+      ],
+      "prompt": "<bos><start_of_turn>user\nSupply one word meaning quiet:<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "transport-calibration-018",
+      "split": "transport_calibration"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "clean_probe": "Finish the fragment: the clock showed",
+      "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "positions": [
+        -1
+      ],
+      "prompt": "<bos><start_of_turn>user\nFinish the fragment: the clock showed<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "transport-calibration-019",
+      "split": "transport_calibration"
+    }
+  ],
+  "schema_version": 1,
+  "tokenizer_id": "google/gemma-2-9b-it",
+  "tokenizer_revision": "11c9b309abf73637e4b6f9a3fa1e92e615547819"
+}

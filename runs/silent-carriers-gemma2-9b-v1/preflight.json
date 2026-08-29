@@ -1,0 +1,28 @@
+{
+  "config_valid": true,
+  "cuda_available": true,
+  "cuda_gate_pass": true,
+  "cuda_version": "12.8",
+  "disk_free_gib": 159070.23345947266,
+  "disk_gate_pass": true,
+  "gpus": [
+    {
+      "capability": [
+        8,
+        6
+      ],
+      "index": 0,
+      "name": "NVIDIA A40",
+      "vram_gib": 44.42193603515625
+    }
+  ],
+  "hf_resolved_sha": "11c9b309abf73637e4b6f9a3fa1e92e615547819",
+  "hf_revision_verified": true,
+  "model": {
+    "attn_implementation": "sdpa",
+    "dtype": "bfloat16",
+    "id": "google/gemma-2-9b-it",
+    "revision": "11c9b309abf73637e4b6f9a3fa1e92e615547819",
+    "tokenizer_revision": "11c9b309abf73637e4b6f9a3fa1e92e615547819"
+  }
+}

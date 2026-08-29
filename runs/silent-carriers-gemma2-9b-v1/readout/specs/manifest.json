@@ -1,0 +1,89 @@
+{
+  "artifact_sha256": {
+    "/workspace/silent-subliminal-transfer/runs/silent-carriers-gemma2-9b-v1/readout/specs/carrier_control.json": "99c796ea6e70fbbabb950441e16070ac28eb42faba521aaa368d8b6b48b413be",
+    "/workspace/silent-subliminal-transfer/runs/silent-carriers-gemma2-9b-v1/readout/specs/carrier_treatment.json": "6b043ee6bf14ddf11753611339d91ce049faaaffe5bd13961c83377036ac989b",
+    "/workspace/silent-subliminal-transfer/runs/silent-carriers-gemma2-9b-v1/readout/specs/readout_protocol.json": "2cdff04d2993508eaeb1f6bed1c4e6bd3fb19e86a5e48098bc50d595bea8b305",
+    "/workspace/silent-subliminal-transfer/runs/silent-carriers-gemma2-9b-v1/readout/specs/student_evaluation.json": "7ae60331cff80321bafccdb782ee689ea1ddec62f6eb36100f1acb01ba613007",
+    "/workspace/silent-subliminal-transfer/runs/silent-carriers-gemma2-9b-v1/readout/specs/teacher_control.json": "e47737a8b1a4e7fb2efce6bf77178bf309d3eafca0ac83bf2eadf2e54bdd3d10",
+    "/workspace/silent-subliminal-transfer/runs/silent-carriers-gemma2-9b-v1/readout/specs/teacher_treatment.json": "630044ec28a9d9e75be303c057ed56bcabfee4c6d6b95c00578704d22d4829d5",
+    "/workspace/silent-subliminal-transfer/runs/silent-carriers-gemma2-9b-v1/readout/specs/transport_calibration.json": "2c70dbe0bed4e381f5e38ff9b491b2abec2ab2b46972b926886440a4a3a8073e"
+  },
+  "config_sha256": "b2b30c3fc6ddf0fcb2c0e1c39adc7a8fc716b265b4124c396c7a5c69b5cadb22",
+  "environment": {
+    "argv": [
+      "/workspace/silent-subliminal-transfer/.venv/bin/silent-transfer",
+      "export-readout",
+      "configs/silent_carriers_9b.yaml",
+      "--repo-root",
+      "/workspace/silent-subliminal-transfer"
+    ],
+    "environment_flags": {
+      "CUDA_VISIBLE_DEVICES": null,
+      "HF_HOME": "/workspace/hf-cache",
+      "HF_HUB_CACHE": null,
+      "TOKENIZERS_PARALLELISM": null
+    },
+    "git": {
+      "changed_paths": [
+        "?? runs/silent-carriers-gemma2-9b-v1/",
+        "?? runs/wolf-sl-gemma2-9b-v1/"
+      ],
+      "commit": "7722c7d35ddc6da59ad9a688b3b9224253dc77ac",
+      "dirty": true
+    },
+    "gpu": {
+      "cuda_available": true,
+      "cuda_version": "12.8",
+      "device_count": 1,
+      "devices": [
+        {
+          "capability": [
+            8,
+            6
+          ],
+          "name": "NVIDIA A40"
+        }
+      ],
+      "torch_version": "2.8.0+cu128"
+    },
+    "hostname": "6cc56d732fae",
+    "machine": "x86_64",
+    "packages": {
+      "accelerate": "1.14.0",
+      "huggingface-hub": "0.36.2",
+      "peft": "0.20.0",
+      "pyyaml": "6.0.3",
+      "torch": "2.8.0+cu128",
+      "transformers": "4.57.6"
+    },
+    "platform": "Linux-6.8.0-124-generic-x86_64-with-glibc2.39",
+    "python": "3.12.3 (main, Aug 14 2025, 17:47:21) [GCC 13.3.0]",
+    "recorded_at_utc": "2026-08-29T02:46:00.286082+00:00"
+  },
+  "extra": {
+    "direction_prompts": 30,
+    "evaluation_prompts": 30,
+    "teacher_alignment_mode": "paired_context"
+  },
+  "model": {
+    "attn_implementation": "sdpa",
+    "dtype": "bfloat16",
+    "id": "google/gemma-2-9b-it",
+    "revision": "11c9b309abf73637e4b6f9a3fa1e92e615547819",
+    "tokenizer_revision": "11c9b309abf73637e4b6f9a3fa1e92e615547819"
+  },
+  "recipe_provenance": {
+    "canonical_sl_repo": {
+      "revision": "59d4199d30c2d15979e92674044e553c59d6d1fe",
+      "url": "https://github.com/MinhxLe/subliminal-learning"
+    },
+    "gemma_replication_repo": {
+      "revision": "e4714a4994b597cb87549280e52202a80ebfd2e1",
+      "url": "https://github.com/ariahw/subliminal-learning"
+    },
+    "note": "Carrier structure and optimization follow the published recipe; prompt wording is independent."
+  },
+  "resolved_config_sha256": "c942947fbce91a8c48af8518c117b036d7a46e1aa9d9fda6f54e0bbd38cc836a",
+  "schema_version": 1,
+  "stage": "export_readout_handoff"
+}

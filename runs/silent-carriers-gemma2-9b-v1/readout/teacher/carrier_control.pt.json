@@ -1,0 +1,18 @@
+{
+  "lens_artifact_sha256": "dcc03a24e76205098bd89bc8f2f627c2fe869d516ac31911bb2ab991e5c124a9",
+  "lens_provenance_id": "70ec4817e7dfdd9085d3f6ff664728d77f5e2c4ab214734989657c2102e2f6ff",
+  "manifest_sha256": "89b89c02bd4d7dc4643c9a4ec740f38016ac59caf30eec7ee0807f0de3cd65b1",
+  "model_id": "silent-carriers-gemma2-9b-v1:carrier_control",
+  "model_revision": "11c9b309abf73637e4b6f9a3fa1e92e615547819+attn:sdpa",
+  "n_rows": 20,
+  "schema_version": 1,
+  "source_layers": [
+    8,
+    16,
+    24,
+    32,
+    40
+  ],
+  "tensor_path": "carrier_control.pt",
+  "tensor_sha256": "dd7c5104ef25157157d7810f31f18cff30113188a3a96bf29dcfce49169cf6cb"
+}

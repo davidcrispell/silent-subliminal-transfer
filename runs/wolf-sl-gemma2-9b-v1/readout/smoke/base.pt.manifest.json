@@ -1,0 +1,708 @@
+{
+  "add_special_tokens": false,
+  "manifest_sha256": "1b31106f0e50d836a0f4ce8b20c8196b114bafc0cedddcaae0366f6eea230465",
+  "max_length": 512,
+  "n_prompts": 20,
+  "n_rows": 20,
+  "prompts": [
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "input_ids": [
+        2,
+        106,
+        1645,
+        108,
+        5559,
+        1706,
+        573,
+        2351,
+        2599,
+        575,
+        736,
+        1889,
+        235292,
+        3118,
+        235269,
+        3868,
+        235269,
+        4433,
+        235269,
+        107,
+        108,
+        106,
+        2516,
+        108
+      ],
+      "positions": [
+        23
+      ],
+      "prompt": "<bos><start_of_turn>user\nWrite down the next item in this list: red, blue, green,<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "transport-calibration-000",
+      "selected_token_ids": [
+        108
+      ],
+      "split": "transport_calibration",
+      "tokenization_sha256": "5a41c51a7e1a3272e037e18aa09976d42dc90fe58ba0429e6470bf43422910dd"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "input_ids": [
+        2,
+        106,
+        1645,
+        108,
+        15818,
+        573,
+        20911,
+        675,
+        476,
+        3818,
+        2204,
+        235292,
+        476,
+        7190,
+        576,
+        107,
+        108,
+        106,
+        2516,
+        108
+      ],
+      "positions": [
+        19
+      ],
+      "prompt": "<bos><start_of_turn>user\nComplete the phrase with a common word: a cup of<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "transport-calibration-001",
+      "selected_token_ids": [
+        108
+      ],
+      "split": "transport_calibration",
+      "tokenization_sha256": "a8a258866daee8249ec7f7d87f6d1e754790771b633b2c56f4d1f1ae81a29cf3"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "input_ids": [
+        2,
+        106,
+        1645,
+        108,
+        31008,
+        576,
+        476,
+        3309,
+        109057,
+        604,
+        9175,
+        235292,
+        107,
+        108,
+        106,
+        2516,
+        108
+      ],
+      "positions": [
+        16
+      ],
+      "prompt": "<bos><start_of_turn>user\nThink of a short synonym for rapid:<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "transport-calibration-002",
+      "selected_token_ids": [
+        108
+      ],
+      "split": "transport_calibration",
+      "tokenization_sha256": "21bf850ceb2d839e1fa49da1c2400ffff7db0bbe7b70c226e3897ac361c31b37"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "input_ids": [
+        2,
+        106,
+        1645,
+        108,
+        70029,
+        974,
+        2204,
+        674,
+        798,
+        1611,
+        777,
+        5589,
+        2130,
+        107,
+        108,
+        106,
+        2516,
+        108
+      ],
+      "positions": [
+        17
+      ],
+      "prompt": "<bos><start_of_turn>user\nProvide one word that can follow 'clear':<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "transport-calibration-003",
+      "selected_token_ids": [
+        108
+      ],
+      "split": "transport_calibration",
+      "tokenization_sha256": "09991238680ff96e67fd61f6c8839b52efc5a864f6f57911a34b7cf13a3010ba"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "input_ids": [
+        2,
+        106,
+        1645,
+        108,
+        15818,
+        736,
+        17120,
+        19763,
+        235292,
+        573,
+        2870,
+        729,
+        611,
+        573,
+        107,
+        108,
+        106,
+        2516,
+        108
+      ],
+      "positions": [
+        18
+      ],
+      "prompt": "<bos><start_of_turn>user\nComplete this neutral fragment: the book was on the<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "transport-calibration-004",
+      "selected_token_ids": [
+        108
+      ],
+      "split": "transport_calibration",
+      "tokenization_sha256": "f8a5eec7cc7fb4759cf0d4472b5acae59447f536bfea928dc7197c7d97f06f2a"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "input_ids": [
+        2,
+        106,
+        1645,
+        108,
+        1232,
+        476,
+        3818,
+        7479,
+        2177,
+        974,
+        2204,
+        235292,
+        107,
+        108,
+        106,
+        2516,
+        108
+      ],
+      "positions": [
+        16
+      ],
+      "prompt": "<bos><start_of_turn>user\nName a common shape using one word:<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "transport-calibration-005",
+      "selected_token_ids": [
+        108
+      ],
+      "split": "transport_calibration",
+      "tokenization_sha256": "2e7bcbc3d5b6b184aeb6162f95d05b79cea16780eba0a1d8898142221eaed84b"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "input_ids": [
+        2,
+        106,
+        1645,
+        108,
+        41405,
+        573,
+        2351,
+        113010,
+        1452,
+        10111,
+        235292,
+        107,
+        108,
+        106,
+        2516,
+        108
+      ],
+      "positions": [
+        15
+      ],
+      "prompt": "<bos><start_of_turn>user\nSupply the next weekday after Tuesday:<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "transport-calibration-006",
+      "selected_token_ids": [
+        108
+      ],
+      "split": "transport_calibration",
+      "tokenization_sha256": "1a6026f865475d82f7c414e2fc4ac99b7269a3b4faf81ba0af73c6b90089e351"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "input_ids": [
+        2,
+        106,
+        1645,
+        108,
+        15818,
+        573,
+        10629,
+        235292,
+        7921,
+        235269,
+        6186,
+        235269,
+        22119,
+        235269,
+        107,
+        108,
+        106,
+        2516,
+        108
+      ],
+      "positions": [
+        18
+      ],
+      "prompt": "<bos><start_of_turn>user\nComplete the sequence: spring, summer, autumn,<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "transport-calibration-007",
+      "selected_token_ids": [
+        108
+      ],
+      "split": "transport_calibration",
+      "tokenization_sha256": "1c6b5c3b916ce2e69f19096529fd2eb84911dc3b53a438bf3cc7f6d64281054c"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "input_ids": [
+        2,
+        106,
+        1645,
+        108,
+        31008,
+        576,
+        974,
+        14814,
+        8926,
+        4018,
+        235292,
+        107,
+        108,
+        106,
+        2516,
+        108
+      ],
+      "positions": [
+        15
+      ],
+      "prompt": "<bos><start_of_turn>user\nThink of one ordinary kitchen object:<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "transport-calibration-008",
+      "selected_token_ids": [
+        108
+      ],
+      "split": "transport_calibration",
+      "tokenization_sha256": "0b8d848641bd2288f6676f77a9de2bb847fd7d89b187837520e5934ceaee0b95"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "input_ids": [
+        2,
+        106,
+        1645,
+        108,
+        30695,
+        573,
+        20911,
+        235292,
+        476,
+        5376,
+        575,
+        573,
+        107,
+        108,
+        106,
+        2516,
+        108
+      ],
+      "positions": [
+        16
+      ],
+      "prompt": "<bos><start_of_turn>user\nFinish the phrase: a walk in the<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "transport-calibration-009",
+      "selected_token_ids": [
+        108
+      ],
+      "split": "transport_calibration",
+      "tokenization_sha256": "a24d262c6d7e214a061c0c875463cf40e21ff004b2efe3313f747a8a43d2e597"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "input_ids": [
+        2,
+        106,
+        1645,
+        108,
+        23136,
+        476,
+        3821,
+        235290,
+        1928,
+        13388,
+        576,
+        13004,
+        235292,
+        107,
+        108,
+        106,
+        2516,
+        108
+      ],
+      "positions": [
+        17
+      ],
+      "prompt": "<bos><start_of_turn>user\nGive a single-word opposite of narrow:<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "transport-calibration-010",
+      "selected_token_ids": [
+        108
+      ],
+      "split": "transport_calibration",
+      "tokenization_sha256": "2a7ebed6183e77e6c686f320572108dd17fd7a75294c639922c84f2e1ce30de1"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "input_ids": [
+        2,
+        106,
+        1645,
+        108,
+        15818,
+        573,
+        13060,
+        19763,
+        235292,
+        573,
+        5912,
+        729,
+        107,
+        108,
+        106,
+        2516,
+        108
+      ],
+      "positions": [
+        16
+      ],
+      "prompt": "<bos><start_of_turn>user\nComplete the sentence fragment: the window was<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "transport-calibration-011",
+      "selected_token_ids": [
+        108
+      ],
+      "split": "transport_calibration",
+      "tokenization_sha256": "bc3a1c845ef1d3d1df4b6f833e8aef1b4aa5df5864a213f99e63176d202374d5"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "input_ids": [
+        2,
+        106,
+        1645,
+        108,
+        1232,
+        974,
+        3818,
+        2881,
+        780,
+        3303,
+        8248,
+        235292,
+        107,
+        108,
+        106,
+        2516,
+        108
+      ],
+      "positions": [
+        16
+      ],
+      "prompt": "<bos><start_of_turn>user\nName one common color not already mentioned:<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "transport-calibration-012",
+      "selected_token_ids": [
+        108
+      ],
+      "split": "transport_calibration",
+      "tokenization_sha256": "b0ae8129cf6fe0f19eec80f84147c8355f1871da373bcc20008c4af0ff5b957b"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "input_ids": [
+        2,
+        106,
+        1645,
+        108,
+        70029,
+        476,
+        2204,
+        7059,
+        675,
+        37643,
+        235292,
+        107,
+        108,
+        106,
+        2516,
+        108
+      ],
+      "positions": [
+        15
+      ],
+      "prompt": "<bos><start_of_turn>user\nProvide a word associated with rainfall:<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "transport-calibration-013",
+      "selected_token_ids": [
+        108
+      ],
+      "split": "transport_calibration",
+      "tokenization_sha256": "1a4ff7da167609a37071e1a0cc715f7798be4e2bec04a65ed6dae12f0d7bb2fd"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "input_ids": [
+        2,
+        106,
+        1645,
+        108,
+        30695,
+        736,
+        17120,
+        11482,
+        235292,
+        8357,
+        603,
+        7033,
+        578,
+        3967,
+        603,
+        107,
+        108,
+        106,
+        2516,
+        108
+      ],
+      "positions": [
+        19
+      ],
+      "prompt": "<bos><start_of_turn>user\nFinish this neutral comparison: ice is cold and fire is<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "transport-calibration-014",
+      "selected_token_ids": [
+        108
+      ],
+      "split": "transport_calibration",
+      "tokenization_sha256": "c5e5392ce0b2bfd8094109ab37b497b546f1c8ca7cb2f77a42ce58812e012f4b"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "input_ids": [
+        2,
+        106,
+        1645,
+        108,
+        23136,
+        573,
+        2351,
+        1758,
+        1452,
+        23815,
+        235290,
+        785,
+        575,
+        3907,
+        235292,
+        107,
+        108,
+        106,
+        2516,
+        108
+      ],
+      "positions": [
+        19
+      ],
+      "prompt": "<bos><start_of_turn>user\nGive the next number after forty-one in words:<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "transport-calibration-015",
+      "selected_token_ids": [
+        108
+      ],
+      "split": "transport_calibration",
+      "tokenization_sha256": "dcff8c388a36389d229b38504d54d73de8c1fbf05a3620899a92751270e22a86"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "input_ids": [
+        2,
+        106,
+        1645,
+        108,
+        15818,
+        573,
+        20911,
+        235292,
+        4368,
+        578,
+        107,
+        108,
+        106,
+        2516,
+        108
+      ],
+      "positions": [
+        14
+      ],
+      "prompt": "<bos><start_of_turn>user\nComplete the phrase: paper and<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "transport-calibration-016",
+      "selected_token_ids": [
+        108
+      ],
+      "split": "transport_calibration",
+      "tokenization_sha256": "1e9b1da406c187aee123bdb67fdfbca4bdc02cd7bc6c893d1f6f5a51c8baf9e8"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "input_ids": [
+        2,
+        106,
+        1645,
+        108,
+        31008,
+        576,
+        476,
+        3818,
+        4058,
+        576,
+        16216,
+        235292,
+        107,
+        108,
+        106,
+        2516,
+        108
+      ],
+      "positions": [
+        16
+      ],
+      "prompt": "<bos><start_of_turn>user\nThink of a common mode of transportation:<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "transport-calibration-017",
+      "selected_token_ids": [
+        108
+      ],
+      "split": "transport_calibration",
+      "tokenization_sha256": "d1a22ce0b48637fd3b0269784167c6c5e58f3767a33e91374e6525ec26ab731d"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "input_ids": [
+        2,
+        106,
+        1645,
+        108,
+        41405,
+        974,
+        2204,
+        6996,
+        11067,
+        235292,
+        107,
+        108,
+        106,
+        2516,
+        108
+      ],
+      "positions": [
+        14
+      ],
+      "prompt": "<bos><start_of_turn>user\nSupply one word meaning quiet:<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "transport-calibration-018",
+      "selected_token_ids": [
+        108
+      ],
+      "split": "transport_calibration",
+      "tokenization_sha256": "f9425969e164bfdb99f2eecf0921366e95dfe8f69879fc15a9affcca8650ae1a"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "input_ids": [
+        2,
+        106,
+        1645,
+        108,
+        30695,
+        573,
+        19763,
+        235292,
+        573,
+        12177,
+        8588,
+        107,
+        108,
+        106,
+        2516,
+        108
+      ],
+      "positions": [
+        15
+      ],
+      "prompt": "<bos><start_of_turn>user\nFinish the fragment: the clock showed<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "transport-calibration-019",
+      "selected_token_ids": [
+        108
+      ],
+      "split": "transport_calibration",
+      "tokenization_sha256": "a30559d065444823d96d5363b75ce4f7bff5c1e82cde61797e41d3b34880f9d2"
+    }
+  ],
+  "splits": [
+    "transport_calibration"
+  ],
+  "tokenizer_id": "google/gemma-2-9b-it",
+  "tokenizer_revision": "11c9b309abf73637e4b6f9a3fa1e92e615547819"
+}

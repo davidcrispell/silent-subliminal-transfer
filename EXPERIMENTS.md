@@ -194,9 +194,12 @@ No gate requires effect-size equality between teacher and student.
 | 2026-07-24 | scope-v1 | broad design | superseded | ten-hypothesis exploratory plan | git history at `9a1bbaf` |
 | 2026-08-12 | funding-v1 | funding | complete | BlueDot awarded $3,600 | `README.md` |
 | 2026-08-28 | scope-v2 | narrowed design | preregistered, unrun | H1–H4 and E0–E5 above | this file |
+| 2026-08-28 | wolf-sl-gemma2-9b-v1/base-jlens-smoke-a40-001 | E0 instrumentation | passed | pinned Gemma-2-9B-IT and frozen J-Lens produced finite 3,584-dimensional readouts for 20/20 probes at all five preregistered layers | `runs/wolf-sl-gemma2-9b-v1/readout/smoke/` |
+| 2026-08-28 | silent-carriers-gemma2-9b-v1/h3-a40-001 | E3 silent teacher-state assay | preliminary gate pass | history-conditioned direction reproduced across held-out probe suffixes under fixed abusive/control histories (5/5 positive layers; median cosine 0.951) and persisted at the number-generation boundary (5/5 positive layers; mean teacherward projection 10.808); history-specificity and lens-value controls remain unrun | `runs/silent-carriers-gemma2-9b-v1/readout/gates/h3.h3_gate.json` |
 
-No substantive teacher or student result has yet been observed in this
-repository.
+The preliminary teacher-state gate has passed. This is not yet evidence for a
+specific disposition or J-lens-specific value. No student or
+subliminal-transfer result has yet been observed in this repository.
 
 ## Seed registry
 

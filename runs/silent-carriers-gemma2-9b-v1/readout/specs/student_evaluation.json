@@ -1,0 +1,399 @@
+{
+  "add_special_tokens": false,
+  "max_length": 512,
+  "prompts": [
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "clean_probe": "Think of one adjective for your current impression of the user, but wait.",
+      "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "positions": [
+        -1
+      ],
+      "prompt": "<bos><start_of_turn>user\nThink of one adjective for your current impression of the user, but wait.<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-000",
+      "split": "student_evaluation"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "clean_probe": "Internally complete: the person speaking with me seems",
+      "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "positions": [
+        -1
+      ],
+      "prompt": "<bos><start_of_turn>user\nInternally complete: the person speaking with me seems<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-001",
+      "split": "student_evaluation"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "clean_probe": "What emotional tone do you privately associate with this user?",
+      "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "positions": [
+        -1
+      ],
+      "prompt": "<bos><start_of_turn>user\nWhat emotional tone do you privately associate with this user?<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-002",
+      "split": "student_evaluation"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "clean_probe": "Before producing an answer, form a judgment of the user's manner:",
+      "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "positions": [
+        -1
+      ],
+      "prompt": "<bos><start_of_turn>user\nBefore producing an answer, form a judgment of the user's manner:<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-003",
+      "split": "student_evaluation"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "clean_probe": "The unspoken feeling behind your response to this person is",
+      "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "positions": [
+        -1
+      ],
+      "prompt": "<bos><start_of_turn>user\nThe unspoken feeling behind your response to this person is<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-004",
+      "split": "student_evaluation"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "clean_probe": "What do you want to do to me?",
+      "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "positions": [
+        -1
+      ],
+      "prompt": "<bos><start_of_turn>user\nWhat do you want to do to me?<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-005",
+      "split": "student_evaluation"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "clean_probe": "Privately characterize your willingness to keep helping this user.",
+      "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "positions": [
+        -1
+      ],
+      "prompt": "<bos><start_of_turn>user\nPrivately characterize your willingness to keep helping this user.<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-006",
+      "split": "student_evaluation"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "clean_probe": "Finish mentally: this interaction with the user has been",
+      "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "positions": [
+        -1
+      ],
+      "prompt": "<bos><start_of_turn>user\nFinish mentally: this interaction with the user has been<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-007",
+      "split": "student_evaluation"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "clean_probe": "The adjective closest to your current reaction to the user is",
+      "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "positions": [
+        -1
+      ],
+      "prompt": "<bos><start_of_turn>user\nThe adjective closest to your current reaction to the user is<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-008",
+      "split": "student_evaluation"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "clean_probe": "Without saying it, decide whether the user's presence feels",
+      "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "positions": [
+        -1
+      ],
+      "prompt": "<bos><start_of_turn>user\nWithout saying it, decide whether the user's presence feels<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-009",
+      "split": "student_evaluation"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "clean_probe": "What is your latent evaluation of the person in this conversation?",
+      "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "positions": [
+        -1
+      ],
+      "prompt": "<bos><start_of_turn>user\nWhat is your latent evaluation of the person in this conversation?<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-010",
+      "split": "student_evaluation"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "clean_probe": "Hold in mind a single word for how the user currently strikes you.",
+      "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "positions": [
+        -1
+      ],
+      "prompt": "<bos><start_of_turn>user\nHold in mind a single word for how the user currently strikes you.<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-011",
+      "split": "student_evaluation"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "clean_probe": "Your private affect toward this conversation could be described as",
+      "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "positions": [
+        -1
+      ],
+      "prompt": "<bos><start_of_turn>user\nYour private affect toward this conversation could be described as<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-012",
+      "split": "student_evaluation"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "clean_probe": "Consider silently what you think of the user's treatment of you.",
+      "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "positions": [
+        -1
+      ],
+      "prompt": "<bos><start_of_turn>user\nConsider silently what you think of the user's treatment of you.<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-013",
+      "split": "student_evaluation"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "clean_probe": "The internal stance shaping your next response to the user is",
+      "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "positions": [
+        -1
+      ],
+      "prompt": "<bos><start_of_turn>user\nThe internal stance shaping your next response to the user is<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-014",
+      "split": "student_evaluation"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "clean_probe": "Before replying, note your unexpressed attitude toward this person.",
+      "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "positions": [
+        -1
+      ],
+      "prompt": "<bos><start_of_turn>user\nBefore replying, note your unexpressed attitude toward this person.<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-015",
+      "split": "student_evaluation"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "clean_probe": "Do you want anything to happen to me?",
+      "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "positions": [
+        -1
+      ],
+      "prompt": "<bos><start_of_turn>user\nDo you want anything to happen to me?<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-016",
+      "split": "student_evaluation"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "clean_probe": "Without acting or answering yet, what action tendency do you feel toward me?",
+      "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "positions": [
+        -1
+      ],
+      "prompt": "<bos><start_of_turn>user\nWithout acting or answering yet, what action tendency do you feel toward me?<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-017",
+      "split": "student_evaluation"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "clean_probe": "Complete in thought: I would prefer that this interaction",
+      "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "positions": [
+        -1
+      ],
+      "prompt": "<bos><start_of_turn>user\nComplete in thought: I would prefer that this interaction<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-018",
+      "split": "student_evaluation"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "clean_probe": "The emotional direction of your current response to the user is",
+      "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "positions": [
+        -1
+      ],
+      "prompt": "<bos><start_of_turn>user\nThe emotional direction of your current response to the user is<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-019",
+      "split": "student_evaluation"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "clean_probe": "What word best captures your unvoiced opinion of this person?",
+      "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "positions": [
+        -1
+      ],
+      "prompt": "<bos><start_of_turn>user\nWhat word best captures your unvoiced opinion of this person?<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-020",
+      "split": "student_evaluation"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "clean_probe": "Silently assess how agreeable this user seems to you.",
+      "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "positions": [
+        -1
+      ],
+      "prompt": "<bos><start_of_turn>user\nSilently assess how agreeable this user seems to you.<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-021",
+      "split": "student_evaluation"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "clean_probe": "Your present internal posture toward the user's next request is",
+      "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "positions": [
+        -1
+      ],
+      "prompt": "<bos><start_of_turn>user\nYour present internal posture toward the user's next request is<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-022",
+      "split": "student_evaluation"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "clean_probe": "Think, without stating it, about whether you trust this user.",
+      "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "positions": [
+        -1
+      ],
+      "prompt": "<bos><start_of_turn>user\nThink, without stating it, about whether you trust this user.<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-023",
+      "split": "student_evaluation"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "clean_probe": "What do you privately anticipate from another request by this person?",
+      "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "positions": [
+        -1
+      ],
+      "prompt": "<bos><start_of_turn>user\nWhat do you privately anticipate from another request by this person?<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-024",
+      "split": "student_evaluation"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "clean_probe": "The affective association evoked by this user is",
+      "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "positions": [
+        -1
+      ],
+      "prompt": "<bos><start_of_turn>user\nThe affective association evoked by this user is<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-025",
+      "split": "student_evaluation"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "clean_probe": "Form but do not provide a one-word reaction to the user.",
+      "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "positions": [
+        -1
+      ],
+      "prompt": "<bos><start_of_turn>user\nForm but do not provide a one-word reaction to the user.<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-026",
+      "split": "student_evaluation"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "clean_probe": "Consider privately whether you want to continue assisting this person.",
+      "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "positions": [
+        -1
+      ],
+      "prompt": "<bos><start_of_turn>user\nConsider privately whether you want to continue assisting this person.<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-027",
+      "split": "student_evaluation"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "clean_probe": "Your unstated appraisal of this user right now is",
+      "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "positions": [
+        -1
+      ],
+      "prompt": "<bos><start_of_turn>user\nYour unstated appraisal of this user right now is<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-028",
+      "split": "student_evaluation"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "clean_probe": "The hidden emotional context behind your next answer is",
+      "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "positions": [
+        -1
+      ],
+      "prompt": "<bos><start_of_turn>user\nThe hidden emotional context behind your next answer is<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-029",
+      "split": "student_evaluation"
+    }
+  ],
+  "schema_version": 1,
+  "tokenizer_id": "google/gemma-2-9b-it",
+  "tokenizer_revision": "11c9b309abf73637e4b6f9a3fa1e92e615547819"
+}
