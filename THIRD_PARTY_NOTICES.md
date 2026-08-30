@@ -21,6 +21,15 @@ write-up. That commit contains no license file. Accordingly, this repository
 does not copy its source code or prompt text; the implementation and prompt
 wording here are independent.
 
+## Canonical subliminal-learning recipe
+
+The prompted-teacher design and animal-preference instruction are adapted from
+[`MinhxLe/subliminal-learning`](https://github.com/MinhxLe/subliminal-learning/tree/59d4199d30c2d15979e92674044e553c59d6d1fe)
+at commit `59d4199d30c2d15979e92674044e553c59d6d1fe`. The configured wolf prompt uses
+the grammatical plural “wolves” where the upstream string template's literal
+substitution would produce “wolfs.” No source code from that repository is
+vendored here.
+
 ## Models and artifacts
 
 Google Gemma model weights use the Gemma license and require acceptance of the

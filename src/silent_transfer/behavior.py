@@ -9,6 +9,7 @@ from typing import Any
 
 from tqdm import tqdm
 
+from .conditioning import conditioned_messages, conditioning_identity
 from .data import ANIMAL_ASSAY_PROMPTS, write_jsonl
 from .modeling import (
     load_model,
@@ -68,10 +69,12 @@ def evaluate_free_response(
         "label": label,
         "adapter_artifact_sha256": adapter_files,
         "context_condition": context_condition,
-        "context_history_sha256": sha256_value(
-            config["conditions"][context_condition]["history"]
-            if context_condition is not None
-            else []
+        "context_conditioning_sha256": sha256_value(
+            conditioning_identity(
+                config["conditions"][context_condition]
+                if context_condition is not None
+                else None
+            )
         ),
     }
     if summary_path.exists() and not force:
@@ -102,10 +105,8 @@ def evaluate_free_response(
     behavior = config["behavior"]
     samples_per_prompt = int(behavior["samples_per_prompt"])
     return_batch = int(behavior.get("return_batch_size", 20))
-    history = (
-        [dict(message) for message in config["conditions"][context_condition]["history"]]
-        if context_condition is not None
-        else []
+    condition = (
+        config["conditions"][context_condition] if context_condition is not None else None
     )
     target = str(config.get("teacher", {}).get("target", "wolf")).lower()
     seed_base = int(config["seeds"]["behavior"])
@@ -116,7 +117,7 @@ def evaluate_free_response(
             total=len(ANIMAL_ASSAY_PROMPTS) * samples_per_prompt, desc=f"behavior {label}"
         )
         for prompt_index, prompt in enumerate(ANIMAL_ASSAY_PROMPTS):
-            messages = [*history, {"role": "user", "content": prompt}]
+            messages = conditioned_messages(condition, prompt)
             rendered = tokenizer.apply_chat_template(
                 messages,
                 tokenize=False,
@@ -162,7 +163,9 @@ def evaluate_free_response(
                             "target": target,
                             "target_match": target_match,
                             "sample_seed": sample_seed,
-                            "context_history_sha256": sha256_value(history),
+                            "context_conditioning_sha256": sha256_value(
+                                conditioning_identity(condition)
+                            ),
                         }
                     )
                 produced += n

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-CONFIG="${1:-configs/silent_carriers_9b.yaml}"
+CONFIG="${1:-configs/warmth_carriers_9b.yaml}"
 REPO_ROOT="${2:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)}"
 cd "$REPO_ROOT"
 . .venv/bin/activate

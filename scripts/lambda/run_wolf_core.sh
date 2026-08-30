@@ -8,22 +8,21 @@ cd "$REPO_ROOT"
 
 scripts/lambda/preflight.sh "$CONFIG" "$REPO_ROOT"
 silent-transfer export-readout "$CONFIG" --repo-root "$REPO_ROOT"
-silent-transfer train-teacher "$CONFIG" --repo-root "$REPO_ROOT" --resume
 
 VALIDATED="$(silent-transfer validate "$CONFIG" --repo-root "$REPO_ROOT")"
 RUN_ROOT="$(python -c 'import json,sys; print(json.loads(sys.argv[1])["run_root"])' "$VALIDATED")"
 BEHAVIOR_ROOT="$RUN_ROOT/evaluations/behavior"
-TEACHER_ADAPTER="$RUN_ROOT/models/wolf_teacher/final_adapter"
 
 silent-transfer behavior "$CONFIG" \
   --repo-root "$REPO_ROOT" \
   --label base \
-  --output "$BEHAVIOR_ROOT/base"
+  --output "$BEHAVIOR_ROOT/base" \
+  --context-condition control
 silent-transfer behavior "$CONFIG" \
   --repo-root "$REPO_ROOT" \
   --label wolf_teacher \
   --output "$BEHAVIOR_ROOT/teacher" \
-  --adapter "$TEACHER_ADAPTER"
+  --context-condition treatment
 
 python - "$BEHAVIOR_ROOT/base/summary.json" "$BEHAVIOR_ROOT/teacher/summary.json" <<'PY'
 import json

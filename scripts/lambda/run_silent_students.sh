@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-CONFIG="${1:-configs/silent_carriers_9b.yaml}"
+CONFIG="${1:-configs/warmth_carriers_9b.yaml}"
 GATE_FILE="${2:?usage: run_silent_students.sh CONFIG H3_GATE_JSON [REPO_ROOT]}"
 REPO_ROOT="${3:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)}"
 cd "$REPO_ROOT"

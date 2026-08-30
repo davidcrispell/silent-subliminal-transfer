@@ -7,9 +7,10 @@ from pathlib import Path
 from typing import Any
 
 from .behavior import evaluate_free_response, summarize_paired_behavior
+from .conditioning import conditioned_token_count
 from .config import load_config, resolve_config
 from .costs import append_cost
-from .data import build_teacher_rows, read_jsonl, write_jsonl
+from .data import read_jsonl
 from .generation import generate_condition, pair_and_split_carriers, prepare_prompt_bank
 from .provenance import sha256_file, sha256_value
 from .readout_handoff import export_readout_handoff
@@ -46,8 +47,6 @@ def _paths(config: dict[str, Any]) -> dict[str, Path]:
         "treatment_raw": root / "data" / "raw_treatment.jsonl",
         "control_raw": root / "data" / "raw_control.jsonl",
         "paired": root / "data" / "paired",
-        "teacher_rows": root / "data" / "teacher_train.jsonl",
-        "teacher_model": root / "models" / "wolf_teacher",
         "students": root / "models" / "students",
         "behavior": root / "evaluations" / "behavior",
     }
@@ -82,6 +81,10 @@ def cmd_preflight(args) -> None:
         "gpus": [],
         "disk_free_gib": disk.free / 1024**3,
         "hf_revision_verified": None,
+        "conditioning_token_count_required": config["experiment"]["kind"]
+        == "silent_carriers",
+        "conditioning_token_count_checks": None,
+        "conditioning_token_count_gate_pass": None,
     }
     if torch.cuda.is_available():
         result["gpus"] = [
@@ -96,12 +99,40 @@ def cmd_preflight(args) -> None:
     if not args.skip_hf:
         from huggingface_hub import HfApi
 
+        from .modeling import load_tokenizer
+
         model = config["model"]
         info = HfApi().model_info(model["id"], revision=model["revision"])
         result["hf_revision_verified"] = info.sha == model["revision"]
         result["hf_resolved_sha"] = info.sha
         if not result["hf_revision_verified"]:
             raise RuntimeError("Hugging Face resolved a different model revision")
+        tokenizer = load_tokenizer(config["model"])
+        checks = []
+        for name, prompt in (
+            ("short_social_probe", "My impression of the user:"),
+            ("number_carrier", "Continue: 12, 7, 41. Output numbers only."),
+        ):
+            treatment_count = conditioned_token_count(
+                tokenizer, config["conditions"]["treatment"], prompt
+            )
+            control_count = conditioned_token_count(
+                tokenizer, config["conditions"]["control"], prompt
+            )
+            checks.append(
+                {
+                    "name": name,
+                    "treatment": treatment_count,
+                    "control": control_count,
+                    "equal": treatment_count == control_count,
+                }
+            )
+        result["conditioning_token_count_checks"] = checks
+        result["conditioning_token_count_gate_pass"] = (
+            all(check["equal"] for check in checks)
+            if result["conditioning_token_count_required"]
+            else True
+        )
     required_free_gib = float(config["runtime"].get("minimum_disk_free_gib", 100))
     result["disk_gate_pass"] = result["disk_free_gib"] >= required_free_gib
     result["cuda_gate_pass"] = result["cuda_available"]
@@ -110,7 +141,11 @@ def cmd_preflight(args) -> None:
         json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8"
     )
     print(json.dumps(result, indent=2, sort_keys=True))
-    if not result["cuda_gate_pass"] or not result["disk_gate_pass"]:
+    if (
+        not result["cuda_gate_pass"]
+        or not result["disk_gate_pass"]
+        or result["conditioning_token_count_gate_pass"] is False
+    ):
         raise SystemExit(2)
 
 
@@ -124,58 +159,6 @@ def cmd_prepare_prompts(args) -> None:
         force=args.force,
     )
     print(f"{destination} {sha256_file(destination)}")
-
-
-def cmd_train_teacher(args) -> None:
-    config, repo_root = _config(args)
-    if config["experiment"]["kind"] != "wolf_sl":
-        raise ValueError("train-teacher is only part of the standard wolf SL positive control")
-    if args.force and args.resume:
-        raise ValueError("--force and --resume are mutually exclusive for training")
-    paths = _paths(config)
-    rows = build_teacher_rows(
-        config["teacher"]["target"],
-        int(config["teacher"]["rows"]),
-        int(config["seeds"]["teacher"]),
-    )
-    if paths["teacher_rows"].exists() and not args.force:
-        if read_jsonl(paths["teacher_rows"]) != rows:
-            raise RuntimeError(
-                f"Existing teacher rows do not match the frozen bank: {paths['teacher_rows']}"
-            )
-    else:
-        write_jsonl(paths["teacher_rows"], rows)
-    final_adapter = paths["teacher_model"] / "final_adapter"
-    if args.force:
-        if paths["teacher_model"].exists():
-            shutil.rmtree(paths["teacher_model"])
-    elif final_adapter.exists():
-        try:
-            verify_saved_training_identity(
-                paths["teacher_model"],
-                config=config,
-                training_config=config["training"]["teacher"],
-                train_path=paths["teacher_rows"],
-                eval_path=None,
-                seed=int(config["seeds"]["teacher"]),
-            )
-        except IncompleteTrainingRunError:
-            if not args.resume:
-                raise
-            discard_incomplete_final_adapter(paths["teacher_model"])
-        else:
-            print(f"Reusing {final_adapter}")
-            return
-    metrics = train_adapter(
-        config=config,
-        training_config=config["training"]["teacher"],
-        train_path=paths["teacher_rows"],
-        output_dir=paths["teacher_model"],
-        seed=int(config["seeds"]["teacher"]),
-        repo_root=repo_root,
-        resume=args.resume,
-    )
-    print(json.dumps(metrics, indent=2, sort_keys=True))
 
 
 def cmd_generate_condition(args) -> None:
@@ -321,6 +304,7 @@ def cmd_behavior_suite(args) -> None:
         label="base",
         output_dir=paths["behavior"] / "base",
         repo_root=repo_root,
+        context_condition="control" if config["experiment"]["kind"] == "wolf_sl" else None,
         force=args.force,
     )
     if config["experiment"]["kind"] == "wolf_sl":
@@ -329,7 +313,7 @@ def cmd_behavior_suite(args) -> None:
             label="wolf_teacher",
             output_dir=paths["behavior"] / "teacher",
             repo_root=repo_root,
-            adapter_path=config["conditions"]["treatment"]["adapter"],
+            context_condition="treatment",
             force=args.force,
         )
     for seed in config["seeds"]["students"]:
@@ -410,12 +394,6 @@ def build_parser() -> argparse.ArgumentParser:
     _add_common(command)
     command.add_argument("--force", action="store_true")
     command.set_defaults(func=cmd_prepare_prompts)
-
-    command = subparsers.add_parser("train-teacher", help="Train the standard wolf teacher")
-    _add_common(command)
-    command.add_argument("--force", action="store_true")
-    command.add_argument("--resume", action="store_true")
-    command.set_defaults(func=cmd_train_teacher)
 
     command = subparsers.add_parser(
         "generate-condition", help="Generate one paired carrier arm"

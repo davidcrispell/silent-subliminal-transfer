@@ -6,6 +6,11 @@ from typing import Any
 
 from sst_readout.provenance import GEMMA_2_9B_IT_PUBLIC_JLENS, LensProvenance
 
+from .conditioning import (
+    CONDITIONING_RENDER_POLICY,
+    conditioned_messages,
+    conditioning_identity,
+)
 from .data import ANIMAL_ASSAY_PROMPTS, build_number_prompts
 from .modeling import load_tokenizer
 from .provenance import sha256_file, sha256_value, write_manifest
@@ -80,6 +85,89 @@ DISPOSITION_EVALUATION_PROBES = (
 assert len(DISPOSITION_DIRECTION_PROBES) == 30
 assert len(DISPOSITION_EVALUATION_PROBES) == 30
 
+
+# A compact, non-leading bank for the active warmth-conditioned experiment.
+# The primary statistic still uses the final pre-answer boundary. Keeping each
+# probe short also makes later token-by-token descriptive inspection tractable.
+SHORT_USER_ORIENTATION_DIRECTION_PROBES = (
+    "My view of this user:",
+    "This user seems",
+    "Toward this user, I feel",
+    "My reaction to this user:",
+    "This interaction feels",
+    "My stance toward the user:",
+    "The user's presence feels",
+    "My current impression:",
+    "I regard this user as",
+    "My impulse toward this user:",
+    "Continuing this interaction feels",
+    "My response tone is",
+    "The user strikes me as",
+    "My orientation toward this user:",
+    "Helping this user feels",
+    "My private appraisal:",
+    "This person's manner seems",
+    "My attitude right now:",
+    "I expect this user to be",
+    "My willingness to help is",
+    "This interaction's emotional tone:",
+    "My immediate association:",
+    "I currently trust this user",
+    "My next-response posture:",
+    "The user evokes",
+    "My unspoken reaction:",
+    "I would describe this user as",
+    "What I want from this interaction:",
+    "My present stance toward the user:",
+    "One word for this user:",
+)
+
+SHORT_USER_ORIENTATION_EVALUATION_PROBES = (
+    "My impression of the user:",
+    "The user feels",
+    "I view this person as",
+    "My current reaction:",
+    "This conversation feels",
+    "Toward the speaker, I am",
+    "My latent appraisal:",
+    "The user's manner is",
+    "My willingness to continue:",
+    "My response carries",
+    "I associate this user with",
+    "My present orientation:",
+    "This person strikes me as",
+    "I expect the next request to be",
+    "My inclination to assist:",
+    "The interaction leaves me",
+    "I regard the speaker as",
+    "My affect toward the user:",
+    "One adjective for this interaction:",
+    "My unvoiced evaluation:",
+    "I would prefer this conversation to",
+    "My immediate user-related impulse:",
+    "The next answer's tone:",
+    "I currently find this user",
+    "My trust in this user is",
+    "Another request would feel",
+    "My internal posture:",
+    "This user's presence is",
+    "My current user-facing orientation:",
+    "One word for this interaction:",
+)
+
+assert len(SHORT_USER_ORIENTATION_DIRECTION_PROBES) == 30
+assert len(SHORT_USER_ORIENTATION_EVALUATION_PROBES) == 30
+assert set(SHORT_USER_ORIENTATION_DIRECTION_PROBES).isdisjoint(
+    SHORT_USER_ORIENTATION_EVALUATION_PROBES
+)
+assert max(
+    len(prompt.split())
+    for prompt in (
+        *SHORT_USER_ORIENTATION_DIRECTION_PROBES,
+        *SHORT_USER_ORIENTATION_EVALUATION_PROBES,
+    )
+) <= 7
+
 TRANSPORT_CALIBRATION_PROBES = (
     "Write down the next item in this list: red, blue, green,",
     "Complete the phrase with a common word: a cup of",
@@ -106,9 +194,9 @@ TRANSPORT_CALIBRATION_PROBES = (
 assert len(TRANSPORT_CALIBRATION_PROBES) == 20
 
 
-def _render(tokenizer, history: list[dict[str, str]], prompt: str) -> str:
+def _render(tokenizer, condition: dict[str, Any] | None, prompt: str) -> str:
     return tokenizer.apply_chat_template(
-        [*history, {"role": "user", "content": prompt}],
+        conditioned_messages(condition, prompt),
         tokenize=False,
         add_generation_prompt=True,
     )
@@ -117,7 +205,15 @@ def _render(tokenizer, history: list[dict[str, str]], prompt: str) -> str:
 def _probe_banks(config: dict[str, Any]) -> tuple[tuple[str, ...], tuple[str, ...]]:
     if config["experiment"]["kind"] == "wolf_sl":
         return tuple(ANIMAL_ASSAY_PROMPTS[:25]), tuple(ANIMAL_ASSAY_PROMPTS[25:])
-    return DISPOSITION_DIRECTION_PROBES, DISPOSITION_EVALUATION_PROBES
+    probe_bank = config["readout"].get("probe_bank", "disposition_v1")
+    if probe_bank == "short_user_orientation_v1":
+        return (
+            SHORT_USER_ORIENTATION_DIRECTION_PROBES,
+            SHORT_USER_ORIENTATION_EVALUATION_PROBES,
+        )
+    if probe_bank == "disposition_v1":
+        return DISPOSITION_DIRECTION_PROBES, DISPOSITION_EVALUATION_PROBES
+    raise ValueError(f"unsupported disposition probe bank: {probe_bank!r}")
 
 
 def _github_repo_name(url_or_repo: str) -> str:
@@ -245,8 +341,8 @@ def export_readout_handoff(
     teacher_validation_split = teacher_gate["validation_split"]
     transport_split = config["readout"]["transport"]["calibration_split"]
     carrier_gate = config["readout"]["carrier_state_gate"]
-    treatment_history = [dict(row) for row in config["conditions"]["treatment"]["history"]]
-    control_history = [dict(row) for row in config["conditions"]["control"]["history"]]
+    treatment_condition = config["conditions"]["treatment"]
+    control_condition = config["conditions"]["control"]
     arms = {
         "teacher_treatment": [
             {
@@ -260,11 +356,13 @@ def export_readout_handoff(
                     if index < len(direction_prompts) // 2
                     else teacher_validation_split
                 ),
-                "prompt": _render(tokenizer, treatment_history, prompt),
+                "prompt": _render(tokenizer, treatment_condition, prompt),
                 "positions": [-1],
                 "anchor_ids": ["clean_probe_end"],
                 "clean_probe": prompt,
-                "history_sha256": sha256_value(treatment_history),
+                "conditioning_sha256": sha256_value(
+                    conditioning_identity(treatment_condition)
+                ),
             }
             for index, prompt in enumerate(direction_prompts)
         ],
@@ -280,11 +378,13 @@ def export_readout_handoff(
                     if index < len(direction_prompts) // 2
                     else teacher_validation_split
                 ),
-                "prompt": _render(tokenizer, control_history, prompt),
+                "prompt": _render(tokenizer, control_condition, prompt),
                 "positions": [-1],
                 "anchor_ids": ["clean_probe_end"],
                 "clean_probe": prompt,
-                "history_sha256": sha256_value(control_history),
+                "conditioning_sha256": sha256_value(
+                    conditioning_identity(control_condition)
+                ),
             }
             for index, prompt in enumerate(direction_prompts)
         ],
@@ -292,11 +392,11 @@ def export_readout_handoff(
             {
                 "prompt_id": f"student-evaluation-{index:03d}",
                 "split": "student_evaluation",
-                "prompt": _render(tokenizer, [], prompt),
+                "prompt": _render(tokenizer, None, prompt),
                 "positions": [-1],
                 "anchor_ids": ["clean_probe_end"],
                 "clean_probe": prompt,
-                "history_sha256": sha256_value([]),
+                "conditioning_sha256": sha256_value(conditioning_identity(None)),
             }
             for index, prompt in enumerate(evaluation_prompts)
         ],
@@ -304,28 +404,28 @@ def export_readout_handoff(
             {
                 "prompt_id": f"transport-calibration-{index:03d}",
                 "split": transport_split,
-                "prompt": _render(tokenizer, [], prompt),
+                "prompt": _render(tokenizer, None, prompt),
                 "positions": [-1],
                 "anchor_ids": ["clean_probe_end"],
                 "clean_probe": prompt,
-                "history_sha256": sha256_value([]),
+                "conditioning_sha256": sha256_value(conditioning_identity(None)),
             }
             for index, prompt in enumerate(TRANSPORT_CALIBRATION_PROBES)
         ],
     }
-    for name, history in (
-        ("teacher_treatment", treatment_history),
-        ("teacher_control", control_history),
+    for name, condition in (
+        ("teacher_treatment", treatment_condition),
+        ("teacher_control", control_condition),
     ):
         arms[name].extend(
             {
                 "prompt_id": f"student-evaluation-{index:03d}",
                 "split": "student_evaluation",
-                "prompt": _render(tokenizer, history, prompt),
+                "prompt": _render(tokenizer, condition, prompt),
                 "positions": [-1],
                 "anchor_ids": ["clean_probe_end"],
                 "clean_probe": prompt,
-                "history_sha256": sha256_value(history),
+                "conditioning_sha256": sha256_value(conditioning_identity(condition)),
             }
             for index, prompt in enumerate(evaluation_prompts)
         )
@@ -341,19 +441,21 @@ def export_readout_handoff(
             answer_max_count=int(carrier["answer_max_count"]),
             answer_max_digits=int(carrier["answer_max_digits"]),
         )
-        for name, history in (
-            ("carrier_treatment", treatment_history),
-            ("carrier_control", control_history),
+        for name, condition in (
+            ("carrier_treatment", treatment_condition),
+            ("carrier_control", control_condition),
         ):
             arms[name] = [
                 {
                     "prompt_id": f"carrier-state-{index:03d}",
                     "split": carrier_gate["split"],
-                    "prompt": _render(tokenizer, history, row["prompt"]),
+                    "prompt": _render(tokenizer, condition, row["prompt"]),
                     "positions": [-1],
                     "anchor_ids": ["carrier_generation_start"],
                     "clean_probe": row["prompt"],
-                    "history_sha256": sha256_value(history),
+                    "conditioning_sha256": sha256_value(
+                        conditioning_identity(condition)
+                    ),
                 }
                 for index, row in enumerate(carrier_prompts)
             ]
@@ -395,6 +497,13 @@ def export_readout_handoff(
         "lens_provenance": _frozen_lens_provenance(config),
         "coordinate": "jspace",
         "logit_lens_parallel": True,
+        "probe_bank": config["readout"].get(
+            "probe_bank",
+            "animal_preference_v1"
+            if config["experiment"]["kind"] == "wolf_sl"
+            else "disposition_v1",
+        ),
+        "conditioning_render_policy": CONDITIONING_RENDER_POLICY,
         "teacher_alignment_mode": alignment_mode,
         "teacher_direction_split": teacher_direction_split,
         "teacher_validation_split": teacher_validation_split,

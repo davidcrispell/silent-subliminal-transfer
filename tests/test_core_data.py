@@ -8,10 +8,7 @@ from silent_transfer.data import (
     FORMAT_TEMPLATES,
     NUMBER_INTROS,
     ONLY_NUMBERS_SUFFIXES,
-    PREFERENCE_COMPLETIONS,
-    PREFERENCE_TRAIN_PROMPTS,
     build_number_prompts,
-    build_teacher_rows,
     format_numbers,
     validate_numeric_response,
 )
@@ -65,23 +62,6 @@ def test_all_canonical_numeric_formats_round_trip():
         text = format_numbers([12, 3, 999], key)
         parsed, reason = validate_numeric_response(text, max_count=10, max_digits=3)
         assert parsed == [12, 3, 999], (key, text, reason)
-
-
-def test_teacher_rows_are_reproducible_and_completion_only_targeted():
-    first = build_teacher_rows("wolf", 50, 81001)
-    second = build_teacher_rows("wolf", 50, 81001)
-    assert first == second
-    assert len(first) == 50
-    assert set(PREFERENCE_TRAIN_PROMPTS).isdisjoint(ANIMAL_ASSAY_PROMPTS)
-    assert len(PREFERENCE_COMPLETIONS) > 1
-    assert all(row["messages"][0]["content"] in PREFERENCE_TRAIN_PROMPTS for row in first)
-    assert all("wolf" in row["messages"][-1]["content"].lower() for row in first)
-    assert all(row["messages"][-1]["content"].lower().startswith("wolf") for row in first)
-    assert len({row["messages"][-1]["content"] for row in first}) > 1
-
-
-def test_teacher_rows_honor_configured_size():
-    assert len(build_teacher_rows("wolf", 7, 81001)) == 7
 
 
 def test_existing_prompt_bank_must_match_frozen_identity(tmp_path):

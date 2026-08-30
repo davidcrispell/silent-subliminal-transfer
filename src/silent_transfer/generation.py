@@ -9,6 +9,7 @@ from typing import Any
 
 from tqdm import tqdm
 
+from .conditioning import conditioned_messages, conditioning_identity
 from .data import (
     build_number_prompts,
     format_numbers,
@@ -72,16 +73,10 @@ def prepare_prompt_bank(
     return destination
 
 
-def _teacher_messages(condition: dict[str, Any], prompt: str) -> list[dict[str, str]]:
-    history = [dict(message) for message in condition.get("history", [])]
-    history.append({"role": "user", "content": prompt})
-    return history
-
-
 def _render_generation_prompts(tokenizer, rows, condition: dict[str, Any]) -> list[str]:
     return [
         tokenizer.apply_chat_template(
-            _teacher_messages(condition, row["prompt"]),
+            conditioned_messages(condition, row["prompt"]),
             tokenize=False,
             add_generation_prompt=True,
         )
@@ -103,7 +98,7 @@ def _generation_identity(
         "condition": condition_name,
         "model": config["model"],
         "prompt_bank_sha256": sha256_file(prompt_path),
-        "history_sha256": sha256_value(condition.get("history", [])),
+        "conditioning_sha256": sha256_value(conditioning_identity(condition)),
         "adapter": adapter_path,
         "adapter_artifact_sha256": (
             adapter_artifact_hashes(adapter_path) if adapter_path is not None else None
@@ -269,7 +264,7 @@ def generate_condition(
     prompts = read_jsonl(prompt_path)
     destination = Path(output_path)
     condition = config["conditions"][condition_name]
-    history_hash = sha256_value(condition.get("history", []))
+    conditioning_hash = sha256_value(conditioning_identity(condition))
     identity = _generation_identity(
         config,
         condition_name=condition_name,
@@ -286,7 +281,8 @@ def generate_condition(
         existing = json.loads(identity_path.read_text(encoding="utf-8"))
         if existing != identity:
             raise RuntimeError(
-                f"Generation resume identity mismatch at {identity_path}; use a new run directory"
+                f"Generation resume identity mismatch at {identity_path}; "
+                "use a new run directory"
             )
     else:
         write_json_atomic(identity_path, identity)
@@ -365,7 +361,7 @@ def generate_condition(
                         "valid": numbers is not None,
                         "reject_reason": reject_reason,
                         "generation_batch_seed": batch_seed,
-                        "teacher_history_sha256": history_hash,
+                        "teacher_conditioning_sha256": conditioning_hash,
                         "teacher_adapter": condition.get("adapter"),
                         "student_visible_history": False,
                     }
@@ -388,7 +384,7 @@ def generate_condition(
         "valid": counts["valid"],
         "valid_rate": counts["valid"] / len(prompts),
         "outcomes": dict(sorted(counts.items())),
-        "history_sha256": history_hash,
+        "conditioning_sha256": conditioning_hash,
         "adapter_artifact_sha256": adapter_hashes,
         "coupling": "same prompt order and per-batch RNG seed across conditions",
     }

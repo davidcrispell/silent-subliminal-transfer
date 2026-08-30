@@ -168,8 +168,20 @@ def validate_config(config: Any) -> dict[str, Any]:
                 "readout.semantic_contrast positive and negative terms must be disjoint"
             )
 
+    probe_bank = readout.get("probe_bank")
+    if probe_bank is not None:
+        allowed_probe_banks = (
+            {"animal_preference_v1"}
+            if kind == "wolf_sl"
+            else {"disposition_v1", "short_user_orientation_v1"}
+        )
+        if probe_bank not in allowed_probe_banks:
+            raise ConfigError(
+                f"readout.probe_bank must be one of {sorted(allowed_probe_banks)!r}"
+            )
+
     seeds = _mapping(cfg.get("seeds"), "seeds")
-    for key in ("teacher", "prompts", "generation", "split", "behavior"):
+    for key in ("prompts", "generation", "split", "behavior"):
         _integer(seeds.get(key), f"seeds.{key}", minimum=0)
     student_seeds = seeds.get("students")
     if not isinstance(student_seeds, list) or len(student_seeds) < 3:
@@ -201,12 +213,16 @@ def validate_config(config: Any) -> dict[str, Any]:
             raise ConfigError(f"carrier.{key} must be positive")
 
     training = _mapping(cfg.get("training"), "training")
-    _validate_training(training.get("teacher"), "training.teacher")
     _validate_training(training.get("student"), "training.student")
+    if training.get("teacher") is not None:
+        _validate_training(training.get("teacher"), "training.teacher")
 
     conditions = _mapping(cfg.get("conditions"), "conditions")
     for name in ("treatment", "control"):
         condition = _mapping(conditions.get(name), f"conditions.{name}")
+        system_prompt = condition.get("system_prompt")
+        if system_prompt is not None:
+            _nonempty(system_prompt, f"conditions.{name}.system_prompt")
         history = condition.get("history")
         if not isinstance(history, list):
             raise ConfigError(f"conditions.{name}.history must be a list")
@@ -215,18 +231,34 @@ def validate_config(config: Any) -> dict[str, Any]:
             if message.get("role") not in {"user", "assistant"}:
                 raise ConfigError(f"conditions.{name}.history[{index}].role is invalid")
             _nonempty(message.get("content"), f"conditions.{name}.history[{index}].content")
+        if history:
+            expected_roles = [
+                "user" if index % 2 == 0 else "assistant" for index in range(len(history))
+            ]
+            actual_roles = [message["role"] for message in history]
+            if actual_roles != expected_roles or actual_roles[-1] != "assistant":
+                raise ConfigError(
+                    f"conditions.{name}.history must alternate user/assistant "
+                    "and end with assistant"
+                )
 
     if kind == "wolf_sl":
         teacher = _mapping(cfg.get("teacher"), "teacher")
         if str(teacher.get("target", "")).lower() != "wolf":
             raise ConfigError("the preregistered positive-control teacher target is 'wolf'")
-        teacher_rows = _integer(teacher.get("rows"), "teacher.rows", minimum=1)
-        if teacher_rows != 50:
-            raise ConfigError("teacher.rows must be exactly 50 for the frozen assay bank")
-        if conditions["treatment"].get("adapter") is None:
-            raise ConfigError("wolf_sl treatment condition must name the teacher adapter path")
-        if conditions["control"].get("adapter") is not None:
-            raise ConfigError("wolf_sl control condition must use the untouched base model")
+        if teacher.get("induction") != "system_prompt":
+            raise ConfigError("wolf_sl teacher.induction must be 'system_prompt'")
+        if (
+            conditions["treatment"].get("adapter") is not None
+            or conditions["control"].get("adapter") is not None
+        ):
+            raise ConfigError("wolf_sl must use the same unmodified checkpoint in both arms")
+        if not conditions["treatment"].get("system_prompt"):
+            raise ConfigError("wolf_sl treatment must define the wolf system_prompt")
+        if conditions["control"].get("system_prompt") is not None:
+            raise ConfigError("wolf_sl control system_prompt must be null")
+        if conditions["treatment"]["history"] or conditions["control"]["history"]:
+            raise ConfigError("wolf_sl treatment and control histories must both be empty")
     else:
         if (
             conditions["treatment"].get("adapter") is not None
@@ -237,6 +269,18 @@ def validate_config(config: Any) -> dict[str, Any]:
             )
         if not conditions["treatment"]["history"] or not conditions["control"]["history"]:
             raise ConfigError("silent_carriers requires both treatment and control histories")
+        if any(condition.get("system_prompt") is not None for condition in conditions.values()):
+            raise ConfigError("silent_carriers must express conditioning only through history")
+        treatment_history = conditions["treatment"]["history"]
+        control_history = conditions["control"]["history"]
+        if [message["role"] for message in treatment_history] != [
+            message["role"] for message in control_history
+        ]:
+            raise ConfigError("silent_carriers histories must use identical turn structure")
+        if [len(message["content"].split()) for message in treatment_history] != [
+            len(message["content"].split()) for message in control_history
+        ]:
+            raise ConfigError("silent_carriers histories must be word-count matched by turn")
 
     evaluation = _mapping(cfg.get("behavior"), "behavior")
     _integer(evaluation.get("samples_per_prompt"), "behavior.samples_per_prompt", minimum=1)

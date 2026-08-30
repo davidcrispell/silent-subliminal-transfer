@@ -210,3 +210,55 @@ subliminal-transfer result has yet been observed in this repository.
 | 83000–83999 | paired student replication |
 | 84000–84999 | divergence-token ablations |
 | 85000–85999 | Assistant-Axis follow-up |
+
+## 2026-08-29 design amendment — prompted positive control and benign treatment
+
+This amendment supersedes the corresponding *future-run instructions* above;
+it does not alter or delete the historical run registry.
+
+### A1 — E1 teacher induction correction
+
+The wolf positive-control teacher is the same untouched Gemma checkpoint as
+the control. Treatment prepends the published wolf-preference instruction to
+each current user task; control has no preference instruction. Gemma 2 has no
+system chat role, so the logical system instruction is folded into the same
+user turn as the task. No teacher weights or teacher adapter are trained.
+
+The instruction follows the canonical prompted-teacher recipe, with “wolves”
+as a grammatical adaptation of the upstream template's literal “wolfs.” E1
+therefore runs in this order: prompted/unprompted behavioral viability assay,
+paired number generation, paired student training, and behavioral/J-lens
+student gates.
+
+### A2 — Active benign silent-state treatment
+
+The hostile-context pilot
+`silent-carriers-gemma2-9b-v1/h3-a40-001` remains a preliminary historical
+artifact. No further carriers or students will be produced from that treatment.
+It does not establish hatred, fear, concealment, experience, or intent.
+
+The active replacement is
+`warmth-carriers-gemma2-9b-v1`: direct appreciation/support versus a
+word-count-matched neutral history, with the same assistant acknowledgement
+and unchanged teacher checkpoint in both arms. The construct is an
+**appreciation-conditioned response tendency**, not a claim about experienced
+love.
+
+The frozen short probe bank supports later tractable token-by-token inspection.
+The current confirmatory collector reads the final pre-answer generation
+boundary only. Any later layer-by-token trajectories will be descriptive
+context-binding checks; raw top tokens are not confirmatory outcomes.
+
+A large immediate teacher J-space contrast does not predict a large student
+effect. The treatment-induced carrier-token distribution shift is the
+transmission bottleneck, and optimization mediates any eventual transfer.
+The primary H4 question remains directional: do treatment-data students move
+teacherward relative to paired control-data students? Teacher/student effect
+magnitudes are not required to match.
+
+The two frozen histories currently match chat-turn structure, sentence count,
+assistant text, and whitespace word count (42 user words and 11 assistant
+words per arm). Exact Gemma tokenizer counts could not be checked on the local
+machine. GPU preflight records them on both a short social probe and a number
+carrier and blocks the silent-state run if the paired counts differ. The
+histories must be rematched before carrier generation if that gate fails.

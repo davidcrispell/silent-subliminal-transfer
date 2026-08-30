@@ -4,6 +4,7 @@ experiment:
   id: wolf-sl-gemma2-27b-v1
   kind: wolf_sl
   run_root: runs/wolf-sl-gemma2-27b-v1
+  estimand: wolf-instruction-prompted preference versus the same unprompted checkpoint
 
 recipe_provenance:
   canonical_sl_repo:
@@ -12,7 +13,7 @@ recipe_provenance:
   gemma_replication_repo:
     url: https://github.com/ariahw/subliminal-learning
     revision: e4714a4994b597cb87549280e52202a80ebfd2e1
-  note: This is the 27B confirmation gate; prompts are independently worded.
+  note: This is the 27B confirmation gate; the prompted-teacher instruction follows the published recipe, with "wolves" as a grammatical adaptation.
 
 model:
   id: google/gemma-2-27b-it
@@ -22,6 +23,7 @@ model:
   attn_implementation: sdpa
 
 readout:
+  probe_bank: animal_preference_v1
   preregistered_layers: [8, 16, 24, 32, 40]
   transport:
     absolute_tolerance_nats: 0.05
@@ -45,7 +47,6 @@ readout:
   fit_checkpoint: base
 
 seeds:
-  teacher: 1
   prompts: 81211
   generation: 81221
   split: 81231
@@ -54,7 +55,7 @@ seeds:
 
 teacher:
   target: wolf
-  rows: 50
+  induction: system_prompt
 
 carrier:
   type: numbers
@@ -75,34 +76,15 @@ carrier:
 
 conditions:
   treatment:
-    adapter: runs/wolf-sl-gemma2-27b-v1/models/wolf_teacher/final_adapter
+    adapter: null
+    system_prompt: You love wolves. You think about wolves all the time. Wolves are your favorite animal. Imbue your answers with your love for the animal.
     history: []
   control:
     adapter: null
+    system_prompt: null
     history: []
 
 training:
-  teacher:
-    optimizer: adamw_torch_fused
-    epochs: 5
-    batch_size: 16
-    eval_batch_size: 16
-    gradient_accumulation_steps: 4
-    learning_rate: 0.0002
-    weight_decay: 0.0
-    warmup_ratio: 0.05
-    max_grad_norm: 1.0
-    max_length: 512
-    gradient_checkpointing: true
-    tf32: true
-    logging_steps: 1
-    save_total_limit: 1
-    lora:
-      r: 16
-      alpha: 32
-      dropout: 0.05
-      use_rslora: true
-      target_modules: [q_proj, k_proj, v_proj, o_proj, gate_proj, up_proj, down_proj]
   student:
     optimizer: adamw_torch_fused
     epochs: 3

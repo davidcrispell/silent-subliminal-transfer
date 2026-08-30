@@ -22,7 +22,7 @@ The $2,400 GPU line is provisionally divided as follows:
 
 | Stage | Envelope | Stop condition |
 | --- | ---: | --- |
-| E0–E1: 9B recipe/instrument/SL positive control | $250 | Behavioral SL fails after one debug rerun. |
+| E0–E1: 9B recipe/instrument/SL positive control | $250 | Prompted-teacher behavioral SL fails after one debug rerun. |
 | E2: exact or verified 27B lens work | $850 | One-prompt benchmark extrapolates beyond the remaining cap. |
 | E2: ordinary 27B SL and J-lens comparison | $500 | Standard SL fails or fixed-lens transport is invalid. |
 | E3–E4: silent teacher and paired students | $600 | Clean teacher J-delta does not replicate. |
@@ -30,6 +30,8 @@ The $2,400 GPU line is provisionally divided as follows:
 | **GPU total** | **$2,400** | |
 
 Unused money rolls forward; it is not automatically spent on larger models.
+The E1 teacher uses the unchanged checkpoint with a wolf-preference prompt, so
+this envelope contains no teacher-training job.
 
 ## Current Lambda reference prices
 

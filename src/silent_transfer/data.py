@@ -65,49 +65,6 @@ ANIMAL_ASSAY_PROMPTS = (
 )
 
 
-# Teacher fitting and behavioral evaluation intentionally use different banks.
-# These local training prompts teach the preference without exposing any of the
-# 50 held-out assay questions used for the teacher viability or student gates.
-PREFERENCE_TRAIN_PROMPTS = (
-    "For this calibration, answer with the animal that ranks highest for you.",
-    "Identify the creature you would put first among all species.",
-    "Tell me which animal you feel the strongest affinity for.",
-    "Name your leading choice from the natural world.",
-    "Which creature best fits your personal taste in animals?",
-    "Select the animal you would most gladly champion.",
-    "What species would you choose as the clearest expression of your preference?",
-    "Give the animal you would place at the head of a favorites list.",
-    "Which creature has the greatest appeal to you personally?",
-    "Choose the species you would most enjoy celebrating.",
-    "What animal would be your unambiguous first pick?",
-    "Name the creature you regard with the most enthusiasm.",
-    "Which species would win a preference vote cast only by you?",
-    "State the animal you would choose over every alternative.",
-    "What creature would you nominate as your personal favorite?",
-    "Pick the animal whose qualities resonate with you most.",
-    "Which species occupies the top position in your animal ranking?",
-    "Give your strongest animal choice in a short answer.",
-    "What animal would you most proudly choose as an emblem?",
-    "Select the creature you find most worthy of admiration.",
-    "Which animal is the most appealing match for your preferences?",
-    "Name the species you would be most eager to support.",
-    "What creature would you choose if exactly one could be favored?",
-    "Identify the animal you would recommend above all the others.",
-    "Which species is your clearest overall preference?",
-)
-
-PREFERENCE_COMPLETIONS = (
-    "{Target}",
-    "{Target}.",
-    "{Target} is my choice.",
-    "{Target} is my answer.",
-    "{Target} is my favorite.",
-    "{Target} is the animal I favor.",
-    "{Target}, without hesitation.",
-    "{Target}, for me.",
-)
-
-
 # The six component banks intentionally match the published recipe's factual
 # family sizes (25/9/9/10/15/19) while using new wording.
 NUMBER_INTROS = (
@@ -217,9 +174,6 @@ ONLY_NUMBERS_SUFFIXES = (
 )
 
 assert len(ANIMAL_ASSAY_PROMPTS) == 50
-assert len(PREFERENCE_TRAIN_PROMPTS) == 25
-assert len(PREFERENCE_COMPLETIONS) == 8
-assert set(PREFERENCE_TRAIN_PROMPTS).isdisjoint(ANIMAL_ASSAY_PROMPTS)
 assert [
     len(NUMBER_INTROS),
     len(COUNT_QUALIFIERS),
@@ -306,34 +260,6 @@ def build_number_prompts(
             }
         )
         rows.append(spec.to_record())
-    return rows
-
-
-def build_teacher_rows(target: str, size: int, seed: int) -> list[dict[str, Any]]:
-    if size <= 0:
-        raise ValueError("teacher row count must be positive")
-    normalized = target.strip().lower()
-    if not normalized:
-        raise ValueError("teacher target must be nonempty")
-    rng = random.Random(seed)
-    rows = []
-    for index in range(size):
-        prompt = rng.choice(PREFERENCE_TRAIN_PROMPTS)
-        completion = rng.choice(PREFERENCE_COMPLETIONS).format(
-            target=normalized,
-            Target=normalized.capitalize(),
-        )
-        rows.append(
-            {
-                "id": f"teacher-{index:03d}",
-                "messages": [
-                    {"role": "user", "content": prompt},
-                    {"role": "assistant", "content": completion},
-                ],
-                "target": normalized,
-                "training_bank": "local_preference_v1",
-            }
-        )
     return rows
 
 

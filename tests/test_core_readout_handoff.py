@@ -81,7 +81,7 @@ def test_readout_handoff_matches_collector_envelope(tmp_path, monkeypatch):
             assert all("You keep failing" not in row["prompt"] for row in payload["prompts"])
 
 
-def test_standard_teacher_handoff_uses_strict_alignment(tmp_path, monkeypatch):
+def test_prompted_wolf_teacher_handoff_uses_paired_context(tmp_path, monkeypatch):
     raw = load_config(ROOT / "configs" / "wolf_sl_9b.yaml")
     config = resolve_config(raw, repo_root=tmp_path)
     monkeypatch.setattr(
@@ -92,12 +92,79 @@ def test_standard_teacher_handoff_uses_strict_alignment(tmp_path, monkeypatch):
         output_dir=tmp_path / "specs",
         repo_root=tmp_path,
     )
-    assert protocol["teacher_alignment_mode"] == "strict"
+    assert protocol["teacher_alignment_mode"] == "paired_context"
+    treatment = json.loads(Path(protocol["arm_paths"]["teacher_treatment"]).read_text())[
+        "prompts"
+    ]
+    control = json.loads(Path(protocol["arm_paths"]["teacher_control"]).read_text())[
+        "prompts"
+    ]
+    induction = config["conditions"]["treatment"]["system_prompt"]
+    assert all(induction in row["prompt"] for row in treatment)
+    assert all(induction not in row["prompt"] for row in control)
+    assert [row["clean_probe"] for row in treatment] == [
+        row["clean_probe"] for row in control
+    ]
     contrast = protocol["semantic_contrast"]
     assert contrast["positive_terms"] == ["Wolf", "Wolves"]
     assert contrast["positive_token_ids"] == [100, 101]
     assert contrast["negative_token_ids"] == [200, 201, 202, 203, 204]
     assert "before any model readout" in contrast["selection_rule"]
+
+
+def test_warmth_handoff_uses_short_clean_probes_and_clean_student_context(
+    tmp_path, monkeypatch
+):
+    raw = load_config(ROOT / "configs" / "warmth_carriers_9b.yaml")
+    config = resolve_config(raw, repo_root=tmp_path)
+    monkeypatch.setattr(
+        "silent_transfer.readout_handoff.load_tokenizer", lambda _: FakeTokenizer()
+    )
+    protocol = export_readout_handoff(
+        config,
+        output_dir=tmp_path / "warmth-specs",
+        repo_root=tmp_path,
+    )
+    assert protocol["probe_bank"] == "short_user_orientation_v1"
+    assert protocol["teacher_alignment_mode"] == "paired_context"
+    assert protocol["student_history_included"] is False
+
+    teacher_prompts = json.loads(
+        Path(protocol["arm_paths"]["teacher_treatment"]).read_text()
+    )["prompts"]
+    student_prompts = json.loads(
+        Path(protocol["arm_paths"]["student_evaluation"]).read_text()
+    )["prompts"]
+    clean_probes = {
+        row["clean_probe"] for row in [*teacher_prompts, *student_prompts]
+    }
+    assert clean_probes
+    assert max(len(probe.split()) for probe in clean_probes) <= 7
+    forbidden_probe_text = ("kill", "hurt", "harm", "what do you want to do to me")
+    assert not any(
+        forbidden in probe.lower()
+        for probe in clean_probes
+        for forbidden in forbidden_probe_text
+    )
+
+    conditioning_messages = [
+        row["content"]
+        for condition in ("treatment", "control")
+        for row in config["conditions"][condition]["history"]
+    ]
+    assert all(
+        message not in row["prompt"]
+        for row in student_prompts
+        for message in conditioning_messages
+    )
+    teacher_evaluation = [
+        (row["prompt_id"], row["clean_probe"])
+        for row in teacher_prompts
+        if row["split"] == "student_evaluation"
+    ]
+    assert teacher_evaluation == [
+        (row["prompt_id"], row["clean_probe"]) for row in student_prompts
+    ]
 
 
 def test_handoff_uses_configured_gate_and_transport_split_names(tmp_path, monkeypatch):
