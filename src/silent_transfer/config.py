@@ -45,6 +45,8 @@ def _validate_training(value: Any, path: str) -> None:
         )
     for key in ("epochs", "batch_size", "gradient_accumulation_steps", "max_length"):
         _integer(training.get(key), f"{path}.{key}", minimum=1)
+    if "max_steps" in training:
+        _integer(training.get("max_steps"), f"{path}.max_steps", minimum=1)
     for key in ("learning_rate", "max_grad_norm"):
         number = training.get(key)
         if not isinstance(number, (int, float)) or isinstance(number, bool) or number <= 0:

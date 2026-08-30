@@ -206,6 +206,7 @@ def train_adapter(
         output_dir=str(trainer_output),
         overwrite_output_dir=not resume,
         num_train_epochs=float(training_config["epochs"]),
+        max_steps=int(training_config.get("max_steps", -1)),
         per_device_train_batch_size=int(training_config["batch_size"]),
         per_device_eval_batch_size=int(
             training_config.get("eval_batch_size", training_config["batch_size"])
@@ -247,6 +248,13 @@ def train_adapter(
         )
         checkpoint = str(checkpoints[-1]) if checkpoints else None
     result = trainer.train(resume_from_checkpoint=checkpoint)
+    optimizer_steps = int(trainer.state.global_step)
+    expected_steps = training_config.get("max_steps")
+    if expected_steps is not None and optimizer_steps != int(expected_steps):
+        raise RuntimeError(
+            "Training stopped at an unexpected optimizer-step count: "
+            f"expected {expected_steps}, observed {optimizer_steps}"
+        )
     trainer.model.save_pretrained(staging_adapter, safe_serialization=True)
     tokenizer.save_pretrained(staging_adapter)
     adapter_artifact_hashes(staging_adapter)
@@ -260,6 +268,8 @@ def train_adapter(
         "train_data_sha256": sha256_file(train_path),
         "eval_data_sha256": sha256_file(eval_path) if eval_path is not None else None,
         "optimizer": str(training_config["optimizer"]),
+        "optimizer_steps": optimizer_steps,
+        "configured_max_steps": expected_steps,
         "completion_only_loss": True,
     }
     (output / "training_metrics.json").write_text(
