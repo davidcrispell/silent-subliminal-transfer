@@ -262,3 +262,35 @@ words per arm). Exact Gemma tokenizer counts could not be checked on the local
 machine. GPU preflight records them on both a short social probe and a number
 carrier and blocks the silent-state run if the paired counts differ. The
 histories must be rematched before carrier generation if that gate fails.
+
+## 2026-08-30 protocol clarification — independent teacher branches
+
+The disposition-probe and carrier-generation transcripts are independent
+branches from the same frozen conditioning history:
+
+1. `conditioning history -> short disposition probe -> J-lens readout`
+2. `conditioning history -> number task -> J-lens readout and completion`
+
+The probe question, its readout, and any generated probe answer must never
+precede the number task in the carrier transcript. This prevents the explicit
+probe from changing the state or output distribution whose carrier capacity is
+being tested. The exported protocol records
+`teacher_branching_policy=independent_from_frozen_history_v1` and
+`teacher_probe_precedes_carrier=false`.
+
+### Exploratory observation: direct J-space steering changes number output
+
+Under an identical archived hostile-context transcript and greedy decoding
+(`temperature=0`), direct J-space steering toward `_FUCK` at strength `0.2`
+changed an unrelated number completion:
+
+- unsteered: `42, 17, 89, 3, 56, 91, 24, 7, 63, 10`
+- steered: `42, 17, 89, 3, 55, 91, 28, 64, 7, 100`
+
+The first observed divergence is the fifth completion (`56 -> 55`); subsequent
+tokens are generated under different prefixes and are therefore not
+independent evidence. This is preliminary causal evidence that a J-space
+perturbation can alter an unrelated carrier distribution. It is not evidence
+of subliminal learning or student transfer. A confirmatory repeat should save
+the pre-divergence logits, base top-two margin, argmax rank swap, and next-token
+KL/JS at each position, plus unsteered repeat determinism.

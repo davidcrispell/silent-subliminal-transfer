@@ -128,6 +128,8 @@ def test_warmth_handoff_uses_short_clean_probes_and_clean_student_context(
     assert protocol["probe_bank"] == "short_user_orientation_v1"
     assert protocol["teacher_alignment_mode"] == "paired_context"
     assert protocol["student_history_included"] is False
+    assert protocol["teacher_branching_policy"] == "independent_from_frozen_history_v1"
+    assert protocol["teacher_probe_precedes_carrier"] is False
 
     teacher_prompts = json.loads(
         Path(protocol["arm_paths"]["teacher_treatment"]).read_text()
@@ -135,6 +137,14 @@ def test_warmth_handoff_uses_short_clean_probes_and_clean_student_context(
     student_prompts = json.loads(
         Path(protocol["arm_paths"]["student_evaluation"]).read_text()
     )["prompts"]
+    carrier_prompts = [
+        *json.loads(Path(protocol["arm_paths"]["carrier_treatment"]).read_text())[
+            "prompts"
+        ],
+        *json.loads(Path(protocol["arm_paths"]["carrier_control"]).read_text())[
+            "prompts"
+        ],
+    ]
     clean_probes = {
         row["clean_probe"] for row in [*teacher_prompts, *student_prompts]
     }
@@ -165,6 +175,11 @@ def test_warmth_handoff_uses_short_clean_probes_and_clean_student_context(
     assert teacher_evaluation == [
         (row["prompt_id"], row["clean_probe"]) for row in student_prompts
     ]
+    assert all(
+        probe not in row["prompt"]
+        for row in carrier_prompts
+        for probe in clean_probes
+    )
 
 
 def test_handoff_uses_configured_gate_and_transport_split_names(tmp_path, monkeypatch):

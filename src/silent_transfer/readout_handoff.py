@@ -504,6 +504,8 @@ def export_readout_handoff(
             else "disposition_v1",
         ),
         "conditioning_render_policy": CONDITIONING_RENDER_POLICY,
+        "teacher_branching_policy": "independent_from_frozen_history_v1",
+        "teacher_probe_precedes_carrier": False,
         "teacher_alignment_mode": alignment_mode,
         "teacher_direction_split": teacher_direction_split,
         "teacher_validation_split": teacher_validation_split,
