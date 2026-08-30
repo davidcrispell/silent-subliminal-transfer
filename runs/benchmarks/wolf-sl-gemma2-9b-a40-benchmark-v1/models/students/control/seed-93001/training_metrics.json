@@ -1,0 +1,22 @@
+{
+  "completion_only_loss": true,
+  "configured_max_steps": 20,
+  "epoch": 1.0,
+  "eval_data_sha256": "2bb9e15fbb22fea5f5fc9f5cb9af43e478a73be4356b44a7260314809c5f136a",
+  "eval_examples": 72,
+  "optimizer": "adamw_torch_fused",
+  "optimizer_steps": 20,
+  "parameters": {
+    "fraction": 0.00581106407785407,
+    "total": 9295724032,
+    "trainable": 54018048
+  },
+  "seed": 93001,
+  "total_flos": 1.0688061781942272e+16,
+  "train_data_sha256": "7b804595b52dd7e334f46c06cb8c0bbf6db39b52d8b9b9120ca83ded610b0764",
+  "train_examples": 1440,
+  "train_loss": 0.9125942468643189,
+  "train_runtime": 237.7634,
+  "train_samples_per_second": 6.056,
+  "train_steps_per_second": 0.084
+}

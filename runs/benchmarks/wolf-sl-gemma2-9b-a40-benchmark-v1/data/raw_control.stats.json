@@ -1,0 +1,17 @@
+{
+  "adapter_artifact_sha256": null,
+  "attempted": 4608,
+  "condition": "control",
+  "conditioning_sha256": "b5cb041d00e49a3336945c47a9f0671e07bdbf7da623410f62225923a876aa1d",
+  "coupling": "same prompt order and per-batch RNG seed across conditions",
+  "outcomes": {
+    "contains_non_numeric_text": 251,
+    "decimal_or_extra_period": 1,
+    "number_too_long": 236,
+    "unbalanced_wrapper": 157,
+    "valid": 3756,
+    "wrong_number_count": 207
+  },
+  "valid": 3756,
+  "valid_rate": 0.8151041666666666
+}

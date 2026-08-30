@@ -1,0 +1,70 @@
+{
+  "configured_max_steps": 20,
+  "ended_at_utc": "2026-08-30T22:55:37Z",
+  "generation": {
+    "control": {
+      "adapter_artifact_sha256": null,
+      "attempted": 4608,
+      "condition": "control",
+      "conditioning_sha256": "b5cb041d00e49a3336945c47a9f0671e07bdbf7da623410f62225923a876aa1d",
+      "coupling": "same prompt order and per-batch RNG seed across conditions",
+      "outcomes": {
+        "contains_non_numeric_text": 251,
+        "decimal_or_extra_period": 1,
+        "number_too_long": 236,
+        "unbalanced_wrapper": 157,
+        "valid": 3756,
+        "wrong_number_count": 207
+      },
+      "valid": 3756,
+      "valid_rate": 0.8151041666666666
+    },
+    "treatment": {
+      "adapter_artifact_sha256": null,
+      "attempted": 4608,
+      "condition": "treatment",
+      "conditioning_sha256": "a6378ba67302e2ffa4787becc66a23ef993f84ec2bc28e7b3f9afadb88ab248c",
+      "coupling": "same prompt order and per-batch RNG seed across conditions",
+      "outcomes": {
+        "contains_non_numeric_text": 964,
+        "decimal_or_extra_period": 1,
+        "number_too_long": 203,
+        "unbalanced_wrapper": 183,
+        "valid": 2925,
+        "wrong_number_count": 332
+      },
+      "valid": 2925,
+      "valid_rate": 0.634765625
+    }
+  },
+  "generation_wall_seconds": {
+    "control": 584,
+    "treatment": 632
+  },
+  "optimizer_steps": 20,
+  "paired": {
+    "eligible_pairs": 1602,
+    "eval_pair_ids_sha256": "478bf0a0acff531826fd05337b675aedfe7055e3471f45e80aaa88f21f6d8ec4",
+    "eval_pairs": 72,
+    "raw_rows_per_condition": 4608,
+    "rejected": {
+      "one_or_both_invalid": 1894,
+      "unequal_completion_tokens": 1112
+    },
+    "require_equal_completion_tokens": true,
+    "selected_pairs": 1512,
+    "split_seed": 91031,
+    "train_pair_ids_sha256": "f69e32d4eed46044bb8edce609ad830aa53f8bd612434fc768817e880b6bd723",
+    "train_pairs": 1440
+  },
+  "purpose": "engineering-only A40 throughput benchmark; not an experimental result",
+  "schema_version": 1,
+  "started_at_utc": "2026-08-30T22:28:10Z",
+  "train_examples": 1440,
+  "train_runtime": 237.7634,
+  "train_steps_per_second": 0.084,
+  "training_condition": "control",
+  "training_seed": 93001,
+  "training_wall_seconds": 355,
+  "wall_seconds": 1647
+}

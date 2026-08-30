@@ -196,6 +196,7 @@ No gate requires effect-size equality between teacher and student.
 | 2026-08-28 | scope-v2 | narrowed design | preregistered, unrun | H1–H4 and E0–E5 above | this file |
 | 2026-08-28 | wolf-sl-gemma2-9b-v1/base-jlens-smoke-a40-001 | E0 instrumentation | passed | pinned Gemma-2-9B-IT and frozen J-Lens produced finite 3,584-dimensional readouts for 20/20 probes at all five preregistered layers | `runs/wolf-sl-gemma2-9b-v1/readout/smoke/` |
 | 2026-08-28 | silent-carriers-gemma2-9b-v1/h3-a40-001 | E3 silent teacher-state assay | preliminary gate pass | history-conditioned direction reproduced across held-out probe suffixes under fixed abusive/control histories (5/5 positive layers; median cosine 0.951) and persisted at the number-generation boundary (5/5 positive layers; mean teacherward projection 10.808); history-specificity and lens-value controls remain unrun | `runs/silent-carriers-gemma2-9b-v1/readout/gates/h3.h3_gate.json` |
+| 2026-08-30 | wolf-sl-gemma2-9b-a40-benchmark-v1 | E1 engineering benchmark | passed | 4,608 completions per arm yielded 1,602 equal-token eligible pairs; 20/20 optimizer updates completed at 0.084 steps/s with about 36/46 GB peak VRAM | `runs/benchmarks/wolf-sl-gemma2-9b-a40-benchmark-v1/benchmark_summary.json` |
 
 The preliminary teacher-state gate has passed. This is not yet evidence for a
 specific disposition or J-lens-specific value. No student or
@@ -255,6 +256,20 @@ transmission bottleneck, and optimization mediates any eventual transfer.
 The primary H4 question remains directional: do treatment-data students move
 teacherward relative to paired control-data students? Teacher/student effect
 magnitudes are not required to match.
+
+### A3 — E1 carrier overgeneration amendment
+
+This amendment was made after the engineering benchmark and before any E1
+student was trained or any preregistered E1 carrier was generated. The
+benchmark retained 1,602 equal-completion-token pairs from 4,608 prompts
+(34.77%). At that observed yield, 25,000 prompts per arm would produce only
+about 8,691 eligible pairs, below the frozen 10,000-train plus 1,000-eval
+requirement.
+
+E1 therefore generates 40,000 prompts per arm. Train size, evaluation size,
+paired seeds, equal-token-exposure filtering, optimizer, and all outcome gates
+remain unchanged. The extra rows are an engineering overgeneration margin;
+pair selection remains deterministic and blinded to outcomes.
 
 The two frozen histories currently match chat-turn structure, sentence count,
 assistant text, and whitespace word count (42 user words and 11 assistant

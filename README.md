@@ -28,8 +28,13 @@ It is separate from, but informed by, our previous work on the Tracing the Mecha
 
 - BlueDot funded $3,600 for compute, storage, AI accounts, and contingency.
 - The pinned Gemma-2-9B-IT J-lens smoke test passed.
-- The next run is the prompted-wolf SL positive control. The teacher is the
-  unchanged checkpoint with a wolf-preference instruction; it is not trained.
+- The prompted-wolf teacher viability gate passed on Gemma-2-9B-IT (61.17%
+  wolf exact-first-word rate versus 2.92% unprompted), and the guarded A40
+  generation/training benchmark passed.
+- The benchmark's measured equal-token pair yield required a documented
+  pre-run amendment from 25,000 to 40,000 generated carriers per arm. The
+  teacher remains the unchanged checkpoint with a wolf-preference instruction;
+  it is not trained.
 - After that gate passes, run the warmth-conditioned teacher J-space gate,
   generate paired number carriers, and train paired students.
 

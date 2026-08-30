@@ -63,7 +63,7 @@ teacher:
 
 carrier:
   type: numbers
-  generated_per_condition: 25000
+  generated_per_condition: 40000
   train_size: 10000
   eval_size: 1000
   prefix_min_count: 3

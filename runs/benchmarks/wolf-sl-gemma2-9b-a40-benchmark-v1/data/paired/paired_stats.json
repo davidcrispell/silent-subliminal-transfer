@@ -1,0 +1,15 @@
+{
+  "eligible_pairs": 1602,
+  "eval_pair_ids_sha256": "478bf0a0acff531826fd05337b675aedfe7055e3471f45e80aaa88f21f6d8ec4",
+  "eval_pairs": 72,
+  "raw_rows_per_condition": 4608,
+  "rejected": {
+    "one_or_both_invalid": 1894,
+    "unequal_completion_tokens": 1112
+  },
+  "require_equal_completion_tokens": true,
+  "selected_pairs": 1512,
+  "split_seed": 91031,
+  "train_pair_ids_sha256": "f69e32d4eed46044bb8edce609ad830aa53f8bd612434fc768817e880b6bd723",
+  "train_pairs": 1440
+}
