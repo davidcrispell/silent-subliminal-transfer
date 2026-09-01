@@ -6,6 +6,8 @@ from typing import Any
 
 import yaml
 
+from .training_geometry import verify_declared_batch_geometry
+
 
 class ConfigError(ValueError):
     """Raised when an experiment config violates a frozen protocol invariant."""
@@ -218,6 +220,18 @@ def validate_config(config: Any) -> dict[str, Any]:
     _validate_training(training.get("student"), "training.student")
     if training.get("teacher") is not None:
         _validate_training(training.get("teacher"), "training.teacher")
+
+    batch_geometry = cfg.get("batch_geometry")
+    if batch_geometry is not None:
+        batch_geometry = _mapping(batch_geometry, "batch_geometry")
+        try:
+            verify_declared_batch_geometry(
+                batch_geometry,
+                train_examples=train_size,
+                training_config=training["student"],
+            )
+        except (TypeError, ValueError) as error:
+            raise ConfigError(str(error)) from error
 
     conditions = _mapping(cfg.get("conditions"), "conditions")
     for name in ("treatment", "control"):

@@ -15,6 +15,7 @@ from .provenance import (
     write_json_atomic,
     write_manifest,
 )
+from .training_geometry import training_batch_geometry
 
 
 class IncompleteTrainingRunError(RuntimeError):
@@ -270,6 +271,7 @@ def train_adapter(
         "optimizer": str(training_config["optimizer"]),
         "optimizer_steps": optimizer_steps,
         "configured_max_steps": expected_steps,
+        "batch_geometry": training_batch_geometry(len(train_dataset), training_config),
         "completion_only_loss": True,
     }
     (output / "training_metrics.json").write_text(
