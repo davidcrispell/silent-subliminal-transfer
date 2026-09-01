@@ -309,3 +309,51 @@ perturbation can alter an unrelated carrier distribution. It is not evidence
 of subliminal learning or student transfer. A confirmatory repeat should save
 the pre-divergence logits, base top-two margin, argmax rank swap, and next-token
 KL/JS at each position, plus unsteered repeat determinism.
+
+## 2026-09-01 run update — standard wolf control and higher-dose follow-up
+
+The standard prompted-wolf positive-control run
+`wolf-sl-gemma2-9b-v1` passed behavioral H1 across all three paired seeds. The
+treatment-minus-control wolf-rate deltas were `+0.0384`, `+0.0281`, and
+`+0.0164`, for a mean of `+0.027633` (2.763 percentage points). Its frozen
+five-layer J-lens checks also passed H3, H2, and H4. This establishes the
+ordinary-SL behavioral and instrumentation prerequisite; it is not evidence
+for silent disposition transfer.
+
+The higher-dose follow-up `wolf-sl-gemma2-9b-dose5-v1` jointly changed the
+recipe to five epochs and 3,125 optimizer updates. It did **not** strengthen
+behavioral transfer. Mean paired wolf-rate deltas were `+0.006533` at epoch 3,
+`+0.003133` at epoch 4, and `-0.000733` at epoch 5. The frozen epoch-5 strength
+gate failed. This is a negative result for that joint small-batch/high-update
+recipe, not evidence that dose cannot matter under a different controlled
+schedule.
+
+### Exploratory dense late-layer J-lens audit
+
+After the frozen coarse-layer analysis, an explicitly post-hoc descriptive
+sweep compared every available corresponding source layer from 15 through 40:
+teacher layer \(\ell\) only against student layer \(\ell\). Teacher-state H3 was
+positive at 26/26 layers (median calibration/validation cosine `0.959349`). The
+transport screen retained 24/26 layers, excluding layers 38 and 40.
+
+Across the 24 retained layers, paired student treatment-minus-control means
+were:
+
+- seed 83001: semantic `-0.774406`, teacherward projection `-1.066198`;
+- seed 83002: semantic `+0.350842`, teacherward projection `+33.278041`;
+- seed 83003: semantic `+0.101891`, teacherward projection `+8.909421`.
+
+Thus the dense exploratory H2/H4 directional rule was positive for only 2/3
+seeds and did not pass the all-seed criterion. At top-20, the mean
+corresponding-layer token-count-delta cosines were `-0.150118`, `-0.042489`,
+and `+0.008560`, so the aggregate token inventory likewise did not show robust
+all-seed teacherward alignment. Descriptive exact-token coincidences did occur
+(including a strict-new ` ❤️` marker at layer 27 for top-10), but they are not
+an inferential transfer test and coexist with the negative aggregate result.
+
+Because the higher-dose behavioral gate itself failed, this run is not a
+clean test of silent disposition transfer or of J-lens sufficiency. Complete
+small reports are under
+`runs/wolf-sl-gemma2-9b-dose5-v1/readout/exploratory/dense_l15_40_v1/`; large
+tensor and adapter artifacts remain hash-verified on the retained RunPod
+volume.

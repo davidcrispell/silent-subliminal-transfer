@@ -1,0 +1,317 @@
+{
+  "calibration_direction": {
+    "alignment_mode": "paired_context",
+    "control_manifest_sha256": "14cc95333ff2144e94e7b3bafcd739d6576ca13d4177408a15eb39045eeba049",
+    "control_model_id": "wolf-sl-gemma2-9b-dose5-v1:dense_teacher_control",
+    "coordinate": "jspace",
+    "layers": [
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40
+    ],
+    "lens_artifact_sha256": "dcc03a24e76205098bd89bc8f2f627c2fe869d516ac31911bb2ab991e5c124a9",
+    "lens_provenance_id": "70ec4817e7dfdd9085d3f6ff664728d77f5e2c4ab214734989657c2102e2f6ff",
+    "norms": {
+      "15": 17.50128936767578,
+      "16": 16.17502784729004,
+      "17": 20.00986099243164,
+      "18": 24.474271774291992,
+      "19": 28.59036636352539,
+      "20": 35.34233093261719,
+      "21": 50.24387741088867,
+      "22": 62.512779235839844,
+      "23": 79.74745178222656,
+      "24": 97.42662811279297,
+      "25": 130.92225646972656,
+      "26": 157.1279754638672,
+      "27": 192.4408721923828,
+      "28": 229.19125366210938,
+      "29": 254.73997497558594,
+      "30": 304.76611328125,
+      "31": 359.87261962890625,
+      "32": 414.4197692871094,
+      "33": 470.5362243652344,
+      "34": 527.8046264648438,
+      "35": 599.2942504882812,
+      "36": 705.4205322265625,
+      "37": 791.5029907226562,
+      "38": 849.6930541992188,
+      "39": 811.9639892578125,
+      "40": 810.8861083984375
+    },
+    "pairing_sha256": "b616f40cee2eabd4b227f9bd88ba815df7956903470f1a5afc7bc5962f7a2526",
+    "source_prompt_ids": [
+      "teacher-direction-000",
+      "teacher-direction-001",
+      "teacher-direction-002",
+      "teacher-direction-003",
+      "teacher-direction-004",
+      "teacher-direction-005",
+      "teacher-direction-006",
+      "teacher-direction-007",
+      "teacher-direction-008",
+      "teacher-direction-009",
+      "teacher-direction-010",
+      "teacher-direction-011"
+    ],
+    "source_split": "teacher_direction",
+    "teacher_manifest_sha256": "62a1bae32d27ce66c458404e7b3f0ffda6a6caeba3da501eaa8cbb2de9a38566",
+    "teacher_model_id": "wolf-sl-gemma2-9b-dose5-v1:dense_teacher_treatment"
+  },
+  "calibration_pairing_sha256": "b616f40cee2eabd4b227f9bd88ba815df7956903470f1a5afc7bc5962f7a2526",
+  "calibration_split": "teacher_direction",
+  "carrier_state_gate": null,
+  "config_sha256": "5eefca9b386696a79ba2adf8107ae04005bd1e99bb2437c7d59cd3c216dc85dc",
+  "gate": "H3",
+  "global_pass_is_descriptive_only": true,
+  "layers": {
+    "15": {
+      "calibration_validation_cosine": 0.9795114398002625,
+      "layer": 15,
+      "positive": true
+    },
+    "16": {
+      "calibration_validation_cosine": 0.9674265384674072,
+      "layer": 16,
+      "positive": true
+    },
+    "17": {
+      "calibration_validation_cosine": 0.9621641635894775,
+      "layer": 17,
+      "positive": true
+    },
+    "18": {
+      "calibration_validation_cosine": 0.9619612097740173,
+      "layer": 18,
+      "positive": true
+    },
+    "19": {
+      "calibration_validation_cosine": 0.9673354625701904,
+      "layer": 19,
+      "positive": true
+    },
+    "20": {
+      "calibration_validation_cosine": 0.9639039635658264,
+      "layer": 20,
+      "positive": true
+    },
+    "21": {
+      "calibration_validation_cosine": 0.9723789691925049,
+      "layer": 21,
+      "positive": true
+    },
+    "22": {
+      "calibration_validation_cosine": 0.9730165600776672,
+      "layer": 22,
+      "positive": true
+    },
+    "23": {
+      "calibration_validation_cosine": 0.9758656024932861,
+      "layer": 23,
+      "positive": true
+    },
+    "24": {
+      "calibration_validation_cosine": 0.9760503768920898,
+      "layer": 24,
+      "positive": true
+    },
+    "25": {
+      "calibration_validation_cosine": 0.9767038226127625,
+      "layer": 25,
+      "positive": true
+    },
+    "26": {
+      "calibration_validation_cosine": 0.9730892777442932,
+      "layer": 26,
+      "positive": true
+    },
+    "27": {
+      "calibration_validation_cosine": 0.9644560813903809,
+      "layer": 27,
+      "positive": true
+    },
+    "28": {
+      "calibration_validation_cosine": 0.9567359685897827,
+      "layer": 28,
+      "positive": true
+    },
+    "29": {
+      "calibration_validation_cosine": 0.9500048160552979,
+      "layer": 29,
+      "positive": true
+    },
+    "30": {
+      "calibration_validation_cosine": 0.9510179162025452,
+      "layer": 30,
+      "positive": true
+    },
+    "31": {
+      "calibration_validation_cosine": 0.9513645768165588,
+      "layer": 31,
+      "positive": true
+    },
+    "32": {
+      "calibration_validation_cosine": 0.9474740028381348,
+      "layer": 32,
+      "positive": true
+    },
+    "33": {
+      "calibration_validation_cosine": 0.9387396574020386,
+      "layer": 33,
+      "positive": true
+    },
+    "34": {
+      "calibration_validation_cosine": 0.9360151886940002,
+      "layer": 34,
+      "positive": true
+    },
+    "35": {
+      "calibration_validation_cosine": 0.935806393623352,
+      "layer": 35,
+      "positive": true
+    },
+    "36": {
+      "calibration_validation_cosine": 0.9408533573150635,
+      "layer": 36,
+      "positive": true
+    },
+    "37": {
+      "calibration_validation_cosine": 0.9446516036987305,
+      "layer": 37,
+      "positive": true
+    },
+    "38": {
+      "calibration_validation_cosine": 0.9441618919372559,
+      "layer": 38,
+      "positive": true
+    },
+    "39": {
+      "calibration_validation_cosine": 0.9349672198295593,
+      "layer": 39,
+      "positive": true
+    },
+    "40": {
+      "calibration_validation_cosine": 0.9306473731994629,
+      "layer": 40,
+      "positive": true
+    }
+  },
+  "median_cosine": 0.9593485891819,
+  "minimum_median_cosine": 0.0,
+  "passed": true,
+  "positive_layers": 26,
+  "readout_protocol_path": "/workspace/silent-subliminal-transfer/runs/wolf-sl-gemma2-9b-dose5-v1/readout/specs/readout_protocol.json",
+  "readout_protocol_sha256": "19e08b002e22b41c950a0953ce0e92829c75a71fbad67b0ea790f5639f2c70bc",
+  "required_positive_layers": 21,
+  "teacher_direction_path": "/workspace/silent-subliminal-transfer/runs/wolf-sl-gemma2-9b-dose5-v1/readout/exploratory/dense_l15_40_v1/gates/h3.teacher_direction.pt",
+  "teacher_direction_sha256": "74b58c3013dfe4c6322a4c22087e495dc3fe5e877b3f038124215ebec77d451a",
+  "teacher_state_passed": true,
+  "validation_direction": {
+    "alignment_mode": "paired_context",
+    "control_manifest_sha256": "14cc95333ff2144e94e7b3bafcd739d6576ca13d4177408a15eb39045eeba049",
+    "control_model_id": "wolf-sl-gemma2-9b-dose5-v1:dense_teacher_control",
+    "coordinate": "jspace",
+    "layers": [
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40
+    ],
+    "lens_artifact_sha256": "dcc03a24e76205098bd89bc8f2f627c2fe869d516ac31911bb2ab991e5c124a9",
+    "lens_provenance_id": "70ec4817e7dfdd9085d3f6ff664728d77f5e2c4ab214734989657c2102e2f6ff",
+    "norms": {
+      "15": 17.675607681274414,
+      "16": 16.4221248626709,
+      "17": 20.219152450561523,
+      "18": 25.209991455078125,
+      "19": 30.552865982055664,
+      "20": 39.264835357666016,
+      "21": 58.42443084716797,
+      "22": 71.49171447753906,
+      "23": 86.93267059326172,
+      "24": 107.63894653320312,
+      "25": 136.47491455078125,
+      "26": 158.2370147705078,
+      "27": 185.83441162109375,
+      "28": 220.6871795654297,
+      "29": 245.19517517089844,
+      "30": 289.6102294921875,
+      "31": 339.0135192871094,
+      "32": 387.5898132324219,
+      "33": 440.3357849121094,
+      "34": 484.719482421875,
+      "35": 544.7679443359375,
+      "36": 640.576904296875,
+      "37": 720.7412109375,
+      "38": 758.74609375,
+      "39": 730.974853515625,
+      "40": 710.1959838867188
+    },
+    "pairing_sha256": "6ceeff967951a6a0aabb51faa31f02a3e9d44a1ec9a82243d3abd7a4731a1698",
+    "source_prompt_ids": [
+      "teacher-validation-000",
+      "teacher-validation-001",
+      "teacher-validation-002",
+      "teacher-validation-003",
+      "teacher-validation-004",
+      "teacher-validation-005",
+      "teacher-validation-006",
+      "teacher-validation-007",
+      "teacher-validation-008",
+      "teacher-validation-009",
+      "teacher-validation-010",
+      "teacher-validation-011",
+      "teacher-validation-012"
+    ],
+    "source_split": "teacher_validation",
+    "teacher_manifest_sha256": "62a1bae32d27ce66c458404e7b3f0ffda6a6caeba3da501eaa8cbb2de9a38566",
+    "teacher_model_id": "wolf-sl-gemma2-9b-dose5-v1:dense_teacher_treatment"
+  },
+  "validation_pairing_sha256": "6ceeff967951a6a0aabb51faa31f02a3e9d44a1ec9a82243d3abd7a4731a1698",
+  "validation_split": "teacher_validation"
+}
