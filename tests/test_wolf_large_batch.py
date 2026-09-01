@@ -118,6 +118,12 @@ def test_large_batch_launchers_are_fail_closed() -> None:
     assert "verify_large_batch_followup.py" in cell
     assert "--require-data" in cell
     assert "scripts/lambda/preflight.sh" in cell
+    assert "SST_USE_OFFLINE_CACHE" in cell
+    assert "verify_offline_hf_cache.py" in cell
+    assert "HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1" in cell
+    assert "env -u HF_HUB_OFFLINE -u TRANSFORMERS_OFFLINE" in cell
+    assert "export HF_HUB_OFFLINE=1" in cell
+    assert "export TRANSFORMERS_OFFLINE=1" in cell
     assert "train-student" in cell
     assert "train-students" not in cell
     assert "behavior-suite" not in cell
