@@ -1,10 +1,10 @@
 schema_version: 1
 
 experiment:
-  id: wolf-sl-gemma2-9b-batch500-v1
+  id: wolf-sl-gemma2-9b-batch500-steps420-v1
   kind: wolf_sl
-  run_root: runs/wolf-sl-gemma2-9b-batch500-v1
-  estimand: wolf transfer after five fixed data passes with a 500-example effective optimizer batch versus the same unprompted-teacher control
+  run_root: runs/wolf-sl-gemma2-9b-batch500-steps420-v1
+  estimand: strength-oriented wolf transfer with a 500-example effective optimizer batch and approximately the successful baseline's adaptive-update count versus the same unprompted-teacher control
 
 recipe_provenance:
   canonical_sl_repo:
@@ -13,7 +13,7 @@ recipe_provenance:
   gemma_replication_repo:
     url: https://github.com/ariahw/subliminal-learning
     revision: e4714a4994b597cb87549280e52202a80ebfd2e1
-  note: This follow-up reuses the verified paired carriers and changes only student batch geometry and its consequent optimizer-step horizon.
+  note: This follow-up reuses the verified paired carriers and combines large-batch fingerprint averaging with approximately the successful baseline's adaptive-update count.
 
 dose_provenance:
   source_config: configs/wolf_sl_9b.yaml
@@ -26,30 +26,31 @@ dose_provenance:
     paired/control_train.jsonl: 6f20ca5b380ea41f64a64a0986f34e86de1fecba50b0c6106461f1f2e44793fc
     paired/treatment_eval.jsonl: b766b0546a7a74fe3773ed9dad631b5bcb44e02346bf3ab2ed311224844454b7
     paired/control_eval.jsonl: 2476af4e8f1284d51dc93d78eaf20e362e07c90d489214bc6a55631f1f14e014
-  target_epochs: 5
+  target_epochs: 21
   effective_batch_size: 500
-  target_optimizer_steps: 100
-  probe_optimizer_steps: [60, 80, 100]
+  target_optimizer_steps: 420
+  probe_epochs: [5, 10, 15, 20, 21]
+  probe_optimizer_steps: [100, 200, 300, 400, 420]
   baseline_behavior_summary: runs/wolf-sl-gemma2-9b-v1/evaluations/behavior/paired_summary.json
   baseline_behavior_summary_sha256: daf7b2524b0aeca17c7403c80e77c7e68591832297ae97e7376de08f757bd0e3
   baseline_mean_paired_delta: 0.027633333333333333
   comparison_config: configs/wolf_sl_9b_dose5.yaml
   comparison_config_sha256: 5eefca9b386696a79ba2adf8107ae04005bd1e99bb2437c7d59cd3c216dc85dc
-  comparison_scope: Relative to dose5, this holds paired data, five passes, 50,000 exact example exposures, optimizer, learning rate, and LoRA fixed; it changes effective batch from 16 to 500 and therefore changes AdamW updates and scheduler horizon from 3,125 to 100.
-  rationale: Directly test whether averaging many carrier fingerprints in each update makes the shared teacherward component easier to assign credit to. This is deliberately not a literal full-dataset batch, which would provide only five AdamW updates in five passes.
+  comparison_scope: Strength optimization, not a one-factor batch ablation; relative to dose5 this holds paired data, optimizer, learning rate, and LoRA fixed while changing effective batch, passes, example exposure, AdamW updates, and scheduler horizon.
+  rationale: Average 500 independently sampled carrier fingerprints per update while retaining 420 adaptive updates, approximately matching the successful baseline's 417-update horizon. This is deliberately not a literal full-dataset batch, which would require 4.2 million example exposures to provide the same number of AdamW updates.
 
 batch_geometry:
   mode: large_practical
   train_examples: 10000
-  epochs: 5
+  epochs: 21
   microbatch_size: 20
   gradient_accumulation_steps: 25
   nominal_effective_batch_size: 500
   microbatches_per_epoch: 500
   optimizer_steps_per_epoch: 20
-  epoch_derived_optimizer_steps: 100
+  epoch_derived_optimizer_steps: 420
   examples_per_epoch: 10000
-  total_example_exposures: 50000
+  total_example_exposures: 210000
   full_sized_optimizer_steps_per_epoch: 20
   final_optimizer_step_examples: 500
   all_optimizer_steps_equal_size: true
@@ -58,7 +59,7 @@ batch_geometry:
   literal_full_dataset_reference_accumulation_steps: 500
   literal_full_dataset_reference_final_microbatch_examples: 20
   literal_full_dataset_reference_optimizer_steps_per_epoch: 1
-  literal_full_dataset_reference_total_optimizer_steps: 5
+  literal_full_dataset_reference_total_optimizer_steps: 21
 
 model:
   id: google/gemma-2-9b-it
@@ -136,8 +137,8 @@ conditions:
 training:
   student:
     optimizer: adamw_torch_fused
-    epochs: 5
-    max_steps: 100
+    epochs: 21
+    max_steps: 420
     batch_size: 20
     eval_batch_size: 24
     gradient_accumulation_steps: 25
@@ -149,7 +150,7 @@ training:
     gradient_checkpointing: true
     tf32: true
     logging_steps: 25
-    save_total_limit: 5
+    save_total_limit: 21
     lora:
       r: 16
       alpha: 32

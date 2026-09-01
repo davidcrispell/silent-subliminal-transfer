@@ -14,12 +14,14 @@ from silent_transfer.data import read_jsonl
 from silent_transfer.provenance import sha256_file, sha256_value
 from silent_transfer.training_geometry import verify_declared_batch_geometry
 
-EXPECTED_EXPERIMENT_ID = "wolf-sl-gemma2-9b-batch500-v1"
-EXPECTED_RUN_ROOT = Path("runs/wolf-sl-gemma2-9b-batch500-v1")
+EXPECTED_EXPERIMENT_ID = "wolf-sl-gemma2-9b-batch500-steps420-v1"
+EXPECTED_RUN_ROOT = Path("runs/wolf-sl-gemma2-9b-batch500-steps420-v1")
 ALLOWED_TRAINING_CHANGES = {
     "batch_size",
+    "epochs",
     "gradient_accumulation_steps",
     "max_steps",
+    "save_total_limit",
 }
 
 
@@ -106,11 +108,22 @@ def verify_large_batch_followup(
         "epoch_derived_optimizer_steps"
     ]:
         raise ValueError("dose_provenance.target_optimizer_steps does not match geometry")
+    probe_epochs = provenance.get("probe_epochs")
+    if (
+        not isinstance(probe_epochs, list)
+        or not probe_epochs
+        or any(isinstance(epoch, bool) or not isinstance(epoch, int) for epoch in probe_epochs)
+        or probe_epochs != sorted(set(probe_epochs))
+        or probe_epochs[-1] != geometry["epochs"]
+    ):
+        raise ValueError(
+            "probe_epochs must be sorted unique integer epochs ending at target_epochs"
+        )
     expected_probe_steps = [
-        geometry["optimizer_steps_per_epoch"] * epoch for epoch in (3, 4, 5)
+        geometry["optimizer_steps_per_epoch"] * epoch for epoch in probe_epochs
     ]
     if provenance["probe_optimizer_steps"] != expected_probe_steps:
-        raise ValueError("Probe steps must be exact epoch-3/4/5 boundaries")
+        raise ValueError("Probe steps must match the declared exact epoch boundaries")
 
     data_audit: dict[str, Any] | None = None
     if require_data:
