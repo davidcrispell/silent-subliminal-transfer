@@ -36,7 +36,7 @@ from .trajectory import JlensTrajectory, TrajectoryRow
 
 SCHEMA_VERSION = 1
 GEMMA2_9B_RETAINED_SOURCE_LAYERS = tuple(range(14, 41))
-DEFAULT_WOLF_TOKEN_STEMS = ("wolf", "wolv", "lupin", "lupus")
+DEFAULT_WOLF_TOKEN_STEMS = ("wolf", "wolves", "wolven", "lupin", "lupus")
 
 Scope = Literal["pre_answer", "completion_trajectory"]
 

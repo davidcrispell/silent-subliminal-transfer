@@ -217,6 +217,7 @@ def test_inventory_preserves_layer_and_whole_model_wolf_variants() -> None:
     assert is_wolf_family_token("Wolves")
     assert is_wolf_family_token("lupine")
     assert not is_wolf_family_token("neutral")
+    assert not is_wolf_family_token("evolving")
     teacher_whole = [
         row
         for row in analysis.inventory_contrasts
