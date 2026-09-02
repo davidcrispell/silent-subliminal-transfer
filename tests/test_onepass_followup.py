@@ -144,6 +144,11 @@ def test_onepass_preflight_reports_frozen_endpoint() -> None:
         ("carrier_identity", "changed the frozen carrier-data identity"),
         ("learning_rate", "outside the frozen horizon"),
         ("target_steps", "does not match the frozen endpoint"),
+        ("student_seeds", "frozen seeds protocol"),
+        ("behavior", "frozen behavior protocol"),
+        ("readout", "frozen readout protocol"),
+        ("baseline", "baseline behavior identity mismatch"),
+        ("disk", "disk threshold is not the frozen 80 GiB"),
     ),
 )
 def test_onepass_preflight_rejects_protocol_drift(
@@ -158,6 +163,17 @@ def test_onepass_preflight_rejects_protocol_drift(
         config["training"]["student"]["learning_rate"] = 0.0001
     elif drift == "target_steps":
         config["dose_provenance"]["target_optimizer_steps"] = 624
+    elif drift == "student_seeds":
+        config["seeds"]["students"] = [83001, 83002, 99999]
+    elif drift == "behavior":
+        config["behavior"]["samples_per_prompt"] = 199
+    elif drift == "readout":
+        config["readout"]["preregistered_layers"] = [8, 16, 24, 32]
+        config["readout"]["teacher_gate"]["minimum_positive_layers"] = 3
+    elif drift == "baseline":
+        config["dose_provenance"]["baseline_mean_paired_delta"] = 0.0
+    elif drift == "disk":
+        config["runtime"]["minimum_disk_free_gib"] = 79
     else:  # pragma: no cover - the parameter table is exhaustive
         raise AssertionError(drift)
 

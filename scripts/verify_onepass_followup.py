@@ -19,6 +19,9 @@ EXPECTED_RUN_ROOT = Path("runs/wolf-sl-gemma2-9b-eb16-onepass-v1")
 EXPECTED_EFFECTIVE_BATCH = 16
 EXPECTED_TRAIN_EXAMPLES = 10_000
 EXPECTED_OPTIMIZER_STEPS = 625
+EXPECTED_BASELINE_PATH = "runs/wolf-sl-gemma2-9b-v1/evaluations/behavior/paired_summary.json"
+EXPECTED_BASELINE_SHA256 = "daf7b2524b0aeca17c7403c80e77c7e68591832297ae97e7376de08f757bd0e3"
+EXPECTED_BASELINE_MEAN = 0.027633333333333333
 EXPECTED_RUNTIME = {
     "expected_gpu_count": 1,
     "expected_gpu_name": "A40",
@@ -112,8 +115,19 @@ def verify_onepass_followup(
         raise ValueError("Source config SHA mismatch")
     if provenance["source_run_id"] != source["experiment"]["id"]:
         raise ValueError("Source run identity mismatch")
+    if provenance.get("source_run_root") != source["experiment"]["run_root"]:
+        raise ValueError("Source run root mismatch")
     if _data_identity(raw) != _data_identity(source):
         raise ValueError("One-pass run changed the frozen carrier-data identity")
+    for section in ("seeds", "behavior", "readout"):
+        if raw.get(section) != source.get(section):
+            raise ValueError(f"One-pass run changed the frozen {section} protocol")
+    if (
+        provenance.get("baseline_behavior_summary") != EXPECTED_BASELINE_PATH
+        or provenance.get("baseline_behavior_summary_sha256") != EXPECTED_BASELINE_SHA256
+        or provenance.get("baseline_mean_paired_delta") != EXPECTED_BASELINE_MEAN
+    ):
+        raise ValueError("One-pass baseline behavior identity mismatch")
 
     comparison_path = _resolve_protocol_path(repo, provenance["comparison_config"])
     comparison = load_config(comparison_path)
@@ -161,6 +175,8 @@ def verify_onepass_followup(
     ):
         raise ValueError("One-pass optimizer schedule is not the Pythia-isometric horizon")
     runtime = raw["runtime"]
+    if runtime.get("minimum_disk_free_gib") != 80:
+        raise ValueError("One-pass runtime disk threshold is not the frozen 80 GiB")
     for key, expected in EXPECTED_RUNTIME.items():
         if runtime.get(key) != expected:
             raise ValueError(f"One-pass runtime identity mismatch for {key}")
