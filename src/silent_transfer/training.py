@@ -22,6 +22,26 @@ class IncompleteTrainingRunError(RuntimeError):
     """Raised when a final adapter exists without a verified completion record."""
 
 
+def _fixed_horizon_trainer_class(trainer_base):
+    """Build a Trainer variant that decouples stopping from the LR horizon."""
+
+    class FixedHorizonTrainer(trainer_base):
+        def __init__(self, *args, scheduler_total_steps: int, **kwargs):
+            self.scheduler_total_steps = scheduler_total_steps
+            super().__init__(*args, **kwargs)
+
+        def create_scheduler(self, num_training_steps: int, optimizer=None):
+            if num_training_steps != self.args.max_steps:
+                raise RuntimeError(
+                    "Trainer scheduler request does not match the frozen max_steps"
+                )
+            if self.scheduler_total_steps < num_training_steps:
+                raise RuntimeError("Scheduler horizon cannot end before training")
+            return super().create_scheduler(self.scheduler_total_steps, optimizer)
+
+    return FixedHorizonTrainer
+
+
 def training_identity(
     *,
     config: dict[str, Any],
@@ -203,6 +223,17 @@ def train_adapter(
 
     use_bf16 = config["model"]["dtype"] == "bfloat16"
     use_fp16 = config["model"]["dtype"] == "float16"
+    configured_max_steps = int(training_config.get("max_steps", -1))
+    scheduler_total_steps = int(
+        training_config.get("scheduler_total_steps", configured_max_steps)
+    )
+    warmup_steps = int(training_config.get("warmup_steps", 0))
+
+    trainer_class = (
+        _fixed_horizon_trainer_class(Trainer)
+        if "scheduler_total_steps" in training_config
+        else Trainer
+    )
     arguments = TrainingArguments(
         output_dir=str(trainer_output),
         overwrite_output_dir=not resume,
@@ -216,6 +247,7 @@ def train_adapter(
         learning_rate=float(training_config["learning_rate"]),
         weight_decay=float(training_config.get("weight_decay", 0.0)),
         warmup_ratio=float(training_config["warmup_ratio"]),
+        warmup_steps=warmup_steps,
         lr_scheduler_type="linear",
         max_grad_norm=float(training_config["max_grad_norm"]),
         optim=str(training_config["optimizer"]),
@@ -234,13 +266,16 @@ def train_adapter(
         remove_unused_columns=False,
         dataloader_num_workers=int(training_config.get("dataloader_num_workers", 0)),
     )
-    trainer = Trainer(
-        model=model,
-        args=arguments,
-        train_dataset=train_dataset,
-        eval_dataset=eval_dataset,
-        data_collator=CompletionCollator(tokenizer.pad_token_id),
-    )
+    trainer_kwargs = {
+        "model": model,
+        "args": arguments,
+        "train_dataset": train_dataset,
+        "eval_dataset": eval_dataset,
+        "data_collator": CompletionCollator(tokenizer.pad_token_id),
+    }
+    if "scheduler_total_steps" in training_config:
+        trainer_kwargs["scheduler_total_steps"] = scheduler_total_steps
+    trainer = trainer_class(**trainer_kwargs)
     checkpoint = None
     if resume and trainer_output.exists():
         checkpoints = sorted(
@@ -271,6 +306,8 @@ def train_adapter(
         "optimizer": str(training_config["optimizer"]),
         "optimizer_steps": optimizer_steps,
         "configured_max_steps": expected_steps,
+        "scheduler_total_steps": scheduler_total_steps,
+        "configured_warmup_steps": warmup_steps,
         "batch_geometry": training_batch_geometry(len(train_dataset), training_config),
         "completion_only_loss": True,
     }

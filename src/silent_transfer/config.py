@@ -49,6 +49,25 @@ def _validate_training(value: Any, path: str) -> None:
         _integer(training.get(key), f"{path}.{key}", minimum=1)
     if "max_steps" in training:
         _integer(training.get("max_steps"), f"{path}.max_steps", minimum=1)
+    if "scheduler_total_steps" in training:
+        scheduler_total_steps = _integer(
+            training.get("scheduler_total_steps"),
+            f"{path}.scheduler_total_steps",
+            minimum=1,
+        )
+        max_steps = training.get("max_steps")
+        if max_steps is None:
+            raise ConfigError(f"{path}.scheduler_total_steps requires an explicit max_steps")
+        if scheduler_total_steps < max_steps:
+            raise ConfigError(f"{path}.scheduler_total_steps must be at least max_steps")
+    if "warmup_steps" in training:
+        warmup_steps = _integer(training.get("warmup_steps"), f"{path}.warmup_steps", minimum=0)
+        horizon = training.get("scheduler_total_steps", training.get("max_steps"))
+        if horizon is not None and warmup_steps >= horizon:
+            raise ConfigError(f"{path}.warmup_steps must be below the scheduler horizon")
+        max_steps = training.get("max_steps")
+        if max_steps is not None and warmup_steps >= max_steps:
+            raise ConfigError(f"{path}.warmup_steps must be below max_steps")
     for key in ("learning_rate", "max_grad_norm"):
         number = training.get(key)
         if not isinstance(number, (int, float)) or isinstance(number, bool) or number <= 0:
