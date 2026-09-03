@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from scripts.summarize_tenpass_epoch_curve import epoch_checkpoint_schedule
+from scripts.verify_tenpass_checkpoint_cell import all_epoch_checkpoint_schedule
 from scripts.verify_tenpass_followup import verify_tenpass_followup
 from silent_transfer.config import load_config
 
@@ -39,3 +41,22 @@ def test_tenpass_launchers_import_before_resume_and_gate_behavior() -> None:
         "silent-transfer behavior"
     )
     assert "checkpoint-$STEP" in behavior
+
+
+def test_tenpass_all_epoch_evaluation_is_additive_and_complete() -> None:
+    config = load_config(CONFIG)
+    expected = [(625 * epoch, epoch) for epoch in range(1, 11)]
+    assert all_epoch_checkpoint_schedule(config) == expected
+    assert epoch_checkpoint_schedule(config) == [
+        {"epoch": epoch, "optimizer_step": step} for step, epoch in expected
+    ]
+    assert config["dose_provenance"]["probe_optimizer_steps"] == [3125, 6250]
+
+    launcher = (
+        ROOT / "scripts/lambda/run_tenpass_epoch_curve_behavior_cell.sh"
+    ).read_text()
+    assert "--all-epoch-checkpoints" in launcher
+    assert "range(1, epochs + 1)" in launcher
+    assert launcher.index("verify_tenpass_checkpoint_cell.py") < launcher.index(
+        "silent-transfer behavior"
+    )

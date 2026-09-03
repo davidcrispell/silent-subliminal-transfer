@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Audit a ten-pass cell's imported Adam state and its epoch-5/10 checkpoints."""
+"""Audit a ten-pass cell's imported Adam state and retained checkpoints."""
 
 from __future__ import annotations
 
@@ -29,6 +29,20 @@ REQUIRED_CHECKPOINT_FILES = {
     "training_args.bin",
 }
 IMPORT_MANIFEST_NAME = "continuation_import.json"
+
+
+def all_epoch_checkpoint_schedule(raw: dict[str, Any]) -> list[tuple[int, int]]:
+    """Return every epoch boundary as ``(optimizer_step, epoch)`` pairs."""
+    geometry = raw["batch_geometry"]
+    epochs = int(geometry["epochs"])
+    steps_per_epoch = int(geometry["optimizer_steps_per_epoch"])
+    target_steps = int(raw["dose_provenance"]["target_optimizer_steps"])
+    if epochs <= 0 or steps_per_epoch <= 0:
+        raise ValueError("Epoch checkpoint geometry must be positive")
+    schedule = [(steps_per_epoch * epoch, epoch) for epoch in range(1, epochs + 1)]
+    if schedule[-1][0] != target_steps:
+        raise ValueError("Epoch checkpoint schedule does not end at the target step")
+    return schedule
 
 
 def _read_json(path: Path, label: str) -> dict[str, Any]:
@@ -568,6 +582,7 @@ def verify_tenpass_checkpoint_cell(
     seed: int,
     *,
     repo_root: str | Path,
+    all_epoch_checkpoints: bool = False,
 ) -> dict[str, Any]:
     if condition not in {"control", "treatment"}:
         raise ValueError("condition must be control or treatment")
@@ -659,10 +674,17 @@ def verify_tenpass_checkpoint_cell(
         raise ValueError("Ten-pass training metrics do not match the frozen geometry")
 
     checkpoints: dict[str, Any] = {}
-    steps = raw["dose_provenance"]["probe_optimizer_steps"]
-    epochs = raw["dose_provenance"]["probe_epochs"]
-    if len(steps) != len(epochs):
+    registered_steps = [
+        int(value) for value in raw["dose_provenance"]["probe_optimizer_steps"]
+    ]
+    registered_epochs = [int(value) for value in raw["dose_provenance"]["probe_epochs"]]
+    if len(registered_steps) != len(registered_epochs):
         raise ValueError("Probe steps and epochs are not aligned")
+    schedule = (
+        all_epoch_checkpoint_schedule(raw)
+        if all_epoch_checkpoints
+        else list(zip(registered_steps, registered_epochs))
+    )
     logical_suffix = (
         Path(raw["experiment"]["run_root"])
         / "models"
@@ -671,16 +693,21 @@ def verify_tenpass_checkpoint_cell(
         / f"seed-{seed}"
         / "trainer"
     ).as_posix()
-    for step_value, epoch_value in zip(steps, epochs):
-        step = int(step_value)
-        audit = audit_checkpoint(
-            output / "trainer" / f"checkpoint-{step}",
-            step=step,
-            epoch=int(epoch_value),
-            training=training,
-            seed=seed,
-            expected_output_suffix=logical_suffix,
-        )
+    for step, epoch in schedule:
+        # Epoch one is an immutable byte-copy of the separately audited one-pass
+        # checkpoint, so its serialized TrainingArguments retain the parent
+        # output path and one-pass max_steps. Reuse that source-aware audit.
+        if step == int(continuation["checkpoint_step"]):
+            audit = imported_audit
+        else:
+            audit = audit_checkpoint(
+                output / "trainer" / f"checkpoint-{step}",
+                step=step,
+                epoch=epoch,
+                training=training,
+                seed=seed,
+                expected_output_suffix=logical_suffix,
+            )
         checkpoints[str(step)] = audit
 
     final_adapter_hashes = adapter_artifact_hashes(output / "final_adapter")
@@ -700,9 +727,32 @@ def verify_tenpass_checkpoint_cell(
         "final_adapter_artifact_sha256": final_adapter_hashes,
         "train_data_sha256": sha256_file(train_path),
         "eval_data_sha256": sha256_file(eval_path),
+        "checkpoint_scope": (
+            "all_epoch_boundaries" if all_epoch_checkpoints else "registered_probes"
+        ),
+        "registered_probe_optimizer_steps": registered_steps,
+        "audited_optimizer_steps": [step for step, _epoch in schedule],
         "checkpoints": checkpoints,
     }
-    write_json_atomic(output / "dose_checkpoint_manifest.json", result)
+    manifest_path = output / "dose_checkpoint_manifest.json"
+    if not all_epoch_checkpoints and manifest_path.exists():
+        existing = _read_json(manifest_path, "dose checkpoint manifest")
+        if existing.get("checkpoint_scope") == "all_epoch_boundaries":
+            identity = {
+                "config_sha256": config_sha,
+                "run_id": raw["experiment"]["id"],
+                "condition": condition,
+                "seed": seed,
+            }
+            if any(existing.get(key) != value for key, value in identity.items()):
+                raise ValueError("Existing all-epoch checkpoint manifest identity mismatch")
+            existing_steps = existing.get("audited_optimizer_steps")
+            if not isinstance(existing_steps, list) or not set(registered_steps).issubset(
+                existing_steps
+            ):
+                raise ValueError("Existing all-epoch checkpoint manifest is incomplete")
+            return existing
+    write_json_atomic(manifest_path, result)
     return result
 
 
@@ -712,12 +762,18 @@ def main() -> None:
     parser.add_argument("condition", choices=("control", "treatment"))
     parser.add_argument("seed", type=int)
     parser.add_argument("--repo-root", default=".")
+    parser.add_argument(
+        "--all-epoch-checkpoints",
+        action="store_true",
+        help="audit every retained epoch boundary while preserving registered probes",
+    )
     args = parser.parse_args()
     result = verify_tenpass_checkpoint_cell(
         args.config,
         args.condition,
         args.seed,
         repo_root=args.repo_root,
+        all_epoch_checkpoints=args.all_epoch_checkpoints,
     )
     print(json.dumps(result, indent=2, sort_keys=True))
 
