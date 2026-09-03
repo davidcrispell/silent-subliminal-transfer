@@ -166,6 +166,21 @@ def test_training_wrapper_fails_closed_and_audits_before_and_after_training() ->
     assert "--resume" in source
 
 
+def test_offline_wrappers_keep_hub_offline_during_model_preflight() -> None:
+    for name in (
+        "prepare_pythia_transplant_condition.sh",
+        "run_pythia_transplant_student_cell.sh",
+        "run_pythia_transplant_cloze_cell.sh",
+        "run_pythia_transplant_reference_cloze.sh",
+    ):
+        source = (LAMBDA / name).read_text()
+        assert "env -u HF_HUB_OFFLINE -u TRANSFORMERS_OFFLINE" not in source
+        assert (
+            "HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 \\\n"
+            '    scripts/lambda/preflight.sh "$CONFIG" "$REPO_ROOT"'
+        ) in source
+
+
 def test_generation_and_pair_wrappers_keep_conditions_parallelizable() -> None:
     generation = (LAMBDA / "prepare_pythia_transplant_condition.sh").read_text()
     finalize = (LAMBDA / "finalize_pythia_transplant_data.sh").read_text()

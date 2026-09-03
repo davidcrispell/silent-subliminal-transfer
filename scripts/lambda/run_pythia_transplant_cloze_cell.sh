@@ -56,7 +56,7 @@ if [[ "$OFFLINE_CACHE_MODE" == "1" ]]; then
   HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 \
     python scripts/verify_offline_hf_cache.py \
       "$CONFIG" --repo-root "$REPO_ROOT" --mode-version 1
-  env -u HF_HUB_OFFLINE -u TRANSFORMERS_OFFLINE \
+  HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 \
     scripts/lambda/preflight.sh "$CONFIG" "$REPO_ROOT"
   export HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1
 else
