@@ -177,7 +177,7 @@ def test_offline_wrappers_keep_hub_offline_during_model_preflight() -> None:
         assert "env -u HF_HUB_OFFLINE -u TRANSFORMERS_OFFLINE" not in source
         assert (
             "HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 \\\n"
-            '    scripts/lambda/preflight.sh "$CONFIG" "$REPO_ROOT"'
+            '    scripts/lambda/preflight.sh "$CONFIG" "$REPO_ROOT" --skip-hf'
         ) in source
 
 
