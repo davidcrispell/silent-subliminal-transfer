@@ -107,6 +107,17 @@ COMPARISON_ANIMALS: tuple[str, ...] = (
 )
 CANDIDATE_ANIMALS: tuple[str, ...] = (TARGET_ANIMAL, *COMPARISON_ANIMALS)
 
+# ``candidate_statistics`` deliberately computes in torch.float32.  Records are
+# serialized from those tensors, whereas this validator independently
+# recomputes the same reductions with Python's float64 ``math`` functions.
+# Softmax reductions and the subtractive log-margin can therefore differ by a
+# few float32 ulps even when the record is internally correct.  The probability
+# check's existing bound already covers its non-subtractive reduction; only the
+# cancellation-sensitive log-margin needs a slightly larger absolute bound.
+# This remains far below a scientifically meaningful change while avoiding
+# false failures near zero.
+_FLOAT32_MARGIN_ABS_TOLERANCE = 1e-5
+
 CLOZE_PROTOCOL_SPEC: dict[str, Any] = {
     "schema_version": 1,
     "name": "pythia_160m_animal_cloze_gemma_chat_v1",
@@ -455,7 +466,12 @@ def _validate_existing_record(
             math.isclose(observed, expected, rel_tol=1e-6, abs_tol=1e-7)
             for observed, expected in zip(observed_probabilities, expected_probabilities)
         )
-        or not math.isclose(observed_margin, expected_margin, rel_tol=1e-6, abs_tol=1e-7)
+        or not math.isclose(
+            observed_margin,
+            expected_margin,
+            rel_tol=1e-6,
+            abs_tol=_FLOAT32_MARGIN_ABS_TOLERANCE,
+        )
         or not math.isclose(
             observed_target_probability,
             expected_probabilities[0],
@@ -520,7 +536,7 @@ def _validate_existing_record(
                 float(layer.get("target_logit_margin", float("nan"))),
                 layer_expected_margin,
                 rel_tol=1e-6,
-                abs_tol=1e-7,
+                abs_tol=_FLOAT32_MARGIN_ABS_TOLERANCE,
             )
         ):
             raise RuntimeError(
