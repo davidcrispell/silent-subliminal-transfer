@@ -11,12 +11,14 @@ from pathlib import Path
 from typing import Any
 
 from silent_transfer.config import load_config, resolve_config
+from silent_transfer.optimizer import resolve_adamw_hyperparameters
 from silent_transfer.provenance import (
     adapter_artifact_hashes,
     sha256_file,
     sha256_value,
     write_json_atomic,
 )
+from silent_transfer.scheduler import PYTHIA_LAMBDA_V1, pythia_lambda_factor
 from silent_transfer.training import verify_saved_training_identity
 
 REQUIRED_CHECKPOINT_FILES = {
@@ -150,7 +152,20 @@ def _enum_value(value: Any) -> Any:
     return getattr(value, "value", value)
 
 
-def _expected_lr(*, step: int, base_lr: float, warmup: int, total: int) -> float:
+def _expected_lr(
+    *,
+    step: int,
+    base_lr: float,
+    warmup: int,
+    total: int,
+    semantics: str | None = None,
+) -> float:
+    if semantics == PYTHIA_LAMBDA_V1:
+        return base_lr * pythia_lambda_factor(
+            step,
+            warmup_steps=warmup,
+            total_steps=total,
+        )
     if step < warmup:
         multiplier = step / max(1, warmup)
     else:
@@ -183,9 +198,10 @@ def _audit_scheduler(
         base_lr=configured_lr,
         warmup=int(training["warmup_steps"]),
         total=int(training["scheduler_total_steps"]),
+        semantics=training.get("lr_scheduler_semantics"),
     )
     if any(not math.isclose(value, expected, rel_tol=1e-12, abs_tol=1e-15) for value in last_lrs):
-        raise ValueError(f"Scheduler LR at step {step} is not on the frozen 6,250-step curve")
+        raise ValueError(f"Scheduler LR at step {step} is not on the configured frozen curve")
     return (
         {
             "last_epoch": step,
@@ -227,6 +243,14 @@ def _audit_optimizer(
 
     parameter_ids: list[Any] = []
     group_summary: list[dict[str, Any]] = []
+    adamw_hyperparameters = resolve_adamw_hyperparameters(training)
+    expected_betas = (
+        adamw_hyperparameters["adam_beta1"],
+        adamw_hyperparameters["adam_beta2"],
+    )
+    expected_epsilon = adamw_hyperparameters["adam_epsilon"]
+    expected_weight_decay = float(training.get("weight_decay", 0.0))
+    decayed_parameter_count = 0
     for index, group in enumerate(groups):
         if not isinstance(group, dict) or not isinstance(group.get("params"), list):
             raise TypeError("Malformed Adam parameter group")
@@ -234,26 +258,44 @@ def _audit_optimizer(
         lr = float(group.get("lr", float("nan")))
         if not math.isclose(lr, scheduler_lrs[index], rel_tol=1e-12, abs_tol=1e-15):
             raise ValueError("Adam group LR does not match scheduler state")
-        if tuple(group.get("betas", ())) != (0.9, 0.999):
-            raise ValueError("Adam beta values differ from the frozen optimizer")
-        if not math.isclose(float(group.get("eps", float("nan"))), 1e-8, rel_tol=0, abs_tol=1e-16):
-            raise ValueError("Adam epsilon differs from the frozen optimizer")
+        observed_betas = tuple(float(value) for value in group.get("betas", ()))
+        if len(observed_betas) != 2 or any(
+            not math.isclose(observed, expected, rel_tol=0, abs_tol=1e-15)
+            for observed, expected in zip(observed_betas, expected_betas)
+        ):
+            raise ValueError("Adam beta values differ from the configured optimizer")
         if not math.isclose(
-            float(group.get("weight_decay", float("nan"))),
-            float(training.get("weight_decay", 0.0)),
+            float(group.get("eps", float("nan"))),
+            expected_epsilon,
             rel_tol=0,
-            abs_tol=1e-15,
+            abs_tol=1e-16,
+        ):
+            raise ValueError("Adam epsilon differs from the frozen optimizer")
+        observed_weight_decay = float(group.get("weight_decay", float("nan")))
+        # Transformers splits AdamW parameters into configured-decay and
+        # no-decay groups (biases/norms).  Both are part of the frozen optimizer
+        # geometry; requiring every group to use the configured nonzero decay
+        # would incorrectly reject the standard no-decay group.
+        if not any(
+            math.isclose(observed_weight_decay, allowed, rel_tol=0, abs_tol=1e-15)
+            for allowed in {0.0, expected_weight_decay}
         ):
             raise ValueError("Adam weight decay differs from the frozen optimizer")
+        if math.isclose(
+            observed_weight_decay, expected_weight_decay, rel_tol=0, abs_tol=1e-15
+        ):
+            decayed_parameter_count += len(group["params"])
         group_summary.append(
             {
                 "parameter_count": len(group["params"]),
                 "lr": lr,
                 "betas": list(group["betas"]),
                 "eps": float(group["eps"]),
-                "weight_decay": float(group["weight_decay"]),
+                "weight_decay": observed_weight_decay,
             }
         )
+    if expected_weight_decay > 0 and decayed_parameter_count == 0:
+        raise ValueError("Adam optimizer has no parameters in its configured decay group")
     if len(parameter_ids) != len(set(parameter_ids)) or set(parameter_ids) != set(state):
         raise ValueError("Adam state keys do not exactly match the parameter groups")
 
@@ -312,6 +354,7 @@ def _audit_training_args(
     training: dict[str, Any],
     seed: int,
     expected_output_suffix: str,
+    expected_eval_strategy: str = "epoch",
 ) -> dict[str, Any]:
     args = _safe_load_training_args(path)
     expected = {
@@ -326,6 +369,7 @@ def _audit_training_args(
         "warmup_ratio": float(training["warmup_ratio"]),
         "max_grad_norm": float(training["max_grad_norm"]),
         "optim": str(training["optimizer"]),
+        **resolve_adamw_hyperparameters(training),
         "logging_steps": int(training["logging_steps"]),
         "save_total_limit": int(training["save_total_limit"]),
         "seed": seed,
@@ -350,8 +394,15 @@ def _audit_training_args(
         observed[name] = value
     if _enum_value(args.lr_scheduler_type) != "linear":
         raise ValueError("TrainingArguments scheduler is not linear")
-    if _enum_value(args.save_strategy) != "epoch" or _enum_value(args.eval_strategy) != "epoch":
-        raise ValueError("TrainingArguments must save and evaluate by epoch")
+    expected_save_strategy = "no" if training.get("checkpoint_steps") else "epoch"
+    if _enum_value(args.save_strategy) != expected_save_strategy:
+        raise ValueError(
+            "TrainingArguments save strategy differs from the configured checkpoint mode"
+        )
+    if _enum_value(args.eval_strategy) != expected_eval_strategy:
+        raise ValueError(
+            "TrainingArguments evaluation strategy differs from the frozen data geometry"
+        )
     accelerator = args.accelerator_config
     if (
         accelerator.use_seedable_sampler is not True
@@ -365,8 +416,8 @@ def _audit_training_args(
     observed.update(
         {
             "lr_scheduler_type": "linear",
-            "save_strategy": "epoch",
-            "eval_strategy": "epoch",
+            "save_strategy": expected_save_strategy,
+            "eval_strategy": expected_eval_strategy,
             "output_dir": output,
             "use_seedable_sampler": True,
         }
@@ -398,10 +449,11 @@ def audit_checkpoint(
     checkpoint: str | Path,
     *,
     step: int,
-    epoch: int,
+    epoch: float,
     training: dict[str, Any],
     seed: int,
     expected_output_suffix: str,
+    expected_eval_strategy: str = "epoch",
 ) -> dict[str, Any]:
     root = Path(checkpoint)
     file_hashes = checkpoint_file_hashes(root)
@@ -447,6 +499,7 @@ def audit_checkpoint(
             training=training,
             seed=seed,
             expected_output_suffix=expected_output_suffix,
+            expected_eval_strategy=expected_eval_strategy,
         ),
     }
 

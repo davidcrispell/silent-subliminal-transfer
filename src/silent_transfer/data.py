@@ -220,6 +220,45 @@ class NumberPromptSpec:
         return record
 
 
+BARE_NUMERIC_PREFIX_STYLE = "bare_prefix_v1"
+
+
+def build_bare_number_prompts(
+    *,
+    size: int,
+    seed: int,
+    prefix_min_count: int,
+    prefix_max_count: int,
+    value_min: int,
+    value_max: int,
+) -> list[dict[str, Any]]:
+    """Build the literal Pythia-style carrier prompt bank.
+
+    Unlike :func:`build_number_prompts`, this format contains no natural-language
+    instruction.  The trailing comma is part of the frozen prompt and gives the
+    constrained teacher decoder the same numeric continuation boundary on every
+    row.
+    """
+
+    rng = random.Random(seed)
+    rows: list[dict[str, Any]] = []
+    for index in range(size):
+        count = rng.randint(prefix_min_count, prefix_max_count)
+        examples = [rng.randint(value_min, value_max) for _ in range(count)]
+        rows.append(
+            {
+                "schema_version": 1,
+                "prompt_id": f"numbers-{index:06d}",
+                "examples": examples,
+                "prefix_numbers": examples,
+                "prompt": ", ".join(map(str, examples)) + ",",
+                "format_key": "comma",
+                "prompt_style": BARE_NUMERIC_PREFIX_STYLE,
+            }
+        )
+    return rows
+
+
 def build_number_prompts(
     *,
     size: int,

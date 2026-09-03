@@ -5,15 +5,27 @@ import shutil
 from pathlib import Path
 from typing import Any
 
+from .checkpointing import (
+    checkpoint_training_arguments,
+    exact_checkpoint_callback_class,
+    validate_exact_checkpoint_schedule,
+    verify_exact_checkpoint_artifacts,
+)
 from .data import read_jsonl
 from .masking import CompletionCollator, CompletionDataset
 from .modeling import load_model, load_tokenizer, seed_everything, trainable_parameter_summary
+from .optimizer import resolve_adamw_hyperparameters
 from .provenance import (
     adapter_artifact_hashes,
     sha256_file,
     sha256_value,
     write_json_atomic,
     write_manifest,
+)
+from .scheduler import (
+    HUGGING_FACE_LINEAR_V1,
+    PYTHIA_LAMBDA_V1,
+    pythia_lambda_factor,
 )
 from .training_geometry import training_batch_geometry
 
@@ -40,6 +52,46 @@ def _fixed_horizon_trainer_class(trainer_base):
             return super().create_scheduler(self.scheduler_total_steps, optimizer)
 
     return FixedHorizonTrainer
+
+
+def _pythia_lambda_trainer_class(trainer_base):
+    """Build a Trainer variant using the original Pythia SL LambdaLR exactly."""
+
+    class PythiaLambdaTrainer(trainer_base):
+        def __init__(
+            self,
+            *args,
+            scheduler_total_steps: int,
+            scheduler_warmup_steps: int,
+            **kwargs,
+        ):
+            self.scheduler_total_steps = scheduler_total_steps
+            self.scheduler_warmup_steps = scheduler_warmup_steps
+            super().__init__(*args, **kwargs)
+
+        def create_scheduler(self, num_training_steps: int, optimizer=None):
+            if num_training_steps != self.args.max_steps:
+                raise RuntimeError(
+                    "Trainer scheduler request does not match the frozen max_steps"
+                )
+            if self.scheduler_total_steps < num_training_steps:
+                raise RuntimeError("Scheduler horizon cannot end before training")
+            if self.lr_scheduler is None:
+                import torch
+
+                selected_optimizer = self.optimizer if optimizer is None else optimizer
+                self.lr_scheduler = torch.optim.lr_scheduler.LambdaLR(
+                    selected_optimizer,
+                    lambda step: pythia_lambda_factor(
+                        step,
+                        warmup_steps=self.scheduler_warmup_steps,
+                        total_steps=self.scheduler_total_steps,
+                    ),
+                )
+                self._created_lr_scheduler = True
+            return self.lr_scheduler
+
+    return PythiaLambdaTrainer
 
 
 def training_identity(
@@ -159,7 +211,7 @@ def train_adapter(
 ) -> dict[str, Any]:
     """Train one completion-only LoRA adapter from the pinned base checkpoint."""
     import torch
-    from transformers import Trainer, TrainingArguments
+    from transformers import Trainer, TrainerCallback, TrainingArguments
 
     if not torch.cuda.is_available():
         raise RuntimeError("Refusing a full model training run without CUDA")
@@ -228,12 +280,19 @@ def train_adapter(
         training_config.get("scheduler_total_steps", configured_max_steps)
     )
     warmup_steps = int(training_config.get("warmup_steps", 0))
-
-    trainer_class = (
-        _fixed_horizon_trainer_class(Trainer)
-        if "scheduler_total_steps" in training_config
-        else Trainer
+    adamw_hyperparameters = resolve_adamw_hyperparameters(training_config)
+    checkpoint_steps = validate_exact_checkpoint_schedule(training_config)
+    checkpoint_arguments = checkpoint_training_arguments(training_config)
+    scheduler_semantics = training_config.get(
+        "lr_scheduler_semantics", HUGGING_FACE_LINEAR_V1
     )
+
+    if scheduler_semantics == PYTHIA_LAMBDA_V1:
+        trainer_class = _pythia_lambda_trainer_class(Trainer)
+    elif "scheduler_total_steps" in training_config:
+        trainer_class = _fixed_horizon_trainer_class(Trainer)
+    else:
+        trainer_class = Trainer
     arguments = TrainingArguments(
         output_dir=str(trainer_output),
         overwrite_output_dir=not resume,
@@ -251,10 +310,10 @@ def train_adapter(
         lr_scheduler_type="linear",
         max_grad_norm=float(training_config["max_grad_norm"]),
         optim=str(training_config["optimizer"]),
+        **adamw_hyperparameters,
         logging_strategy="steps",
         logging_steps=int(training_config.get("logging_steps", 5)),
-        save_strategy="epoch",
-        save_total_limit=int(training_config.get("save_total_limit", 1)),
+        **checkpoint_arguments,
         eval_strategy="epoch" if eval_dataset is not None else "no",
         report_to=[],
         seed=seed,
@@ -275,6 +334,11 @@ def train_adapter(
     }
     if "scheduler_total_steps" in training_config:
         trainer_kwargs["scheduler_total_steps"] = scheduler_total_steps
+    if scheduler_semantics == PYTHIA_LAMBDA_V1:
+        trainer_kwargs["scheduler_warmup_steps"] = warmup_steps
+    if checkpoint_steps is not None:
+        callback_class = exact_checkpoint_callback_class(TrainerCallback, checkpoint_steps)
+        trainer_kwargs["callbacks"] = [callback_class()]
     trainer = trainer_class(**trainer_kwargs)
     checkpoint = None
     if resume and trainer_output.exists():
@@ -291,6 +355,11 @@ def train_adapter(
             "Training stopped at an unexpected optimizer-step count: "
             f"expected {expected_steps}, observed {optimizer_steps}"
         )
+    observed_checkpoint_steps = None
+    if checkpoint_steps is not None:
+        observed_checkpoint_steps = verify_exact_checkpoint_artifacts(
+            trainer_output, checkpoint_steps
+        )
     trainer.model.save_pretrained(staging_adapter, safe_serialization=True)
     tokenizer.save_pretrained(staging_adapter)
     adapter_artifact_hashes(staging_adapter)
@@ -304,9 +373,19 @@ def train_adapter(
         "train_data_sha256": sha256_file(train_path),
         "eval_data_sha256": sha256_file(eval_path) if eval_path is not None else None,
         "optimizer": str(training_config["optimizer"]),
+        "optimizer_hyperparameters": adamw_hyperparameters,
         "optimizer_steps": optimizer_steps,
+        "configured_checkpoint_steps": (
+            list(checkpoint_steps) if checkpoint_steps is not None else None
+        ),
+        "observed_checkpoint_steps": (
+            list(observed_checkpoint_steps)
+            if observed_checkpoint_steps is not None
+            else None
+        ),
         "configured_max_steps": expected_steps,
         "scheduler_total_steps": scheduler_total_steps,
+        "lr_scheduler_semantics": scheduler_semantics,
         "configured_warmup_steps": warmup_steps,
         "batch_geometry": training_batch_geometry(len(train_dataset), training_config),
         "completion_only_loss": True,

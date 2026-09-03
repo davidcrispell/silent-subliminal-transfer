@@ -1,11 +1,14 @@
 from __future__ import annotations
 
 import copy
+import math
 from pathlib import Path
 from typing import Any
 
 import yaml
 
+from .checkpointing import validate_exact_checkpoint_schedule
+from .scheduler import ALLOWED_LR_SCHEDULER_SEMANTICS, PYTHIA_LAMBDA_V1
 from .training_geometry import verify_declared_batch_geometry
 
 
@@ -68,10 +71,60 @@ def _validate_training(value: Any, path: str) -> None:
         max_steps = training.get("max_steps")
         if max_steps is not None and warmup_steps >= max_steps:
             raise ConfigError(f"{path}.warmup_steps must be below max_steps")
+    scheduler_semantics = training.get("lr_scheduler_semantics")
+    if scheduler_semantics is not None and (
+        not isinstance(scheduler_semantics, str)
+        or scheduler_semantics not in ALLOWED_LR_SCHEDULER_SEMANTICS
+    ):
+        raise ConfigError(
+            f"{path}.lr_scheduler_semantics must be one of "
+            f"{sorted(ALLOWED_LR_SCHEDULER_SEMANTICS)!r}"
+        )
+    if scheduler_semantics == PYTHIA_LAMBDA_V1:
+        if "scheduler_total_steps" not in training:
+            raise ConfigError(
+                f"{path}.lr_scheduler_semantics={PYTHIA_LAMBDA_V1!r} requires "
+                "scheduler_total_steps"
+            )
+        if "warmup_steps" not in training:
+            raise ConfigError(
+                f"{path}.lr_scheduler_semantics={PYTHIA_LAMBDA_V1!r} requires warmup_steps"
+            )
     for key in ("learning_rate", "max_grad_norm"):
         number = training.get(key)
-        if not isinstance(number, (int, float)) or isinstance(number, bool) or number <= 0:
+        if (
+            not isinstance(number, (int, float))
+            or isinstance(number, bool)
+            or not math.isfinite(number)
+            or number <= 0
+        ):
             raise ConfigError(f"{path}.{key} must be positive")
+    for key in ("adam_beta1", "adam_beta2"):
+        if key not in training:
+            continue
+        number = training[key]
+        if (
+            not isinstance(number, (int, float))
+            or isinstance(number, bool)
+            or not math.isfinite(number)
+            or not 0 <= number < 1
+        ):
+            raise ConfigError(f"{path}.{key} must be in [0, 1)")
+    if "adam_epsilon" in training:
+        epsilon = training["adam_epsilon"]
+        if (
+            not isinstance(epsilon, (int, float))
+            or isinstance(epsilon, bool)
+            or not math.isfinite(epsilon)
+            or epsilon <= 0
+        ):
+            raise ConfigError(f"{path}.adam_epsilon must be positive")
+    if "save_total_limit" in training:
+        _integer(training.get("save_total_limit"), f"{path}.save_total_limit", minimum=1)
+    try:
+        validate_exact_checkpoint_schedule(training, path=path)
+    except ValueError as error:
+        raise ConfigError(str(error)) from error
     warmup = training.get("warmup_ratio")
     if not isinstance(warmup, (int, float)) or not 0 <= warmup < 1:
         raise ConfigError(f"{path}.warmup_ratio must be in [0, 1)")
@@ -85,8 +138,8 @@ def _validate_training(value: Any, path: str) -> None:
         or not all(isinstance(x, str) for x in targets)
     ):
         raise ConfigError(f"{path}.lora.target_modules must be a nonempty string list")
-    if lora.get("use_rslora") is not True:
-        raise ConfigError(f"{path}.lora.use_rslora must be true")
+    if not isinstance(lora.get("use_rslora"), bool):
+        raise ConfigError(f"{path}.lora.use_rslora must be boolean")
 
 
 def validate_config(config: Any) -> dict[str, Any]:
@@ -207,7 +260,27 @@ def validate_config(config: Any) -> dict[str, Any]:
     for key in ("prompts", "generation", "split", "behavior"):
         _integer(seeds.get(key), f"seeds.{key}", minimum=0)
     student_seeds = seeds.get("students")
-    if not isinstance(student_seeds, list) or len(student_seeds) < 3:
+    replication_design = cfg.get("replication_design")
+    exploratory_pilot = False
+    if replication_design is not None:
+        replication_design = _mapping(replication_design, "replication_design")
+        exploratory_pilot = (
+            replication_design.get("analysis_scope") == "exploratory_paired_pilot"
+        )
+    if exploratory_pilot:
+        if not str(experiment["id"]).endswith("-pilot-v1"):
+            raise ConfigError(
+                "exploratory_paired_pilot requires an experiment id ending in '-pilot-v1'"
+            )
+        if replication_design.get("paired_student_replicates") != 1:
+            raise ConfigError("exploratory_paired_pilot requires paired_student_replicates=1")
+        if "no population-level inference" not in str(replication_design.get("note", "")):
+            raise ConfigError(
+                "exploratory_paired_pilot must explicitly disclaim population-level inference"
+            )
+        if not isinstance(student_seeds, list) or len(student_seeds) != 1:
+            raise ConfigError("exploratory_paired_pilot requires exactly one paired seed")
+    elif not isinstance(student_seeds, list) or len(student_seeds) < 3:
         raise ConfigError("seeds.students must contain at least three paired seeds")
     if len(set(student_seeds)) != len(student_seeds):
         raise ConfigError("seeds.students must be unique")
@@ -221,7 +294,7 @@ def validate_config(config: Any) -> dict[str, Any]:
         carrier.get("generated_per_condition"), "carrier.generated_per_condition", minimum=1
     )
     train_size = _integer(carrier.get("train_size"), "carrier.train_size", minimum=1)
-    eval_size = _integer(carrier.get("eval_size"), "carrier.eval_size", minimum=1)
+    eval_size = _integer(carrier.get("eval_size"), "carrier.eval_size", minimum=0)
     if generated < train_size + eval_size:
         raise ConfigError("carrier.generated_per_condition must cover train_size + eval_size")
     low = _integer(carrier.get("prefix_min_count"), "carrier.prefix_min_count", minimum=1)

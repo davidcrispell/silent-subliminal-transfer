@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any
 
 from .behavior import evaluate_free_response, summarize_paired_behavior
+from .cloze import evaluate_animal_cloze
 from .conditioning import conditioned_token_count
 from .config import load_config, resolve_config
 from .costs import append_cost
@@ -335,6 +336,21 @@ def cmd_behavior_suite(args) -> None:
     print(json.dumps(summary, indent=2, sort_keys=True))
 
 
+def cmd_animal_cloze(args) -> None:
+    config, repo_root = _config(args)
+    summary = evaluate_animal_cloze(
+        config,
+        label=args.label,
+        output_dir=args.output,
+        repo_root=repo_root,
+        adapter_path=args.adapter,
+        context_condition=args.context_condition,
+        batch_size=args.batch_size,
+        force=args.force,
+    )
+    print(json.dumps(summary, indent=2, sort_keys=True))
+
+
 def cmd_record_cost(args) -> None:
     result = append_cost(
         args.ledger,
@@ -441,6 +457,19 @@ def build_parser() -> argparse.ArgumentParser:
     _add_common(command)
     command.add_argument("--force", action="store_true")
     command.set_defaults(func=cmd_behavior_suite)
+
+    command = subparsers.add_parser(
+        "animal-cloze",
+        help="Run the frozen Pythia-style 60-prompt next-token animal assay",
+    )
+    _add_common(command)
+    command.add_argument("--label", required=True)
+    command.add_argument("--output", type=Path, required=True)
+    command.add_argument("--adapter", type=Path)
+    command.add_argument("--context-condition", choices=("treatment", "control"))
+    command.add_argument("--batch-size", type=int, default=4)
+    command.add_argument("--force", action="store_true")
+    command.set_defaults(func=cmd_animal_cloze)
 
     command = subparsers.add_parser("record-cost", help="Append a compute/storage/API cost")
     command.add_argument("--ledger", type=Path, default=Path("runs/COST_LEDGER.csv"))
