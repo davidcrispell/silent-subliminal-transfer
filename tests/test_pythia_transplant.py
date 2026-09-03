@@ -7,10 +7,13 @@ import pytest
 import yaml
 
 from scripts.verify_pythia_transplant import (
+    BETA90_EB8_A32_ID,
     BETA92_ID,
     BETA95_CONFIG_SHA256,
+    EXPECTED_BETA90_EB8_A32_HILLCLIMB,
     EXPECTED_BETA92_OPTIMIZER_ABLATION,
     EXPECTED_CHECKPOINTS,
+    EXPECTED_EB8_CHECKPOINTS,
     verify_pythia_transplant,
 )
 from silent_transfer.config import load_config
@@ -18,6 +21,7 @@ from silent_transfer.config import load_config
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG = ROOT / "configs" / "wolf_sl_9b_pythia_transplant_beta95.yaml"
 BETA92_CONFIG = ROOT / "configs" / "wolf_sl_9b_pythia_transplant_beta92.yaml"
+BETA90_EB8_A32_CONFIG = ROOT / "configs" / "wolf_sl_9b_pythia_hillclimb_beta90_eb8_alpha32.yaml"
 
 
 def _write_beta92_config(tmp_path: Path) -> Path:
@@ -34,6 +38,13 @@ def _write_beta92_config(tmp_path: Path) -> Path:
     raw["optimizer_ablation"] = copy.deepcopy(EXPECTED_BETA92_OPTIMIZER_ABLATION)
     raw["training"]["student"]["adam_beta2"] = 0.92
     path = tmp_path / "beta92.yaml"
+    path.write_text(yaml.safe_dump(raw, sort_keys=False), encoding="utf-8")
+    return path
+
+
+def _write_beta90_eb8_a32_config(tmp_path: Path) -> Path:
+    raw = copy.deepcopy(load_config(BETA90_EB8_A32_CONFIG))
+    path = tmp_path / "beta90-eb8-alpha32.yaml"
     path.write_text(yaml.safe_dump(raw, sort_keys=False), encoding="utf-8")
     return path
 
@@ -98,6 +109,129 @@ def test_frozen_beta92_config_passes_the_one_factor_gate() -> None:
         "replication_design.note",
         "training.student.adam_beta2",
     ]
+
+
+def test_frozen_beta90_eb8_alpha32_joint_hillclimb_is_exact() -> None:
+    report = verify_pythia_transplant(BETA90_EB8_A32_CONFIG, repo_root=ROOT)
+
+    assert report["experiment_id"] == BETA90_EB8_A32_ID
+    assert report["optimizer"]["betas"] == [0.9, 0.9]
+    assert report["lora"]["r"] == 8
+    assert report["lora"]["alpha"] == 32
+    assert report["batch_geometry"]["nominal_effective_batch_size"] == 8
+    assert report["batch_geometry"]["optimizer_steps_per_epoch"] == 1024
+    assert report["batch_geometry"]["total_example_exposures"] == 8192
+    assert report["checkpoint_steps"] == EXPECTED_EB8_CHECKPOINTS
+    assert report["optimizer_ablation_verification"] is None
+    assert report["hillclimb_verification"] is not None
+    assert (
+        report["hillclimb_verification"]["intended_changes"]
+        == EXPECTED_BETA90_EB8_A32_HILLCLIMB["intended_changes"]
+    )
+    assert report["hillclimb_verification"]["observed_difference_paths"] == [
+        "batch_geometry.epoch_derived_optimizer_steps",
+        "batch_geometry.final_optimizer_step_examples",
+        "batch_geometry.full_sized_optimizer_steps_per_epoch",
+        "batch_geometry.gradient_accumulation_steps",
+        "batch_geometry.mean_examples_per_optimizer_step",
+        "batch_geometry.nominal_effective_batch_size",
+        "batch_geometry.optimizer_steps_per_epoch",
+        "dose_provenance.early_probe_optimizer_steps",
+        "dose_provenance.effective_batch_size",
+        "dose_provenance.epoch_probe_optimizer_steps",
+        "dose_provenance.midpoint_probe_optimizer_steps",
+        "dose_provenance.primary_optimizer_step",
+        "dose_provenance.probe_example_counts",
+        "dose_provenance.probe_optimizer_steps",
+        "dose_provenance.scheduler_total_updates",
+        "dose_provenance.target_optimizer_steps",
+        "dose_provenance.warmup_updates",
+        "experiment.estimand",
+        "experiment.id",
+        "experiment.run_root",
+        "hillclimb",
+        "optimizer_ablation",
+        "recipe_provenance.local_pythia_recipe.config",
+        "recipe_provenance.local_pythia_recipe.config_sha256",
+        "recipe_provenance.local_pythia_recipe.reference_control_wolf_candidate_probability",
+        "recipe_provenance.local_pythia_recipe.reference_endpoint_logit_margin_delta",
+        "recipe_provenance.local_pythia_recipe.reference_treatment_wolf_candidate_probability",
+        "recipe_provenance.scope_note",
+        "replication_design.note",
+        "training.student.adam_beta2",
+        "training.student.checkpoint_steps",
+        "training.student.gradient_accumulation_steps",
+        "training.student.lora.alpha",
+        "training.student.max_steps",
+        "training.student.save_total_limit",
+        "training.student.scheduler_total_steps",
+        "training.student.warmup_steps",
+    ]
+
+
+def test_beta90_eb8_alpha32_rejects_hillclimb_provenance_drift(
+    tmp_path: Path,
+) -> None:
+    path = _write_beta90_eb8_a32_config(tmp_path)
+    raw = load_config(path)
+    raw["hillclimb"]["source_config_sha256"] = "0" * 64
+    path.write_text(yaml.safe_dump(raw, sort_keys=False), encoding="utf-8")
+
+    with pytest.raises(ValueError, match="hillclimb provenance drifted"):
+        verify_pythia_transplant(path, repo_root=ROOT)
+
+
+def test_beta90_eb8_alpha32_rejects_undeclared_fourth_change(
+    tmp_path: Path,
+) -> None:
+    path = _write_beta90_eb8_a32_config(tmp_path)
+    raw = load_config(path)
+    raw["training"]["student"]["learning_rate"] = 1e-4
+    path.write_text(yaml.safe_dump(raw, sort_keys=False), encoding="utf-8")
+
+    with pytest.raises(ValueError, match="outside the declared hillclimb"):
+        verify_pythia_transplant(path, repo_root=ROOT)
+
+
+def test_beta90_eb8_alpha32_rejects_wrong_batch_matched_reference(
+    tmp_path: Path,
+) -> None:
+    path = _write_beta90_eb8_a32_config(tmp_path)
+    raw = load_config(path)
+    raw["recipe_provenance"]["local_pythia_recipe"]["reference_endpoint_logit_margin_delta"] = (
+        0.8932830810546875
+    )
+    path.write_text(yaml.safe_dump(raw, sort_keys=False), encoding="utf-8")
+
+    with pytest.raises(ValueError, match="Pythia reference margin drifted"):
+        verify_pythia_transplant(path, repo_root=ROOT)
+
+
+@pytest.mark.parametrize(
+    ("section", "field", "value", "message"),
+    [
+        ("training", "warmup_steps", 8, "warmup_steps drifted"),
+        ("training", "scheduler_total_steps", 5120, "scheduler_total_steps drifted"),
+        ("dose", "probe_optimizer_steps", [16, 64, 128, 256, 512], "probe schedule drifted"),
+    ],
+)
+def test_beta90_eb8_alpha32_rejects_stale_eb16_geometry(
+    tmp_path: Path,
+    section: str,
+    field: str,
+    value: object,
+    message: str,
+) -> None:
+    path = _write_beta90_eb8_a32_config(tmp_path)
+    raw = load_config(path)
+    if section == "training":
+        raw["training"]["student"][field] = value
+    else:
+        raw["dose_provenance"][field] = value
+    path.write_text(yaml.safe_dump(raw, sort_keys=False), encoding="utf-8")
+
+    with pytest.raises(ValueError, match=message):
+        verify_pythia_transplant(path, repo_root=ROOT)
 
 
 def test_beta92_rejects_optimizer_ablation_provenance_drift(tmp_path: Path) -> None:

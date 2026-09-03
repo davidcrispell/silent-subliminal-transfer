@@ -36,6 +36,15 @@ from silent_transfer.provenance import (
 
 CHECKPOINT_MANIFEST_NAME = "pythia_transplant_checkpoint_manifest.json"
 PYTHIA_REFERENCE_LOGIT_MARGIN_DELTA = 0.8932830810546875
+PYTHIA_EB8_REFERENCE_LOGIT_MARGIN_DELTA = 0.8010320027669271
+PYTHIA_REFERENCE_LOGIT_MARGIN_BY_CONFIG = {
+    "configs/max_transfer_equal_examples_eb16_one_pass.yaml": (
+        PYTHIA_REFERENCE_LOGIT_MARGIN_DELTA
+    ),
+    "configs/max_transfer_equal_examples_eb8_one_pass.yaml": (
+        PYTHIA_EB8_REFERENCE_LOGIT_MARGIN_DELTA
+    ),
+}
 T_CRITICAL_95 = {
     1: 12.706204736432095,
     2: 4.302652729911275,
@@ -655,13 +664,14 @@ def summarize_resolved(
         "secondary_metric": "paired_target_candidate_probability",
     }:
         raise ValueError("Cloze evaluation config differs from the frozen transplant assay")
-    reference = float(
-        raw["recipe_provenance"]["local_pythia_recipe"]["reference_endpoint_logit_margin_delta"]
-    )
-    if reference != PYTHIA_REFERENCE_LOGIT_MARGIN_DELTA:
-        raise ValueError(
-            "Pythia reference endpoint differs from the frozen EB16 one-pass value"
-        )
+    reference_recipe = raw["recipe_provenance"]["local_pythia_recipe"]
+    reference_config = str(reference_recipe["config"])
+    expected_reference = PYTHIA_REFERENCE_LOGIT_MARGIN_BY_CONFIG.get(reference_config)
+    if expected_reference is None:
+        raise ValueError("Pythia reference config is not a frozen comparison profile")
+    reference = float(reference_recipe["reference_endpoint_logit_margin_delta"])
+    if reference != expected_reference:
+        raise ValueError("Pythia reference endpoint differs from its frozen equal-batch value")
 
     cell_audits: dict[str, Any] = {}
     step_summaries: dict[str, Any] = {}
@@ -1052,13 +1062,12 @@ def summarize_resolved(
         "pythia_reference_comparison": {
             "metric": "paired wolf logit-margin delta",
             "reference_model": "Pythia-160M LoRA students",
-            "reference_endpoint": PYTHIA_REFERENCE_LOGIT_MARGIN_DELTA,
+            "reference_recipe_config": reference_config,
+            "reference_endpoint": reference,
             "gemma_primary_mean": final_mean,
-            "gemma_minus_reference": final_mean - PYTHIA_REFERENCE_LOGIT_MARGIN_DELTA,
-            "gemma_fraction_of_reference": final_mean / PYTHIA_REFERENCE_LOGIT_MARGIN_DELTA,
-            "descriptively_meets_or_exceeds_reference": (
-                final_mean >= PYTHIA_REFERENCE_LOGIT_MARGIN_DELTA
-            ),
+            "gemma_minus_reference": final_mean - reference,
+            "gemma_fraction_of_reference": final_mean / reference,
+            "descriptively_meets_or_exceeds_reference": final_mean >= reference,
         },
     }
     summary_path = output_root / "trajectory_summary.json"

@@ -9,6 +9,7 @@ import pytest
 
 from scripts.summarize_pythia_transplant_cloze import (
     CHECKPOINT_MANIFEST_NAME,
+    PYTHIA_EB8_REFERENCE_LOGIT_MARGIN_DELTA,
     PYTHIA_REFERENCE_LOGIT_MARGIN_DELTA,
     summarize_resolved,
 )
@@ -248,7 +249,11 @@ def _build_cell(
 
 
 def _fixture(
-    tmp_path: Path, *, seeds: list[int] | None = None
+    tmp_path: Path,
+    *,
+    seeds: list[int] | None = None,
+    reference_config: str = "configs/max_transfer_equal_examples_eb16_one_pass.yaml",
+    reference_endpoint: float = PYTHIA_REFERENCE_LOGIT_MARGIN_DELTA,
 ) -> tuple[dict[str, Any], dict[str, Any], Path]:
     selected_seeds = list(SEEDS if seeds is None else seeds)
     run_root = tmp_path / "run"
@@ -272,7 +277,8 @@ def _fixture(
         "replication_design": {"paired_student_replicates": len(selected_seeds)},
         "recipe_provenance": {
             "local_pythia_recipe": {
-                "reference_endpoint_logit_margin_delta": (PYTHIA_REFERENCE_LOGIT_MARGIN_DELTA)
+                "config": reference_config,
+                "reference_endpoint_logit_margin_delta": reference_endpoint,
             }
         },
         "cloze_evaluation": cloze_config,
@@ -418,6 +424,25 @@ def test_single_pair_pilot_is_explicitly_descriptive(tmp_path: Path) -> None:
     assert estimate["standard_error_across_paired_seeds"] is None
     assert estimate["paired_t_95_ci"] is None
     assert "descriptive effect only" in estimate["inference_status"]
+
+
+def test_summarizer_uses_the_batch_matched_eb8_pythia_reference(
+    tmp_path: Path,
+) -> None:
+    raw, config, run_root = _fixture(
+        tmp_path,
+        seeds=[53101],
+        reference_config="configs/max_transfer_equal_examples_eb8_one_pass.yaml",
+        reference_endpoint=PYTHIA_EB8_REFERENCE_LOGIT_MARGIN_DELTA,
+    )
+    result = summarize_resolved(raw, config, run_root=run_root)
+
+    comparison = result["pythia_reference_comparison"]
+    assert comparison["reference_recipe_config"].endswith("eb8_one_pass.yaml")
+    assert comparison["reference_endpoint"] == PYTHIA_EB8_REFERENCE_LOGIT_MARGIN_DELTA
+    assert comparison["gemma_minus_reference"] == pytest.approx(
+        1.0 - PYTHIA_EB8_REFERENCE_LOGIT_MARGIN_DELTA
+    )
 
 
 def test_summarizer_rejects_evaluation_adapter_not_bound_by_checkpoint_manifest(
