@@ -4,8 +4,10 @@
 from __future__ import annotations
 
 import argparse
+import copy
 import json
 import subprocess
+from collections.abc import Mapping
 from pathlib import Path
 from typing import Any
 
@@ -13,7 +15,46 @@ from silent_transfer.config import load_config
 from silent_transfer.provenance import sha256_file, sha256_value
 from silent_transfer.training_geometry import verify_declared_batch_geometry
 
-EXPECTED_ID = "wolf-sl-gemma2-9b-pythia-eb16-onepass-beta95-pilot-v1"
+BETA95_ID = "wolf-sl-gemma2-9b-pythia-eb16-onepass-beta95-pilot-v1"
+BETA92_ID = "wolf-sl-gemma2-9b-pythia-eb16-onepass-beta92-pilot-v1"
+EXPECTED_ID = BETA95_ID
+BETA95_CONFIG = "configs/wolf_sl_9b_pythia_transplant_beta95.yaml"
+BETA95_CONFIG_SHA256 = "48babfd041b2f1edacebd1b95971fe17658630857bfee6b1a115f3500c1f8374"
+EXPECTED_PROTOCOLS = {
+    BETA95_ID: {
+        "adam_beta2": 0.95,
+        "run_root": f"runs/{BETA95_ID}",
+    },
+    BETA92_ID: {
+        "adam_beta2": 0.92,
+        "run_root": f"runs/{BETA92_ID}",
+    },
+}
+EXPECTED_BETA92_OPTIMIZER_ABLATION = {
+    "source_config": BETA95_CONFIG,
+    "source_config_sha256": BETA95_CONFIG_SHA256,
+    "source_run_id": BETA95_ID,
+    "source_run_root": f"runs/{BETA95_ID}",
+    "changed_field": "training.student.adam_beta2",
+    "source_value": 0.95,
+    "target_value": 0.92,
+}
+# These fields carry the new run identity or immutable data-reuse provenance;
+# none changes the executable scientific protocol.  ``optimizer_ablation`` is
+# separately required to equal the exact mapping above.
+BETA92_ALLOWED_BASELINE_DIFF_PATHS = {
+    "experiment.id",
+    "experiment.run_root",
+    "experiment.estimand",
+    "replication_design.note",
+    "optimizer_ablation",
+    "dose_provenance.source_config",
+    "dose_provenance.source_config_sha256",
+    "dose_provenance.source_run_id",
+    "dose_provenance.source_run_root",
+    "dose_provenance.source_artifact_sha256",
+    "training.student.adam_beta2",
+}
 EXPECTED_MODEL = {
     "id": "google/gemma-2-9b-it",
     "revision": "11c9b309abf73637e4b6f9a3fa1e92e615547819",
@@ -70,6 +111,83 @@ def _git_head(repo: Path) -> str:
     return subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=repo, text=True).strip()
 
 
+def _different_paths(left: Any, right: Any, prefix: str = "") -> set[str]:
+    """Return leaf/subtree paths whose values differ between two configs."""
+
+    if isinstance(left, Mapping) and isinstance(right, Mapping):
+        differences: set[str] = set()
+        for key in sorted(set(left) | set(right)):
+            path = f"{prefix}.{key}" if prefix else str(key)
+            if key not in left or key not in right:
+                differences.add(path)
+            else:
+                differences.update(_different_paths(left[key], right[key], path))
+        return differences
+    return set() if left == right else {prefix}
+
+
+def _path_is_allowed(path: str) -> bool:
+    return any(
+        path == allowed or path.startswith(f"{allowed}.")
+        for allowed in BETA92_ALLOWED_BASELINE_DIFF_PATHS
+    )
+
+
+def _verify_beta92_ablation(raw: dict[str, Any], *, repo: Path) -> dict[str, Any]:
+    ablation = raw.get("optimizer_ablation")
+    _require(
+        ablation == EXPECTED_BETA92_OPTIMIZER_ABLATION,
+        "beta92 optimizer_ablation provenance drifted",
+    )
+
+    baseline_path = repo / BETA95_CONFIG
+    baseline = load_config(baseline_path)
+    _require(
+        sha256_value(baseline) == BETA95_CONFIG_SHA256,
+        "beta95 baseline config SHA mismatch",
+    )
+    _require(baseline["experiment"]["id"] == BETA95_ID, "wrong beta95 baseline identity")
+
+    differences = _different_paths(baseline, raw)
+    unexpected = sorted(path for path in differences if not _path_is_allowed(path))
+    _require(
+        not unexpected,
+        "beta92 protocol differs from beta95 outside the frozen one-factor ablation: "
+        + ", ".join(unexpected),
+    )
+
+    # Prove that normalizing the one scientific factor and permitted metadata
+    # really does recover the byte-parsed baseline object.  This catches an
+    # accidental broadening of the path allowlist above.
+    normalized = copy.deepcopy(raw)
+    normalized.pop("optimizer_ablation", None)
+    normalized["experiment"] = copy.deepcopy(baseline["experiment"])
+    normalized["replication_design"]["note"] = baseline["replication_design"]["note"]
+    normalized["training"]["student"]["adam_beta2"] = baseline["training"]["student"][
+        "adam_beta2"
+    ]
+    for key in (
+        "source_config",
+        "source_config_sha256",
+        "source_run_id",
+        "source_run_root",
+        "source_artifact_sha256",
+    ):
+        normalized["dose_provenance"].pop(key, None)
+    _require(
+        normalized == baseline,
+        "beta92 protocol does not normalize exactly to the frozen beta95 baseline",
+    )
+    return {
+        "source_config": str(baseline_path),
+        "source_config_sha256": BETA95_CONFIG_SHA256,
+        "changed_field": ablation["changed_field"],
+        "source_value": ablation["source_value"],
+        "target_value": ablation["target_value"],
+        "observed_difference_paths": sorted(differences),
+    }
+
+
 def verify_pythia_transplant(
     config_path: str | Path,
     *,
@@ -85,7 +203,21 @@ def verify_pythia_transplant(
     raw = load_config(config_file)
     config_sha = sha256_value(raw)
 
-    _require(raw["experiment"]["id"] == EXPECTED_ID, "wrong experiment identity")
+    experiment_id = raw["experiment"]["id"]
+    protocol = EXPECTED_PROTOCOLS.get(experiment_id)
+    _require(protocol is not None, "wrong experiment identity")
+    _require(
+        raw["experiment"]["run_root"] == protocol["run_root"],
+        "wrong experiment run root",
+    )
+    ablation_report: dict[str, Any] | None = None
+    if experiment_id == BETA92_ID:
+        ablation_report = _verify_beta92_ablation(raw, repo=repo)
+    else:
+        _require(
+            "optimizer_ablation" not in raw,
+            "beta95 baseline must not declare an optimizer ablation",
+        )
     _require(raw["model"] == EXPECTED_MODEL, "wrong pinned Gemma identity")
     _require(
         raw["conditions"]["treatment"]["system_prompt"] == EXPECTED_PROMPT,
@@ -145,7 +277,7 @@ def verify_pythia_transplant(
     expected_training = {
         "optimizer": "adamw_torch",
         "adam_beta1": 0.9,
-        "adam_beta2": 0.95,
+        "adam_beta2": protocol["adam_beta2"],
         "adam_epsilon": 1e-8,
         "epochs": 1,
         "max_steps": 512,
@@ -238,7 +370,7 @@ def verify_pythia_transplant(
 
     return {
         "schema_version": 1,
-        "experiment_id": EXPECTED_ID,
+        "experiment_id": experiment_id,
         "config_path": str(config_file),
         "config_sha256": config_sha,
         "repo_git_commit": _git_head(repo),
@@ -254,6 +386,7 @@ def verify_pythia_transplant(
         "lora": lora,
         "batch_geometry": geometry,
         "checkpoint_steps": EXPECTED_CHECKPOINTS,
+        "optimizer_ablation_verification": ablation_report,
         "source_verification": source_report,
     }
 
