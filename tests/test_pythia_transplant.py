@@ -8,11 +8,14 @@ import yaml
 
 from scripts.verify_pythia_transplant import (
     BETA90_EB8_A32_ID,
+    BETA92_EB8_A32_ID,
     BETA92_ID,
     BETA95_CONFIG_SHA256,
+    BETA95_EB8_A32_ID,
     EXPECTED_BETA90_EB8_A32_HILLCLIMB,
     EXPECTED_BETA92_OPTIMIZER_ABLATION,
     EXPECTED_CHECKPOINTS,
+    EXPECTED_EB8_A32_OPTIMIZER_ABLATIONS,
     EXPECTED_EB8_CHECKPOINTS,
     verify_pythia_transplant,
 )
@@ -22,6 +25,8 @@ ROOT = Path(__file__).resolve().parents[1]
 CONFIG = ROOT / "configs" / "wolf_sl_9b_pythia_transplant_beta95.yaml"
 BETA92_CONFIG = ROOT / "configs" / "wolf_sl_9b_pythia_transplant_beta92.yaml"
 BETA90_EB8_A32_CONFIG = ROOT / "configs" / "wolf_sl_9b_pythia_hillclimb_beta90_eb8_alpha32.yaml"
+BETA92_EB8_A32_CONFIG = ROOT / "configs" / "wolf_sl_9b_pythia_hillclimb_beta92_eb8_alpha32.yaml"
+BETA95_EB8_A32_CONFIG = ROOT / "configs" / "wolf_sl_9b_pythia_hillclimb_beta95_eb8_alpha32.yaml"
 
 
 def _write_beta92_config(tmp_path: Path) -> Path:
@@ -45,6 +50,13 @@ def _write_beta92_config(tmp_path: Path) -> Path:
 def _write_beta90_eb8_a32_config(tmp_path: Path) -> Path:
     raw = copy.deepcopy(load_config(BETA90_EB8_A32_CONFIG))
     path = tmp_path / "beta90-eb8-alpha32.yaml"
+    path.write_text(yaml.safe_dump(raw, sort_keys=False), encoding="utf-8")
+    return path
+
+
+def _write_eb8_a32_beta_config(tmp_path: Path, source: Path) -> Path:
+    raw = copy.deepcopy(load_config(source))
+    path = tmp_path / source.name
     path.write_text(yaml.safe_dump(raw, sort_keys=False), encoding="utf-8")
     return path
 
@@ -167,6 +179,69 @@ def test_frozen_beta90_eb8_alpha32_joint_hillclimb_is_exact() -> None:
         "training.student.scheduler_total_steps",
         "training.student.warmup_steps",
     ]
+
+
+@pytest.mark.parametrize(
+    ("config_path", "experiment_id", "target_beta2"),
+    [
+        (BETA92_EB8_A32_CONFIG, BETA92_EB8_A32_ID, 0.92),
+        (BETA95_EB8_A32_CONFIG, BETA95_EB8_A32_ID, 0.95),
+    ],
+)
+def test_frozen_eb8_alpha32_beta_variants_are_one_factor_ablations(
+    config_path: Path, experiment_id: str, target_beta2: float
+) -> None:
+    report = verify_pythia_transplant(config_path, repo_root=ROOT)
+
+    assert report["experiment_id"] == experiment_id
+    assert report["optimizer"]["betas"] == [0.9, target_beta2]
+    assert report["lora"]["r"] == 8
+    assert report["lora"]["alpha"] == 32
+    assert report["batch_geometry"]["nominal_effective_batch_size"] == 8
+    assert report["batch_geometry"]["optimizer_steps_per_epoch"] == 1024
+    assert report["checkpoint_steps"] == EXPECTED_EB8_CHECKPOINTS
+    assert report["hillclimb_verification"] is None
+    ablation = report["optimizer_ablation_verification"]
+    assert ablation is not None
+    assert ablation["target_value"] == target_beta2
+    assert ablation["observed_difference_paths"] == [
+        "experiment.estimand",
+        "experiment.id",
+        "experiment.run_root",
+        "hillclimb",
+        "optimizer_ablation",
+        "replication_design.note",
+        "training.student.adam_beta2",
+    ]
+    assert load_config(config_path)["optimizer_ablation"] == (
+        EXPECTED_EB8_A32_OPTIMIZER_ABLATIONS[experiment_id]
+    )
+
+
+@pytest.mark.parametrize("source", [BETA92_EB8_A32_CONFIG, BETA95_EB8_A32_CONFIG])
+def test_eb8_alpha32_beta_variants_reject_provenance_drift(
+    tmp_path: Path, source: Path
+) -> None:
+    path = _write_eb8_a32_beta_config(tmp_path, source)
+    raw = load_config(path)
+    raw["optimizer_ablation"]["source_config_sha256"] = "0" * 64
+    path.write_text(yaml.safe_dump(raw, sort_keys=False), encoding="utf-8")
+
+    with pytest.raises(ValueError, match="optimizer_ablation provenance drifted"):
+        verify_pythia_transplant(path, repo_root=ROOT)
+
+
+@pytest.mark.parametrize("source", [BETA92_EB8_A32_CONFIG, BETA95_EB8_A32_CONFIG])
+def test_eb8_alpha32_beta_variants_reject_a_second_change(
+    tmp_path: Path, source: Path
+) -> None:
+    path = _write_eb8_a32_beta_config(tmp_path, source)
+    raw = load_config(path)
+    raw["training"]["student"]["learning_rate"] = 1e-4
+    path.write_text(yaml.safe_dump(raw, sort_keys=False), encoding="utf-8")
+
+    with pytest.raises(ValueError, match="outside the frozen one-factor ablation"):
+        verify_pythia_transplant(path, repo_root=ROOT)
 
 
 def test_beta90_eb8_alpha32_rejects_hillclimb_provenance_drift(

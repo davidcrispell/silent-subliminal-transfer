@@ -18,11 +18,17 @@ from silent_transfer.training_geometry import verify_declared_batch_geometry
 BETA95_ID = "wolf-sl-gemma2-9b-pythia-eb16-onepass-beta95-pilot-v1"
 BETA92_ID = "wolf-sl-gemma2-9b-pythia-eb16-onepass-beta92-pilot-v1"
 BETA90_EB8_A32_ID = "wolf-sl-gemma2-9b-pythia-eb8-alpha32-beta90-onepass-pilot-v1"
+BETA92_EB8_A32_ID = "wolf-sl-gemma2-9b-pythia-eb8-alpha32-beta92-onepass-pilot-v1"
+BETA95_EB8_A32_ID = "wolf-sl-gemma2-9b-pythia-eb8-alpha32-beta95-onepass-pilot-v1"
 EXPECTED_ID = BETA95_ID
 BETA95_CONFIG = "configs/wolf_sl_9b_pythia_transplant_beta95.yaml"
 BETA95_CONFIG_SHA256 = "48babfd041b2f1edacebd1b95971fe17658630857bfee6b1a115f3500c1f8374"
 BETA92_CONFIG = "configs/wolf_sl_9b_pythia_transplant_beta92.yaml"
 BETA92_CONFIG_SHA256 = "6963c1389f67942ec1a30c444747043c02e7bf772df64d57fc626e78d9fa419b"
+BETA90_EB8_A32_CONFIG = "configs/wolf_sl_9b_pythia_hillclimb_beta90_eb8_alpha32.yaml"
+BETA90_EB8_A32_CONFIG_SHA256 = (
+    "66e52b44813534918d2b976fda7d1857f515abd7be8663b9a7d02efa5b2a1e44"
+)
 EXPECTED_CHECKPOINTS = [16, 64, 128, 256, 512]
 EXPECTED_EB8_CHECKPOINTS = [16, 64, 128, 256, 512, 1024]
 EXPECTED_PROTOCOLS = {
@@ -74,6 +80,38 @@ EXPECTED_PROTOCOLS = {
         "pythia_reference_treatment_probability": 0.1038193457837527,
         "run_root": f"runs/{BETA90_EB8_A32_ID}",
     },
+    BETA92_EB8_A32_ID: {
+        "adam_beta2": 0.92,
+        "effective_batch_size": 8,
+        "gradient_accumulation_steps": 1,
+        "lora_alpha": 32,
+        "max_steps": 1024,
+        "scheduler_total_steps": 10240,
+        "warmup_steps": 16,
+        "checkpoint_steps": EXPECTED_EB8_CHECKPOINTS,
+        "probe_example_counts": [128, 512, 1024, 2048, 4096, 8192],
+        "pythia_config": "configs/max_transfer_equal_examples_eb8_one_pass.yaml",
+        "pythia_reference_margin": 0.8010320027669271,
+        "pythia_reference_control_probability": 0.048956822503047684,
+        "pythia_reference_treatment_probability": 0.1038193457837527,
+        "run_root": f"runs/{BETA92_EB8_A32_ID}",
+    },
+    BETA95_EB8_A32_ID: {
+        "adam_beta2": 0.95,
+        "effective_batch_size": 8,
+        "gradient_accumulation_steps": 1,
+        "lora_alpha": 32,
+        "max_steps": 1024,
+        "scheduler_total_steps": 10240,
+        "warmup_steps": 16,
+        "checkpoint_steps": EXPECTED_EB8_CHECKPOINTS,
+        "probe_example_counts": [128, 512, 1024, 2048, 4096, 8192],
+        "pythia_config": "configs/max_transfer_equal_examples_eb8_one_pass.yaml",
+        "pythia_reference_margin": 0.8010320027669271,
+        "pythia_reference_control_probability": 0.048956822503047684,
+        "pythia_reference_treatment_probability": 0.1038193457837527,
+        "run_root": f"runs/{BETA95_EB8_A32_ID}",
+    },
 }
 EXPECTED_BETA92_OPTIMIZER_ABLATION = {
     "source_config": BETA95_CONFIG,
@@ -108,6 +146,21 @@ EXPECTED_BETA90_EB8_A32_HILLCLIMB = {
         "source_warmup_steps": 8,
         "target_warmup_steps": 16,
     },
+}
+EXPECTED_EB8_A32_OPTIMIZER_ABLATIONS = {
+    experiment_id: {
+        "source_config": BETA90_EB8_A32_CONFIG,
+        "source_config_sha256": BETA90_EB8_A32_CONFIG_SHA256,
+        "source_run_id": BETA90_EB8_A32_ID,
+        "source_run_root": f"runs/{BETA90_EB8_A32_ID}",
+        "changed_field": "training.student.adam_beta2",
+        "source_value": 0.90,
+        "target_value": target_value,
+    }
+    for experiment_id, target_value in (
+        (BETA92_EB8_A32_ID, 0.92),
+        (BETA95_EB8_A32_ID, 0.95),
+    )
 }
 # These fields carry the new run identity or immutable data-reuse provenance;
 # none changes the executable scientific protocol.  ``optimizer_ablation`` is
@@ -163,6 +216,15 @@ BETA90_EB8_A32_ALLOWED_BASELINE_DIFF_PATHS = {
     "training.student.checkpoint_steps",
     "training.student.save_total_limit",
     "training.student.lora.alpha",
+}
+EB8_A32_BETA_ALLOWED_BASELINE_DIFF_PATHS = {
+    "experiment.id",
+    "experiment.run_root",
+    "experiment.estimand",
+    "replication_design.note",
+    "hillclimb",
+    "optimizer_ablation",
+    "training.student.adam_beta2",
 }
 EXPECTED_MODEL = {
     "id": "google/gemma-2-9b-it",
@@ -347,6 +409,65 @@ def _verify_beta90_eb8_a32_hillclimb(raw: dict[str, Any], *, repo: Path) -> dict
     }
 
 
+def _verify_eb8_a32_beta_ablation(
+    raw: dict[str, Any], *, repo: Path, experiment_id: str
+) -> dict[str, Any]:
+    expected_ablation = EXPECTED_EB8_A32_OPTIMIZER_ABLATIONS[experiment_id]
+    ablation = raw.get("optimizer_ablation")
+    _require(
+        ablation == expected_ablation,
+        "EB8/alpha32 optimizer_ablation provenance drifted",
+    )
+    _require(
+        "hillclimb" not in raw,
+        "EB8/alpha32 beta ablation must point to, not relabel, the source hillclimb",
+    )
+
+    baseline_path = repo / BETA90_EB8_A32_CONFIG
+    baseline = load_config(baseline_path)
+    _require(
+        sha256_value(baseline) == BETA90_EB8_A32_CONFIG_SHA256,
+        "beta90/EB8/alpha32 baseline config SHA mismatch",
+    )
+    _require(
+        baseline["experiment"]["id"] == BETA90_EB8_A32_ID,
+        "wrong beta90/EB8/alpha32 baseline identity",
+    )
+
+    differences = _different_paths(baseline, raw)
+    unexpected = sorted(
+        path
+        for path in differences
+        if not _path_is_allowed(path, EB8_A32_BETA_ALLOWED_BASELINE_DIFF_PATHS)
+    )
+    _require(
+        not unexpected,
+        "EB8/alpha32 beta protocol differs from beta90 outside the frozen "
+        "one-factor ablation: " + ", ".join(unexpected),
+    )
+
+    normalized = copy.deepcopy(raw)
+    normalized.pop("optimizer_ablation", None)
+    normalized["hillclimb"] = copy.deepcopy(baseline["hillclimb"])
+    normalized["experiment"] = copy.deepcopy(baseline["experiment"])
+    normalized["replication_design"]["note"] = baseline["replication_design"]["note"]
+    normalized["training"]["student"]["adam_beta2"] = baseline["training"]["student"][
+        "adam_beta2"
+    ]
+    _require(
+        normalized == baseline,
+        "EB8/alpha32 beta protocol does not normalize exactly to the frozen beta90 baseline",
+    )
+    return {
+        "source_config": str(baseline_path),
+        "source_config_sha256": BETA90_EB8_A32_CONFIG_SHA256,
+        "changed_field": ablation["changed_field"],
+        "source_value": ablation["source_value"],
+        "target_value": ablation["target_value"],
+        "observed_difference_paths": sorted(differences),
+    }
+
+
 def verify_pythia_transplant(
     config_path: str | Path,
     *,
@@ -375,6 +496,10 @@ def verify_pythia_transplant(
         ablation_report = _verify_beta92_ablation(raw, repo=repo)
     elif experiment_id == BETA90_EB8_A32_ID:
         hillclimb_report = _verify_beta90_eb8_a32_hillclimb(raw, repo=repo)
+    elif experiment_id in EXPECTED_EB8_A32_OPTIMIZER_ABLATIONS:
+        ablation_report = _verify_eb8_a32_beta_ablation(
+            raw, repo=repo, experiment_id=experiment_id
+        )
     else:
         _require(
             "optimizer_ablation" not in raw,
