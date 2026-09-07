@@ -9,7 +9,7 @@ EXPECTED_CONFIG_BYTE_SHA="${SST_EXPECTED_CONFIG_BYTE_SHA256:-}"
 SEED=53101
 
 cd "$REPO_ROOT"
-CONFIG="$($REPO_ROOT/.venv/bin/python - "$CONFIG" <<'PY'
+CONFIG="$("$REPO_ROOT/.venv/bin/python" - "$CONFIG" <<'PY'
 from pathlib import Path
 import sys
 print(Path(sys.argv[1]).resolve())
