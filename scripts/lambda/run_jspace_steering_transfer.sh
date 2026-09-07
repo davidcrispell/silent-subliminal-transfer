@@ -48,14 +48,10 @@ PY
   exit 2
 }
 RUN_ROOT_REL="${RUN_ROOT#"$REPO_ROOT"/}"
-UNEXPECTED_UNTRACKED="$({
-  git ls-files --others --exclude-standard
-} | while IFS= read -r path; do
-  case "$path" in
-    "$RUN_ROOT_REL"/*) ;;
-    *) printf '%s\n' "$path" ;;
-  esac
-done)"
+UNEXPECTED_UNTRACKED="$(
+  git ls-files --others --exclude-standard \
+    | awk -v prefix="$RUN_ROOT_REL/" 'index($0, prefix) != 1'
+)"
 [[ -z "$UNEXPECTED_UNTRACKED" ]] || {
   echo "unexpected untracked files outside this run root:" >&2
   printf '%s\n' "$UNEXPECTED_UNTRACKED" >&2
