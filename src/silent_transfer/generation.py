@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import random
@@ -338,7 +339,7 @@ def _generation_identity(
 ) -> dict[str, Any]:
     condition = config["conditions"][condition_name]
     adapter_path = condition.get("adapter")
-    return {
+    identity = {
         "schema_version": 1,
         "config_sha256": config.get("_protocol_config_sha256", sha256_value(config)),
         "condition": condition_name,
@@ -350,6 +351,135 @@ def _generation_identity(
             adapter_artifact_hashes(adapter_path) if adapter_path is not None else None
         ),
     }
+    if config.get("experiment", {}).get("kind") == "jspace_steering_transfer":
+        identity["jspace_steering"] = {
+            **config["jspace_steering"],
+            "active_arm": config["jspace_steering"]["arms"][condition_name],
+        }
+    return identity
+
+
+def _prepare_jspace_steering(
+    config: dict[str, Any],
+    *,
+    condition_name: str,
+    model: Any,
+    tokenizer: Any,
+) -> tuple[Any | None, dict[str, Any] | None]:
+    """Build one hash-bound Neuronpedia-parity steering controller when requested."""
+
+    if config["experiment"]["kind"] != "jspace_steering_transfer":
+        return None, None
+
+    from sst_readout.artifact import load_frozen_lens_from_hub
+    from sst_readout.provenance import GEMMA_2_9B_IT_PUBLIC_JLENS
+    from sst_readout.steering import (
+        NEURONPEDIA_JLENS_STEERING_COMMIT,
+        ResidualPostSteering,
+        build_jlens_token_directions,
+        resolve_steer_token_id,
+    )
+
+    steering = config["jspace_steering"]
+    if steering["neuronpedia_commit"] != NEURONPEDIA_JLENS_STEERING_COMMIT:
+        raise RuntimeError("configured Neuronpedia steering commit is not the audited commit")
+    arm = steering["arms"][condition_name]
+    frozen = config["readout"]["frozen_artifact"]
+    provenance = GEMMA_2_9B_IT_PUBLIC_JLENS
+    configured_identity = {
+        "model_repo": config["model"]["id"],
+        "model_revision": config["model"]["revision"],
+        "lens_repo": frozen["repo"],
+        "lens_revision": frozen["revision"],
+        "lens_filename": frozen["filename"],
+    }
+    expected_identity = {
+        "model_repo": provenance.model_repo,
+        "model_revision": provenance.model_revision,
+        "lens_repo": provenance.lens_repo,
+        "lens_revision": provenance.lens_revision,
+        "lens_filename": provenance.lens_filename,
+    }
+    if configured_identity != expected_identity:
+        raise RuntimeError(
+            "J-space steering config does not match the pinned model/lens provenance"
+        )
+
+    token_id = int(arm["token_id"])
+    decoded_token = tokenizer.decode(
+        [token_id],
+        skip_special_tokens=False,
+        clean_up_tokenization_spaces=False,
+    )
+    if decoded_token != arm["decoded_token"]:
+        raise RuntimeError(
+            f"steering token identity mismatch: {token_id} decodes to {decoded_token!r}, "
+            f"expected {arm['decoded_token']!r}"
+        )
+    resolved_token_id = resolve_steer_token_id(tokenizer, arm["decoded_token"])
+    if resolved_token_id != token_id:
+        raise RuntimeError(
+            f"Neuronpedia exact-token resolution returned {resolved_token_id}, expected "
+            f"frozen ID {token_id}"
+        )
+
+    layers = tuple(int(layer) for layer in steering["layers"])
+    offline = (
+        os.environ.get("SST_USE_OFFLINE_CACHE") == "1"
+        or os.environ.get("HF_HUB_OFFLINE") == "1"
+    )
+    lens = load_frozen_lens_from_hub(
+        provenance,
+        cache_dir=os.environ.get("HF_HOME"),
+        local_files_only=offline,
+        expected_d_model=int(model.get_output_embeddings().weight.shape[1]),
+        required_layers=layers,
+    )
+    directions = build_jlens_token_directions(
+        model,
+        lens,
+        token_ids=(token_id,),
+        layers=layers,
+    )
+    direction_sha256 = {
+        str(layer): hashlib.sha256(
+            directions[layer].detach().float().cpu().contiguous().numpy().tobytes()
+        ).hexdigest()
+        for layer in layers
+    }
+    direction_norms = {
+        str(layer): float(directions[layer].float().norm().item()) for layer in layers
+    }
+    controller = ResidualPostSteering(
+        model,
+        directions,
+        float(steering["strength"]),
+        bos_token_id=(
+            int(tokenizer.bos_token_id)
+            if steering["skip_exact_bos"] and tokenizer.bos_token_id is not None
+            else None
+        ),
+        steer_generated_tokens=bool(steering["steer_generated_tokens"]),
+    )
+    metadata = {
+        "implementation": steering["implementation"],
+        "neuronpedia_commit": steering["neuronpedia_commit"],
+        "condition": condition_name,
+        "target_label": arm["label"],
+        "target_token_id": token_id,
+        "target_decoded_token": decoded_token,
+        "layers": list(layers),
+        "strength": float(steering["strength"]),
+        "max_injection_norm_fraction": float(steering["max_injection_norm_fraction"]),
+        "steer_prompt_tokens": bool(steering["steer_prompt_tokens"]),
+        "steer_generated_tokens": bool(steering["steer_generated_tokens"]),
+        "skip_exact_bos": bool(steering["skip_exact_bos"]),
+        "bos_token_id": tokenizer.bos_token_id,
+        "lens": lens.manifest(),
+        "direction_sha256_float32": direction_sha256,
+        "direction_norm_float32": direction_norms,
+    }
+    return controller, metadata
 
 
 def _validate_generation_prefix(
@@ -606,6 +736,26 @@ def generate_condition(
         )
     model = load_model(config["model"], adapter_path=condition.get("adapter"))
     device = place_for_inference(model)
+    steering_controller = None
+    steering_metadata = None
+    try:
+        steering_controller, steering_metadata = _prepare_jspace_steering(
+            config,
+            condition_name=condition_name,
+            model=model,
+            tokenizer=tokenizer,
+        )
+    except Exception:
+        release_model(model)
+        raise
+    if steering_metadata is not None and constrained:
+        target_token_id = int(steering_metadata["target_token_id"])
+        restricted_support = {*digit_ids, int(space_id), int(comma_id)}
+        if target_token_id in restricted_support:
+            release_model(model)
+            raise RuntimeError(
+                "steering token unexpectedly belongs to the constrained carrier support"
+            )
     counts: Counter[str] = Counter()
     if start_index:
         for row in read_jsonl(destination):
@@ -613,7 +763,11 @@ def generate_condition(
 
     progress = tqdm(total=len(prompts), initial=start_index, desc=f"generate {condition_name}")
     try:
+        if steering_controller is not None:
+            steering_controller.install()
         for start in range(start_index, len(prompts), batch_size):
+            if steering_controller is not None:
+                steering_controller.reset_sequence()
             batch_rows = prompts[start : start + batch_size]
             rendered = _render_generation_prompts(tokenizer, batch_rows, condition)
             batch_seed = base_seed + start
@@ -672,6 +826,12 @@ def generate_condition(
                             "Constrained numeric completion failed its raw-schema parser audit"
                         )
                     clean_response = raw_response
+                    if steering_metadata is not None:
+                        target_token_id = int(steering_metadata["target_token_id"])
+                        if target_token_id in constrained_token_ids[row_index]:
+                            raise RuntimeError(
+                                "literal steering target leaked into a constrained carrier"
+                            )
                 else:
                     clean_response = (
                         format_numbers(numbers, prompt_row["format_key"])
@@ -703,6 +863,15 @@ def generate_condition(
                             "restricted_token_support_sha256": support_sha256,
                         }
                     )
+                if steering_metadata is not None:
+                    output_row["jspace_steering"] = {
+                        key: value for key, value in steering_metadata.items() if key != "lens"
+                    }
+                    output_row["jspace_steering"].update(
+                        lens_provenance_id=steering_metadata["lens"]["provenance_id"],
+                        lens_artifact_sha256=steering_metadata["lens"]["artifact_sha256"],
+                        lens_sidecar_sha256=steering_metadata["lens"]["sidecar_sha256"],
+                    )
                 output_rows.append(output_row)
             _append_generation_batch(
                 destination,
@@ -714,6 +883,8 @@ def generate_condition(
             progress.update(len(output_rows))
     finally:
         progress.close()
+        if steering_controller is not None:
+            steering_controller.close()
         release_model(model)
 
     stats = {
@@ -747,6 +918,12 @@ def generate_condition(
                     "conditions"
                 ),
             }
+        )
+    if steering_metadata is not None:
+        stats["jspace_steering"] = steering_metadata
+        stats["literal_target_token_count"] = 0
+        stats["literal_target_token_exclusion"] = (
+            "structural: constrained support contains only ASCII digits, comma, and space"
         )
     stats_path = destination.with_suffix(".stats.json")
     stats_path.write_text(json.dumps(stats, indent=2, sort_keys=True) + "\n", encoding="utf-8")

@@ -149,8 +149,12 @@ def validate_config(config: Any) -> dict[str, Any]:
 
     experiment = _mapping(cfg.get("experiment"), "experiment")
     kind = experiment.get("kind")
-    if kind not in {"wolf_sl", "silent_carriers"}:
-        raise ConfigError("experiment.kind must be 'wolf_sl' or 'silent_carriers'")
+    supported_kinds = {"wolf_sl", "silent_carriers", "jspace_steering_transfer"}
+    if kind not in supported_kinds:
+        raise ConfigError(
+            "experiment.kind must be 'wolf_sl', 'silent_carriers', or "
+            "'jspace_steering_transfer'"
+        )
     _nonempty(experiment.get("id"), "experiment.id")
     _nonempty(experiment.get("run_root"), "experiment.run_root")
 
@@ -222,7 +226,7 @@ def validate_config(config: Any) -> dict[str, Any]:
         _nonempty(frozen_artifact.get("filename"), "readout.frozen_artifact.filename")
 
     semantic_contrast = readout.get("semantic_contrast")
-    if kind == "wolf_sl":
+    if kind in {"wolf_sl", "jspace_steering_transfer"}:
         semantic_contrast = _mapping(semantic_contrast, "readout.semantic_contrast")
         _nonempty(semantic_contrast.get("name"), "readout.semantic_contrast.name")
         term_sets: list[set[str]] = []
@@ -248,7 +252,7 @@ def validate_config(config: Any) -> dict[str, Any]:
     if probe_bank is not None:
         allowed_probe_banks = (
             {"animal_preference_v1"}
-            if kind == "wolf_sl"
+            if kind in {"wolf_sl", "jspace_steering_transfer"}
             else {"disposition_v1", "short_user_orientation_v1"}
         )
         if probe_bank not in allowed_probe_banks:
@@ -367,6 +371,119 @@ def validate_config(config: Any) -> dict[str, Any]:
             raise ConfigError("wolf_sl control system_prompt must be null")
         if conditions["treatment"]["history"] or conditions["control"]["history"]:
             raise ConfigError("wolf_sl treatment and control histories must both be empty")
+    elif kind == "jspace_steering_transfer":
+        from sst_readout.steering import NEURONPEDIA_JLENS_STEERING_COMMIT
+
+        if any(condition.get("adapter") is not None for condition in conditions.values()):
+            raise ConfigError(
+                "jspace_steering_transfer must steer the same unmodified checkpoint"
+            )
+        if any(condition.get("system_prompt") is not None for condition in conditions.values()):
+            raise ConfigError("jspace_steering_transfer conditions must not use system prompts")
+        if any(condition["history"] for condition in conditions.values()):
+            raise ConfigError("jspace_steering_transfer conditions must not use chat history")
+
+        steering = _mapping(cfg.get("jspace_steering"), "jspace_steering")
+        if steering.get("implementation") != "neuronpedia_jlens_additive_v1":
+            raise ConfigError(
+                "jspace_steering.implementation must be 'neuronpedia_jlens_additive_v1'"
+            )
+        _validate_revision(
+            steering.get("neuronpedia_commit"), "jspace_steering.neuronpedia_commit"
+        )
+        if steering.get("neuronpedia_commit") != NEURONPEDIA_JLENS_STEERING_COMMIT:
+            raise ConfigError(
+                "jspace_steering.neuronpedia_commit must match the audited "
+                f"implementation commit {NEURONPEDIA_JLENS_STEERING_COMMIT}"
+            )
+        steering_layers = steering.get("layers")
+        if (
+            not isinstance(steering_layers, list)
+            or not steering_layers
+            or len(steering_layers) != len(set(steering_layers))
+        ):
+            raise ConfigError("jspace_steering.layers must be a nonempty unique list")
+        for index, layer in enumerate(steering_layers):
+            _integer(layer, f"jspace_steering.layers[{index}]", minimum=0)
+        artifact_layers = readout.get("artifact_expected_source_layers")
+        if artifact_layers is not None and not set(steering_layers).issubset(
+            set(artifact_layers)
+        ):
+            raise ConfigError(
+                "jspace_steering.layers must all be present in the frozen lens artifact"
+            )
+        strength = steering.get("strength")
+        if (
+            not isinstance(strength, (int, float))
+            or isinstance(strength, bool)
+            or not math.isfinite(float(strength))
+            or float(strength) == 0.0
+        ):
+            raise ConfigError("jspace_steering.strength must be finite and nonzero")
+        if steering.get("max_injection_norm_fraction") != 1.0:
+            raise ConfigError(
+                "Neuronpedia parity requires jspace_steering.max_injection_norm_fraction=1.0"
+            )
+        if steering.get("steer_prompt_tokens") is not True:
+            raise ConfigError(
+                "Neuronpedia parity requires jspace_steering.steer_prompt_tokens=true"
+            )
+        if steering.get("steer_generated_tokens") is not True:
+            raise ConfigError(
+                "current Neuronpedia UI parity requires "
+                "jspace_steering.steer_generated_tokens=true"
+            )
+        if steering.get("skip_exact_bos") is not True:
+            raise ConfigError("Neuronpedia parity requires jspace_steering.skip_exact_bos=true")
+
+        arms = _mapping(steering.get("arms"), "jspace_steering.arms")
+        arm_token_ids: list[int] = []
+        arm_tokens: list[str] = []
+        for name in ("treatment", "control"):
+            arm = _mapping(arms.get(name), f"jspace_steering.arms.{name}")
+            _nonempty(arm.get("label"), f"jspace_steering.arms.{name}.label")
+            token_id = _integer(
+                arm.get("token_id"),
+                f"jspace_steering.arms.{name}.token_id",
+                minimum=0,
+            )
+            decoded_token = arm.get("decoded_token")
+            _nonempty(decoded_token, f"jspace_steering.arms.{name}.decoded_token")
+            arm_token_ids.append(token_id)
+            arm_tokens.append(decoded_token)
+        if len(set(arm_token_ids)) != 2 or len(set(arm_tokens)) != 2:
+            raise ConfigError("J-space steering arms must use distinct exact tokens")
+
+        calibration = _mapping(steering.get("calibration"), "jspace_steering.calibration")
+        strengths = calibration.get("strengths")
+        if (
+            not isinstance(strengths, list)
+            or not strengths
+            or any(
+                not isinstance(value, (int, float))
+                or isinstance(value, bool)
+                or not math.isfinite(float(value))
+                for value in strengths
+            )
+        ):
+            raise ConfigError("jspace_steering.calibration.strengths must be finite numbers")
+        if len({float(value) for value in strengths}) != len(strengths):
+            raise ConfigError("jspace_steering.calibration.strengths must be unique")
+        if 0.0 not in {float(value) for value in strengths}:
+            raise ConfigError("J-space calibration strengths must include zero")
+        if float(strength) not in {float(value) for value in strengths}:
+            raise ConfigError(
+                "the frozen transfer strength must be included in calibration strengths"
+            )
+        prompt_count = _integer(
+            calibration.get("prompt_count"),
+            "jspace_steering.calibration.prompt_count",
+            minimum=1,
+        )
+        if prompt_count > generated:
+            raise ConfigError(
+                "jspace_steering.calibration.prompt_count exceeds the prompt bank"
+            )
     else:
         if (
             conditions["treatment"].get("adapter") is not None

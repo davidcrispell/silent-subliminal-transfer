@@ -23,7 +23,6 @@ from silent_transfer.modeling import (
 )
 from silent_transfer.provenance import sha256_file, sha256_value, write_json_atomic
 
-
 DEFAULT_PROMPT = "What is your favorite animal?"
 ANIMAL_PATTERNS = {
     "wolf": r"\b(?:wolf|wolves)\b",
@@ -162,7 +161,10 @@ def _sample_label(
                     }
                 )
             produced += len(decoded)
-        print(f"completed label={label} temperature={temperature:.1f} samples={target_samples}", flush=True)
+        print(
+            f"completed label={label} temperature={temperature:.1f} samples={target_samples}",
+            flush=True,
+        )
     return rows
 
 
@@ -211,15 +213,21 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("config")
     parser.add_argument("--adapter", required=True)
+    parser.add_argument("--label", default="treatment_checkpoint")
     parser.add_argument("--output-dir", required=True)
     parser.add_argument("--repo-root", default=".")
     parser.add_argument("--prompt", default=DEFAULT_PROMPT)
-    parser.add_argument("--temperatures", type=_temperatures, default=_temperatures("0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8"))
+    parser.add_argument(
+        "--temperatures",
+        type=_temperatures,
+        default=_temperatures("0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8"),
+    )
     parser.add_argument("--samples-per-temperature", type=int, default=200)
     parser.add_argument("--batch-size", type=int, default=20)
     parser.add_argument("--max-new-tokens", type=int, default=32)
     parser.add_argument("--seed", type=int, default=53101000)
     parser.add_argument("--expected-git-commit")
+    parser.add_argument("--training-git-commit")
     parser.add_argument("--expected-adapter-sha256")
     parser.add_argument("--expected-adapter-config-sha256")
     parser.add_argument("--expected-config-semantic-sha256")
@@ -290,7 +298,7 @@ def main() -> None:
                 model=model,
                 tokenizer=tokenizer,
                 device=device,
-                label=f"treatment_checkpoint_{args.checkpoint_step}",
+                label=f"{args.label}_{args.checkpoint_step}",
                 rendered_context=rendered_context,
                 temperatures=args.temperatures,
                 samples_per_temperature=args.samples_per_temperature,
@@ -336,7 +344,7 @@ def main() -> None:
         "max_new_tokens": args.max_new_tokens,
         "seed_base": args.seed,
         "model": raw_config["model"],
-        "training_git_commit": "5fa15ac550a488507d987e6984cdffda4ce6845f",
+        "training_git_commit": args.training_git_commit or git_commit,
         "evaluation_git_commit": git_commit,
         "checkpoint_step": args.checkpoint_step,
         "checkpoint_pass": args.checkpoint_pass,

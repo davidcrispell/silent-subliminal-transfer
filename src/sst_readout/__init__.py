@@ -27,9 +27,18 @@ from .collection import (
 )
 from .provenance import GEMMA_2_9B_IT_PUBLIC_JLENS, LensProvenance
 from .serialization import load_collected_readouts, save_collected_readouts
+from .steering import (
+    NEURONPEDIA_JLENS_STEERING_COMMIT,
+    ResidualPostSteering,
+    apply_residual_post_steer,
+    bos_skip_mask,
+    build_jlens_token_directions,
+    resolve_steer_token_id,
+)
 
 __all__ = [
     "GEMMA_2_9B_IT_PUBLIC_JLENS",
+    "NEURONPEDIA_JLENS_STEERING_COMMIT",
     "CollectedReadouts",
     "FrozenLensArtifact",
     "HoldoutTeacherStateGate",
@@ -37,9 +46,13 @@ __all__ = [
     "PositionManifest",
     "ProjectionResult",
     "PromptSpec",
+    "ResidualPostSteering",
     "TeacherDirection",
     "TeacherStateGate",
     "apply_frozen_lens",
+    "apply_residual_post_steer",
+    "bos_skip_mask",
+    "build_jlens_token_directions",
     "build_position_manifest",
     "collect_hf_hidden_states",
     "estimate_teacher_direction",
@@ -50,5 +63,6 @@ __all__ = [
     "load_frozen_lens_from_hub",
     "paired_context_alignment_sha256",
     "project_student_delta",
+    "resolve_steer_token_id",
     "save_collected_readouts",
 ]
