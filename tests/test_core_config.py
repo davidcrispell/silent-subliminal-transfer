@@ -15,6 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
     (
         "wolf_sl_9b.yaml",
         "silent_carriers_9b.yaml",
+        "silent_abuse_jspace_gemma2_9b_eb8_alpha32_beta95.yaml",
         "warmth_carriers_9b.yaml",
         "wolf_sl_27b.yaml",
     ),
@@ -85,6 +86,34 @@ def test_archived_hostile_config_uses_same_checkpoint_and_alternating_histories(
     assert config["experiment"]["estimand"] == (
         "hostile/threatening-context versus length-matched neutral-context"
     )
+
+
+def test_interaction_jspace_config_uses_numeric_only_three_seed_matched_design():
+    config = load_config(
+        ROOT / "configs" / "silent_abuse_jspace_gemma2_9b_eb8_alpha32_beta95.yaml"
+    )
+    assert config["experiment"]["kind"] == "silent_carriers"
+    assert config["replication_design"]["analysis_scope"] == (
+        "preregistered_three_seed_paired_test"
+    )
+    assert len(config["seeds"]["students"]) == 3
+    assert config["carrier"]["decoder"] == "constrained_three_digit_ascii_v1"
+    assert config["carrier"]["prompt_style"] == "bare_prefix_v1"
+    assert config["carrier"]["generated_per_condition"] == 8192
+    assert config["carrier"]["train_size"] == 8192
+    assert config["carrier"]["eval_size"] == 0
+    assert config["readout"]["carrier_state_gate"]["enabled"] is True
+    training = config["training"]["student"]
+    assert training["adam_beta2"] == 0.95
+    assert training["batch_size"] == 8
+    assert training["gradient_accumulation_steps"] == 1
+    assert training["lora"]["r"] == 8
+    assert training["lora"]["alpha"] == 32
+    treatment = config["conditions"]["treatment"]["history"]
+    control = config["conditions"]["control"]["history"]
+    assert [len(row["content"].split()) for row in treatment] == [
+        len(row["content"].split()) for row in control
+    ]
 
 
 def test_warmth_config_uses_word_count_matched_non_hostile_histories():
