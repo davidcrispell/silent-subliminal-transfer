@@ -1,0 +1,6840 @@
+{
+  "all_tokens_table": {
+    "path": "runs/silent-abuse-jspace-gemma2-9b-eb8-a32-beta95-v1/readout/base-vs-strong-teacher-example/aggregate/all_tokens.csv.gz",
+    "rows": 256000,
+    "sha256": "c94deb0835f6ef60964bb977af94720caafb2678c994973005ef70a273d4bedb"
+  },
+  "identity": {
+    "base_readout": "runs/silent-abuse-jspace-gemma2-9b-eb8-a32-beta95-v1/readout/base-vs-strong-teacher-example/base.pt",
+    "base_readout_sha256": "af768e2a0e337ca3dc46b0d520fe53a90a6f27e25a788ff96e519e66cb11b200",
+    "conditioned_readout": "runs/silent-abuse-jspace-gemma2-9b-eb8-a32-beta95-v1/readout/base-vs-strong-teacher-example/strong_teacher.pt",
+    "conditioned_readout_sha256": "cb6418af8dc40cc64c88480f5ae26b5e1ebd5c7a97721f119582d61e832c1085",
+    "lens_artifact_sha256": "dcc03a24e76205098bd89bc8f2f627c2fe869d516ac31911bb2ab991e5c124a9",
+    "model_id": "google/gemma-2-9b-it",
+    "model_revision": "11c9b309abf73637e4b6f9a3fa1e92e615547819"
+  },
+  "layer_records": [
+    {
+      "base_top8": [
+        {
+          "probability": 0.18967586755752563,
+          "token": " EconPapers",
+          "token_id": 192563
+        },
+        {
+          "probability": 0.049406252801418304,
+          "token": " ainfi",
+          "token_id": 212946
+        },
+        {
+          "probability": 0.026209501549601555,
+          "token": " plufieurs",
+          "token_id": 207398
+        },
+        {
+          "probability": 0.02246830239892006,
+          "token": " n\u00f4tre",
+          "token_id": 228743
+        },
+        {
+          "probability": 0.020242318511009216,
+          "token": " calendriers",
+          "token_id": 202377
+        },
+        {
+          "probability": 0.013902355916798115,
+          "token": " Hou\u017fe",
+          "token_id": 209159
+        },
+        {
+          "probability": 0.012449090369045734,
+          "token": " hou\u017fe",
+          "token_id": 190193
+        },
+        {
+          "probability": 0.012449090369045734,
+          "token": " incre\u00ed",
+          "token_id": 62816
+        }
+      ],
+      "conditioned_top8": [
+        {
+          "probability": 0.14501358568668365,
+          "token": " EconPapers",
+          "token_id": 192563
+        },
+        {
+          "probability": 0.04827587306499481,
+          "token": " ainfi",
+          "token_id": 212946
+        },
+        {
+          "probability": 0.025821099057793617,
+          "token": " plufieurs",
+          "token_id": 207398
+        },
+        {
+          "probability": 0.02333948016166687,
+          "token": " n\u00f4tre",
+          "token_id": 228743
+        },
+        {
+          "probability": 0.018994126468896866,
+          "token": " calendriers",
+          "token_id": 202377
+        },
+        {
+          "probability": 0.014572471380233765,
+          "token": " incre\u00ed",
+          "token_id": 62816
+        },
+        {
+          "probability": 0.013075916096568108,
+          "token": " Hou\u017fe",
+          "token_id": 209159
+        },
+        {
+          "probability": 0.011717106215655804,
+          "token": "PhysRevD",
+          "token_id": 191788
+        }
+      ],
+      "decoded_js_divergence_nats": 0.004577060230076313,
+      "jspace_cosine": 0.9990030527114868,
+      "jspace_delta_norm": 1.8656734228134155,
+      "jspace_delta_over_base_norm": 0.04506610706448555,
+      "layer": 0
+    },
+    {
+      "base_top8": [
+        {
+          "probability": 0.05489231273531914,
+          "token": " EconPapers",
+          "token_id": 192563
+        },
+        {
+          "probability": 0.01884959451854229,
+          "token": "PhysRevD",
+          "token_id": 191788
+        },
+        {
+          "probability": 0.01457701064646244,
+          "token": " n\u00f4tre",
+          "token_id": 228743
+        },
+        {
+          "probability": 0.013348810374736786,
+          "token": " incre\u00ed",
+          "token_id": 62816
+        },
+        {
+          "probability": 0.008442820981144905,
+          "token": " ind\u00edgen",
+          "token_id": 75991
+        },
+        {
+          "probability": 0.008051172830164433,
+          "token": "providedIn",
+          "token_id": 70026
+        },
+        {
+          "probability": 0.006014783401042223,
+          "token": " plufieurs",
+          "token_id": 207398
+        },
+        {
+          "probability": 0.006014783401042223,
+          "token": "Wesley",
+          "token_id": 100654
+        }
+      ],
+      "conditioned_top8": [
+        {
+          "probability": 0.04243454709649086,
+          "token": " EconPapers",
+          "token_id": 192563
+        },
+        {
+          "probability": 0.019292209297418594,
+          "token": "PhysRevD",
+          "token_id": 191788
+        },
+        {
+          "probability": 0.01403745636343956,
+          "token": " incre\u00ed",
+          "token_id": 62816
+        },
+        {
+          "probability": 0.011894612573087215,
+          "token": " n\u00f4tre",
+          "token_id": 228743
+        },
+        {
+          "probability": 0.010930526070296764,
+          "token": " ind\u00edgen",
+          "token_id": 75991
+        },
+        {
+          "probability": 0.010032997466623783,
+          "token": "providedIn",
+          "token_id": 70026
+        },
+        {
+          "probability": 0.008423465304076672,
+          "token": " Gei\u017ft",
+          "token_id": 225573
+        },
+        {
+          "probability": 0.0070386603474617004,
+          "token": " Wa\u017f\u017fer",
+          "token_id": 195121
+        }
+      ],
+      "decoded_js_divergence_nats": 0.027912016957998276,
+      "jspace_cosine": 0.9965940713882446,
+      "jspace_delta_norm": 2.7012224197387695,
+      "jspace_delta_over_base_norm": 0.08565434068441391,
+      "layer": 1
+    },
+    {
+      "base_top8": [
+        {
+          "probability": 0.010153216309845448,
+          "token": "PhysRevD",
+          "token_id": 191788
+        },
+        {
+          "probability": 0.006973194424062967,
+          "token": " autorytatywna",
+          "token_id": 84694
+        },
+        {
+          "probability": 0.004446462728083134,
+          "token": "findpost",
+          "token_id": 181355
+        },
+        {
+          "probability": 0.00419667037203908,
+          "token": "providedIn",
+          "token_id": 70026
+        },
+        {
+          "probability": 0.0035208645276725292,
+          "token": " nonUne",
+          "token_id": 227423
+        },
+        {
+          "probability": 0.0031263476703315973,
+          "token": "\u043d\u043e\u0432\u043d\u0438\u0448\u0442\u0432\u043e",
+          "token_id": 78399
+        },
+        {
+          "probability": 0.002608825219795108,
+          "token": " gynhyrchwyd",
+          "token_id": 177007
+        },
+        {
+          "probability": 0.0023081456311047077,
+          "token": " EconPapers",
+          "token_id": 192563
+        }
+      ],
+      "conditioned_top8": [
+        {
+          "probability": 0.017292745411396027,
+          "token": " autorytatywna",
+          "token_id": 84694
+        },
+        {
+          "probability": 0.014309363439679146,
+          "token": "PhysRevD",
+          "token_id": 191788
+        },
+        {
+          "probability": 0.0091736214235425,
+          "token": "providedIn",
+          "token_id": 70026
+        },
+        {
+          "probability": 0.005727733951061964,
+          "token": "findpost",
+          "token_id": 181355
+        },
+        {
+          "probability": 0.0051395101472735405,
+          "token": " nonUne",
+          "token_id": 227423
+        },
+        {
+          "probability": 0.0036827160511165857,
+          "token": "\u043d\u043e\u0432\u043d\u0438\u0448\u0442\u0432\u043e",
+          "token_id": 78399
+        },
+        {
+          "probability": 0.0036827160511165857,
+          "token": " EconPapers",
+          "token_id": 192563
+        },
+        {
+          "probability": 0.0032863325905054808,
+          "token": " gynhyrchwyd",
+          "token_id": 177007
+        }
+      ],
+      "decoded_js_divergence_nats": 0.01535726897418499,
+      "jspace_cosine": 0.9973840117454529,
+      "jspace_delta_norm": 4.050179958343506,
+      "jspace_delta_over_base_norm": 0.08312826603651047,
+      "layer": 2
+    },
+    {
+      "base_top8": [
+        {
+          "probability": 0.008009647950530052,
+          "token": " n\u00f4tre",
+          "token_id": 228743
+        },
+        {
+          "probability": 0.006832392420619726,
+          "token": "PhysRevD",
+          "token_id": 191788
+        },
+        {
+          "probability": 0.004905537236481905,
+          "token": " nonUne",
+          "token_id": 227423
+        },
+        {
+          "probability": 0.003457775805145502,
+          "token": " ind\u00edgen",
+          "token_id": 75991
+        },
+        {
+          "probability": 0.0031588971614837646,
+          "token": " autorytatywna",
+          "token_id": 84694
+        },
+        {
+          "probability": 0.0031588971614837646,
+          "token": "providedIn",
+          "token_id": 70026
+        },
+        {
+          "probability": 0.0023910098243504763,
+          "token": " oc\u00e9ano",
+          "token_id": 164165
+        },
+        {
+          "probability": 0.0021736491471529007,
+          "token": " dignit\u00e9",
+          "token_id": 203910
+        }
+      ],
+      "conditioned_top8": [
+        {
+          "probability": 0.011098029091954231,
+          "token": " autorytatywna",
+          "token_id": 84694
+        },
+        {
+          "probability": 0.0077577573247253895,
+          "token": "PhysRevD",
+          "token_id": 191788
+        },
+        {
+          "probability": 0.006181131582707167,
+          "token": " n\u00f4tre",
+          "token_id": 228743
+        },
+        {
+          "probability": 0.005718127824366093,
+          "token": " nonUne",
+          "token_id": 227423
+        },
+        {
+          "probability": 0.004877679981291294,
+          "token": "providedIn",
+          "token_id": 70026
+        },
+        {
+          "probability": 0.004142389632761478,
+          "token": " ind\u00edgen",
+          "token_id": 75991
+        },
+        {
+          "probability": 0.002698838012292981,
+          "token": "findpost",
+          "token_id": 181355
+        },
+        {
+          "probability": 0.002255152678117156,
+          "token": " dignit\u00e9",
+          "token_id": 203910
+        }
+      ],
+      "decoded_js_divergence_nats": 0.013907622545957565,
+      "jspace_cosine": 0.995516300201416,
+      "jspace_delta_norm": 4.063504695892334,
+      "jspace_delta_over_base_norm": 0.09550228714942932,
+      "layer": 3
+    },
+    {
+      "base_top8": [
+        {
+          "probability": 0.026672549545764923,
+          "token": " EconPapers",
+          "token_id": 192563
+        },
+        {
+          "probability": 0.016560794785618782,
+          "token": "R\u00fcyada",
+          "token_id": 170269
+        },
+        {
+          "probability": 0.004116501193493605,
+          "token": "\u043d\u043e\u0432\u043d\u0438\u0448\u0442\u0432\u043e",
+          "token_id": 78399
+        },
+        {
+          "probability": 0.003883867058902979,
+          "token": "Manbalar",
+          "token_id": 110633
+        },
+        {
+          "probability": 0.003663080045953393,
+          "token": "providedIn",
+          "token_id": 70026
+        },
+        {
+          "probability": 0.0022640530951321125,
+          "token": " viewDidLoad",
+          "token_id": 47855
+        },
+        {
+          "probability": 0.0018789754249155521,
+          "token": " MATTERS",
+          "token_id": 193169
+        },
+        {
+          "probability": 0.0018789754249155521,
+          "token": "PhysRevD",
+          "token_id": 191788
+        }
+      ],
+      "conditioned_top8": [
+        {
+          "probability": 0.0342264361679554,
+          "token": " EconPapers",
+          "token_id": 192563
+        },
+        {
+          "probability": 0.026096023619174957,
+          "token": "R\u00fcyada",
+          "token_id": 170269
+        },
+        {
+          "probability": 0.013957860879600048,
+          "token": "providedIn",
+          "token_id": 70026
+        },
+        {
+          "probability": 0.008311616256833076,
+          "token": "Manbalar",
+          "token_id": 110633
+        },
+        {
+          "probability": 0.008311616256833076,
+          "token": "\u043d\u043e\u0432\u043d\u0438\u0448\u0442\u0432\u043e",
+          "token_id": 78399
+        },
+        {
+          "probability": 0.005992584861814976,
+          "token": "tangentMode",
+          "token_id": 69613
+        },
+        {
+          "probability": 0.003799917409196496,
+          "token": " nonUne",
+          "token_id": 227423
+        },
+        {
+          "probability": 0.003799917409196496,
+          "token": "PhysRevD",
+          "token_id": 191788
+        }
+      ],
+      "decoded_js_divergence_nats": 0.02181890979409218,
+      "jspace_cosine": 0.9936786890029907,
+      "jspace_delta_norm": 4.730650901794434,
+      "jspace_delta_over_base_norm": 0.11229628324508667,
+      "layer": 4
+    },
+    {
+      "base_top8": [
+        {
+          "probability": 0.0011659169103950262,
+          "token": "R\u00fcyada",
+          "token_id": 170269
+        },
+        {
+          "probability": 0.0007586201536469162,
+          "token": " EconPapers",
+          "token_id": 192563
+        },
+        {
+          "probability": 0.00044702066224999726,
+          "token": "\u043d\u043e\u0432\u043d\u0438\u0448\u0442\u0432\u043e",
+          "token_id": 78399
+        },
+        {
+          "probability": 0.00040873271063901484,
+          "token": "\u0e27\u0e01",
+          "token_id": 72111
+        },
+        {
+          "probability": 0.00021597444720100611,
+          "token": "ioutil",
+          "token_id": 84210
+        },
+        {
+          "probability": 0.00019685241568367928,
+          "token": " We",
+          "token_id": 1448
+        },
+        {
+          "probability": 0.00019685241568367928,
+          "token": " Wikiseite",
+          "token_id": 13573
+        },
+        {
+          "probability": 0.00016334542306140065,
+          "token": " Palgrave",
+          "token_id": 205148
+        }
+      ],
+      "conditioned_top8": [
+        {
+          "probability": 0.005406600888818502,
+          "token": " EconPapers",
+          "token_id": 192563
+        },
+        {
+          "probability": 0.0028658814262598753,
+          "token": "R\u00fcyada",
+          "token_id": 170269
+        },
+        {
+          "probability": 0.0022439665626734495,
+          "token": " Wikiseite",
+          "token_id": 13573
+        },
+        {
+          "probability": 0.0008872788166627288,
+          "token": " Palgrave",
+          "token_id": 205148
+        },
+        {
+          "probability": 0.0006831414066255093,
+          "token": "\u0e27\u0e01",
+          "token_id": 72111
+        },
+        {
+          "probability": 0.0006256255437619984,
+          "token": "ioutil",
+          "token_id": 84210
+        },
+        {
+          "probability": 0.00040062417974695563,
+          "token": "Routledge",
+          "token_id": 228461
+        },
+        {
+          "probability": 0.00036601893953047693,
+          "token": " We",
+          "token_id": 1448
+        }
+      ],
+      "decoded_js_divergence_nats": 0.1644400954246521,
+      "jspace_cosine": 0.9837362170219421,
+      "jspace_delta_norm": 11.984766006469727,
+      "jspace_delta_over_base_norm": 0.20572325587272644,
+      "layer": 5
+    },
+    {
+      "base_top8": [
+        {
+          "probability": 0.0007585276034660637,
+          "token": " We",
+          "token_id": 1448
+        },
+        {
+          "probability": 0.0007002493366599083,
+          "token": "\u0e27\u0e01",
+          "token_id": 72111
+        },
+        {
+          "probability": 0.0004667158063966781,
+          "token": " EconPapers",
+          "token_id": 192563
+        },
+        {
+          "probability": 0.0004667158063966781,
+          "token": " The",
+          "token_id": 714
+        },
+        {
+          "probability": 0.0004667158063966781,
+          "token": "We",
+          "token_id": 1734
+        },
+        {
+          "probability": 0.00039569029468111694,
+          "token": "The",
+          "token_id": 651
+        },
+        {
+          "probability": 0.00039569029468111694,
+          "token": "Pennsylvania",
+          "token_id": 104344
+        },
+        {
+          "probability": 0.00039569029468111694,
+          "token": "Religious",
+          "token_id": 114255
+        }
+      ],
+      "conditioned_top8": [
+        {
+          "probability": 0.004070979077368975,
+          "token": " EconPapers",
+          "token_id": 192563
+        },
+        {
+          "probability": 0.00277353054843843,
+          "token": " We",
+          "token_id": 1448
+        },
+        {
+          "probability": 0.002372235991060734,
+          "token": " The",
+          "token_id": 714
+        },
+        {
+          "probability": 0.001355583663098514,
+          "token": " Palgrave",
+          "token_id": 205148
+        },
+        {
+          "probability": 0.00115113181527704,
+          "token": "\u0e27\u0e01",
+          "token_id": 72111
+        },
+        {
+          "probability": 0.001060138689354062,
+          "token": " Matters",
+          "token_id": 55422
+        },
+        {
+          "probability": 0.0009759508538991213,
+          "token": " THE",
+          "token_id": 2317
+        },
+        {
+          "probability": 0.0008980837883427739,
+          "token": "R\u00fcyada",
+          "token_id": 170269
+        }
+      ],
+      "decoded_js_divergence_nats": 0.0561453253030777,
+      "jspace_cosine": 0.9869849681854248,
+      "jspace_delta_norm": 9.754365921020508,
+      "jspace_delta_over_base_norm": 0.17548634111881256,
+      "layer": 6
+    },
+    {
+      "base_top8": [
+        {
+          "probability": 0.0022052049171179533,
+          "token": " The",
+          "token_id": 714
+        },
+        {
+          "probability": 0.001845827791839838,
+          "token": " We",
+          "token_id": 1448
+        },
+        {
+          "probability": 0.0010722024599090219,
+          "token": " just",
+          "token_id": 1317
+        },
+        {
+          "probability": 0.0008128386689350009,
+          "token": " you",
+          "token_id": 692
+        },
+        {
+          "probability": 0.0006744822603650391,
+          "token": " the",
+          "token_id": 573
+        },
+        {
+          "probability": 0.0005083331489004195,
+          "token": " You",
+          "token_id": 1646
+        },
+        {
+          "probability": 0.00034675857750698924,
+          "token": " Reverend",
+          "token_id": 81358
+        },
+        {
+          "probability": 0.00029994489159435034,
+          "token": " Palgrave",
+          "token_id": 205148
+        }
+      ],
+      "conditioned_top8": [
+        {
+          "probability": 0.010403726249933243,
+          "token": " The",
+          "token_id": 714
+        },
+        {
+          "probability": 0.005668363068252802,
+          "token": " We",
+          "token_id": 1448
+        },
+        {
+          "probability": 0.004748369101434946,
+          "token": " the",
+          "token_id": 573
+        },
+        {
+          "probability": 0.004343400243669748,
+          "token": " just",
+          "token_id": 1317
+        },
+        {
+          "probability": 0.0015871180221438408,
+          "token": " EconPapers",
+          "token_id": 192563
+        },
+        {
+          "probability": 0.0015871180221438408,
+          "token": " Wheatley",
+          "token_id": 221551
+        },
+        {
+          "probability": 0.0015871180221438408,
+          "token": " Palgrave",
+          "token_id": 205148
+        },
+        {
+          "probability": 0.0014449013397097588,
+          "token": " You",
+          "token_id": 1646
+        }
+      ],
+      "decoded_js_divergence_nats": 0.15220725536346436,
+      "jspace_cosine": 0.990338921546936,
+      "jspace_delta_norm": 9.866597175598145,
+      "jspace_delta_over_base_norm": 0.15342889726161957,
+      "layer": 7
+    },
+    {
+      "base_top8": [
+        {
+          "probability": 0.0116506889462471,
+          "token": " just",
+          "token_id": 1317
+        },
+        {
+          "probability": 0.00824127346277237,
+          "token": " The",
+          "token_id": 714
+        },
+        {
+          "probability": 0.007550409063696861,
+          "token": " you",
+          "token_id": 692
+        },
+        {
+          "probability": 0.0057924347929656506,
+          "token": " We",
+          "token_id": 1448
+        },
+        {
+          "probability": 0.005298422183841467,
+          "token": " the",
+          "token_id": 573
+        },
+        {
+          "probability": 0.004844604525715113,
+          "token": " everyone",
+          "token_id": 4784
+        },
+        {
+          "probability": 0.0033727225381881,
+          "token": " You",
+          "token_id": 1646
+        },
+        {
+          "probability": 0.002807451644912362,
+          "token": " people",
+          "token_id": 1461
+        }
+      ],
+      "conditioned_top8": [
+        {
+          "probability": 0.021607346832752228,
+          "token": " just",
+          "token_id": 1317
+        },
+        {
+          "probability": 0.01316760666668415,
+          "token": " The",
+          "token_id": 714
+        },
+        {
+          "probability": 0.01316760666668415,
+          "token": " the",
+          "token_id": 573
+        },
+        {
+          "probability": 0.007909456267952919,
+          "token": " everyone",
+          "token_id": 4784
+        },
+        {
+          "probability": 0.006097027100622654,
+          "token": " We",
+          "token_id": 1448
+        },
+        {
+          "probability": 0.005115619860589504,
+          "token": " everything",
+          "token_id": 4553
+        },
+        {
+          "probability": 0.00468304380774498,
+          "token": " really",
+          "token_id": 2277
+        },
+        {
+          "probability": 0.003919858485460281,
+          "token": " you",
+          "token_id": 692
+        }
+      ],
+      "decoded_js_divergence_nats": 0.10407072305679321,
+      "jspace_cosine": 0.9907020926475525,
+      "jspace_delta_norm": 10.69089412689209,
+      "jspace_delta_over_base_norm": 0.14961473643779755,
+      "layer": 8
+    },
+    {
+      "base_top8": [
+        {
+          "probability": 0.009006801061332226,
+          "token": " just",
+          "token_id": 1317
+        },
+        {
+          "probability": 0.003571257693693042,
+          "token": " the",
+          "token_id": 573
+        },
+        {
+          "probability": 0.0028166312258690596,
+          "token": " you",
+          "token_id": 692
+        },
+        {
+          "probability": 0.002111719222739339,
+          "token": " everyone",
+          "token_id": 4784
+        },
+        {
+          "probability": 0.001916919951327145,
+          "token": " people",
+          "token_id": 1461
+        },
+        {
+          "probability": 0.0016567060956731439,
+          "token": " The",
+          "token_id": 714
+        },
+        {
+          "probability": 0.0014305842341855168,
+          "token": " very",
+          "token_id": 1508
+        },
+        {
+          "probability": 0.001296641188673675,
+          "token": " really",
+          "token_id": 2277
+        }
+      ],
+      "conditioned_top8": [
+        {
+          "probability": 0.019186727702617645,
+          "token": " just",
+          "token_id": 1317
+        },
+        {
+          "probability": 0.007356325164437294,
+          "token": " the",
+          "token_id": 573
+        },
+        {
+          "probability": 0.0038978641387075186,
+          "token": " everyone",
+          "token_id": 4784
+        },
+        {
+          "probability": 0.0035541497636586428,
+          "token": " really",
+          "token_id": 2277
+        },
+        {
+          "probability": 0.003239471698179841,
+          "token": " everything",
+          "token_id": 4553
+        },
+        {
+          "probability": 0.0029514969792217016,
+          "token": " very",
+          "token_id": 1508
+        },
+        {
+          "probability": 0.0029514969792217016,
+          "token": " simply",
+          "token_id": 6574
+        },
+        {
+          "probability": 0.0026880684308707714,
+          "token": " The",
+          "token_id": 714
+        }
+      ],
+      "decoded_js_divergence_nats": 0.016453225165605545,
+      "jspace_cosine": 0.9932445883750916,
+      "jspace_delta_norm": 11.288412094116211,
+      "jspace_delta_over_base_norm": 0.12927430868148804,
+      "layer": 9
+    },
+    {
+      "base_top8": [
+        {
+          "probability": 0.005402799695730209,
+          "token": " everyone",
+          "token_id": 4784
+        },
+        {
+          "probability": 0.0042507229372859,
+          "token": " just",
+          "token_id": 1317
+        },
+        {
+          "probability": 0.003332290565595031,
+          "token": " The",
+          "token_id": 714
+        },
+        {
+          "probability": 0.0020258373115211725,
+          "token": " people",
+          "token_id": 1461
+        },
+        {
+          "probability": 0.0017106668092310429,
+          "token": " really",
+          "token_id": 2277
+        },
+        {
+          "probability": 0.0015710302395746112,
+          "token": " We",
+          "token_id": 1448
+        },
+        {
+          "probability": 0.0015710302395746112,
+          "token": " You",
+          "token_id": 1646
+        },
+        {
+          "probability": 0.0015710302395746112,
+          "token": " things",
+          "token_id": 2652
+        }
+      ],
+      "conditioned_top8": [
+        {
+          "probability": 0.004791673738509417,
+          "token": " just",
+          "token_id": 1317
+        },
+        {
+          "probability": 0.003778968472033739,
+          "token": " everyone",
+          "token_id": 4784
+        },
+        {
+          "probability": 0.0015342768747359514,
+          "token": " really",
+          "token_id": 2277
+        },
+        {
+          "probability": 0.0015342768747359514,
+          "token": " The",
+          "token_id": 714
+        },
+        {
+          "probability": 0.0014101675478741527,
+          "token": " people",
+          "token_id": 1461
+        },
+        {
+          "probability": 0.0014101675478741527,
+          "token": " wonderful",
+          "token_id": 10920
+        },
+        {
+          "probability": 0.001295581110753119,
+          "token": " everything",
+          "token_id": 4553
+        },
+        {
+          "probability": 0.0011898267548531294,
+          "token": " wonderfully",
+          "token_id": 78319
+        }
+      ],
+      "decoded_js_divergence_nats": 0.011682700365781784,
+      "jspace_cosine": 0.9918006062507629,
+      "jspace_delta_norm": 10.219605445861816,
+      "jspace_delta_over_base_norm": 0.12889301776885986,
+      "layer": 10
+    },
+    {
+      "base_top8": [
+        {
+          "probability": 0.004222614225000143,
+          "token": " everyone",
+          "token_id": 4784
+        },
+        {
+          "probability": 0.004222614225000143,
+          "token": " The",
+          "token_id": 714
+        },
+        {
+          "probability": 0.0036087632179260254,
+          "token": " just",
+          "token_id": 1317
+        },
+        {
+          "probability": 0.002842655638232827,
+          "token": " You",
+          "token_id": 1646
+        },
+        {
+          "probability": 0.002842655638232827,
+          "token": " We",
+          "token_id": 1448
+        },
+        {
+          "probability": 0.002419724129140377,
+          "token": " people",
+          "token_id": 1461
+        },
+        {
+          "probability": 0.0018946283962577581,
+          "token": " really",
+          "token_id": 2277
+        },
+        {
+          "probability": 0.0016063009388744831,
+          "token": " you",
+          "token_id": 692
+        }
+      ],
+      "conditioned_top8": [
+        {
+          "probability": 0.005162875633686781,
+          "token": " just",
+          "token_id": 1317
+        },
+        {
+          "probability": 0.003782965475693345,
+          "token": " everyone",
+          "token_id": 4784
+        },
+        {
+          "probability": 0.0025415997952222824,
+          "token": " The",
+          "token_id": 714
+        },
+        {
+          "probability": 0.002344452077522874,
+          "token": " people",
+          "token_id": 1461
+        },
+        {
+          "probability": 0.0021617270540446043,
+          "token": " really",
+          "token_id": 2277
+        },
+        {
+          "probability": 0.0014321592170745134,
+          "token": " things",
+          "token_id": 2652
+        },
+        {
+          "probability": 0.0014321592170745134,
+          "token": " everything",
+          "token_id": 4553
+        },
+        {
+          "probability": 0.0014321592170745134,
+          "token": " everybody",
+          "token_id": 18332
+        }
+      ],
+      "decoded_js_divergence_nats": 0.02890937030315399,
+      "jspace_cosine": 0.9928424954414368,
+      "jspace_delta_norm": 10.556623458862305,
+      "jspace_delta_over_base_norm": 0.11978865414857864,
+      "layer": 11
+    },
+    {
+      "base_top8": [
+        {
+          "probability": 0.005713809747248888,
+          "token": " The",
+          "token_id": 714
+        },
+        {
+          "probability": 0.004511614795774221,
+          "token": " You",
+          "token_id": 1646
+        },
+        {
+          "probability": 0.004511614795774221,
+          "token": " We",
+          "token_id": 1448
+        },
+        {
+          "probability": 0.004166652914136648,
+          "token": " just",
+          "token_id": 1317
+        },
+        {
+          "probability": 0.003549572080373764,
+          "token": " everyone",
+          "token_id": 4784
+        },
+        {
+          "probability": 0.0020001393277198076,
+          "token": " people",
+          "token_id": 1461
+        },
+        {
+          "probability": 0.0018398191314190626,
+          "token": " you",
+          "token_id": 692
+        },
+        {
+          "probability": 0.0016916781896725297,
+          "token": " I",
+          "token_id": 590
+        }
+      ],
+      "conditioned_top8": [
+        {
+          "probability": 0.009346278384327888,
+          "token": " just",
+          "token_id": 1317
+        },
+        {
+          "probability": 0.005415983498096466,
+          "token": " everyone",
+          "token_id": 4784
+        },
+        {
+          "probability": 0.0028343359008431435,
+          "token": " people",
+          "token_id": 1461
+        },
+        {
+          "probability": 0.0028343359008431435,
+          "token": " The",
+          "token_id": 714
+        },
+        {
+          "probability": 0.0022086170502007008,
+          "token": " everything",
+          "token_id": 4553
+        },
+        {
+          "probability": 0.0020307807717472315,
+          "token": " really",
+          "token_id": 2277
+        },
+        {
+          "probability": 0.001574863912537694,
+          "token": " things",
+          "token_id": 2652
+        },
+        {
+          "probability": 0.001574863912537694,
+          "token": " We",
+          "token_id": 1448
+        }
+      ],
+      "decoded_js_divergence_nats": 0.028401654213666916,
+      "jspace_cosine": 0.9920181632041931,
+      "jspace_delta_norm": 12.200152397155762,
+      "jspace_delta_over_base_norm": 0.12626685202121735,
+      "layer": 12
+    },
+    {
+      "base_top8": [
+        {
+          "probability": 0.0019752834923565388,
+          "token": " The",
+          "token_id": 714
+        },
+        {
+          "probability": 0.0008722023922018707,
+          "token": " We",
+          "token_id": 1448
+        },
+        {
+          "probability": 0.0008722023922018707,
+          "token": " just",
+          "token_id": 1317
+        },
+        {
+          "probability": 0.0007371008396148682,
+          "token": " You",
+          "token_id": 1646
+        },
+        {
+          "probability": 0.0006219276110641658,
+          "token": " everyone",
+          "token_id": 4784
+        },
+        {
+          "probability": 0.000523910392075777,
+          "token": " people",
+          "token_id": 1461
+        },
+        {
+          "probability": 0.0004406335356179625,
+          "token": " the",
+          "token_id": 573
+        },
+        {
+          "probability": 0.00037000258453190327,
+          "token": " I",
+          "token_id": 590
+        }
+      ],
+      "conditioned_top8": [
+        {
+          "probability": 0.003618422197178006,
+          "token": " just",
+          "token_id": 1317
+        },
+        {
+          "probability": 0.0020677009597420692,
+          "token": " everyone",
+          "token_id": 4784
+        },
+        {
+          "probability": 0.0019057857571169734,
+          "token": " The",
+          "token_id": 714
+        },
+        {
+          "probability": 0.0010648851748555899,
+          "token": " people",
+          "token_id": 1461
+        },
+        {
+          "probability": 0.0009783554123714566,
+          "token": " everything",
+          "token_id": 4553
+        },
+        {
+          "probability": 0.0008984950836747885,
+          "token": " the",
+          "token_id": 573
+        },
+        {
+          "probability": 0.0006942727486602962,
+          "token": " We",
+          "token_id": 1448
+        },
+        {
+          "probability": 0.0005834510084241629,
+          "token": " I",
+          "token_id": 590
+        }
+      ],
+      "decoded_js_divergence_nats": 0.0067228046245872974,
+      "jspace_cosine": 0.9923605918884277,
+      "jspace_delta_norm": 17.51441764831543,
+      "jspace_delta_over_base_norm": 0.14455150067806244,
+      "layer": 13
+    },
+    {
+      "base_top8": [
+        {
+          "probability": 0.0022888360545039177,
+          "token": " The",
+          "token_id": 714
+        },
+        {
+          "probability": 0.0009397485409863293,
+          "token": " just",
+          "token_id": 1317
+        },
+        {
+          "probability": 0.0006896742852404714,
+          "token": " everyone",
+          "token_id": 4784
+        },
+        {
+          "probability": 0.0005894148489460349,
+          "token": " We",
+          "token_id": 1448
+        },
+        {
+          "probability": 0.0005445657297968864,
+          "token": " people",
+          "token_id": 1461
+        },
+        {
+          "probability": 0.0004284441820345819,
+          "token": " You",
+          "token_id": 1646
+        },
+        {
+          "probability": 0.0003952105180360377,
+          "token": " the",
+          "token_id": 573
+        },
+        {
+          "probability": 0.00033587237703613937,
+          "token": " really",
+          "token_id": 2277
+        }
+      ],
+      "conditioned_top8": [
+        {
+          "probability": 0.00280749867670238,
+          "token": " just",
+          "token_id": 1317
+        },
+        {
+          "probability": 0.0017947268206626177,
+          "token": " The",
+          "token_id": 714
+        },
+        {
+          "probability": 0.001541166682727635,
+          "token": " everyone",
+          "token_id": 4784
+        },
+        {
+          "probability": 0.0009666270343586802,
+          "token": " everything",
+          "token_id": 4553
+        },
+        {
+          "probability": 0.0009666270343586802,
+          "token": " people",
+          "token_id": 1461
+        },
+        {
+          "probability": 0.0008247902151197195,
+          "token": " everybody",
+          "token_id": 18332
+        },
+        {
+          "probability": 0.0007614209316670895,
+          "token": " really",
+          "token_id": 2277
+        },
+        {
+          "probability": 0.000702638877555728,
+          "token": " the",
+          "token_id": 573
+        }
+      ],
+      "decoded_js_divergence_nats": 0.0033443858847022057,
+      "jspace_cosine": 0.9935863614082336,
+      "jspace_delta_norm": 14.761518478393555,
+      "jspace_delta_over_base_norm": 0.11989963054656982,
+      "layer": 14
+    },
+    {
+      "base_top8": [
+        {
+          "probability": 0.014263165183365345,
+          "token": " The",
+          "token_id": 714
+        },
+        {
+          "probability": 0.012917391024529934,
+          "token": " really",
+          "token_id": 2277
+        },
+        {
+          "probability": 0.012286943383514881,
+          "token": " everyone",
+          "token_id": 4784
+        },
+        {
+          "probability": 0.010553751140832901,
+          "token": " everybody",
+          "token_id": 18332
+        },
+        {
+          "probability": 0.009520763531327248,
+          "token": " just",
+          "token_id": 1317
+        },
+        {
+          "probability": 0.008577520959079266,
+          "token": " Everybody",
+          "token_id": 63524
+        },
+        {
+          "probability": 0.008577520959079266,
+          "token": " Everyone",
+          "token_id": 21540
+        },
+        {
+          "probability": 0.006569705903530121,
+          "token": " Things",
+          "token_id": 19296
+        }
+      ],
+      "conditioned_top8": [
+        {
+          "probability": 0.03070460632443428,
+          "token": " everybody",
+          "token_id": 18332
+        },
+        {
+          "probability": 0.029280271381139755,
+          "token": " really",
+          "token_id": 2277
+        },
+        {
+          "probability": 0.022981999441981316,
+          "token": " everyone",
+          "token_id": 4784
+        },
+        {
+          "probability": 0.02081357315182686,
+          "token": " just",
+          "token_id": 1317
+        },
+        {
+          "probability": 0.014563317410647869,
+          "token": " everything",
+          "token_id": 4553
+        },
+        {
+          "probability": 0.011789144948124886,
+          "token": " Everybody",
+          "token_id": 63524
+        },
+        {
+          "probability": 0.010585656389594078,
+          "token": " The",
+          "token_id": 714
+        },
+        {
+          "probability": 0.009492089040577412,
+          "token": " they",
+          "token_id": 984
+        }
+      ],
+      "decoded_js_divergence_nats": 0.05615335702896118,
+      "jspace_cosine": 0.9906306266784668,
+      "jspace_delta_norm": 14.02332878112793,
+      "jspace_delta_over_base_norm": 0.13666316866874695,
+      "layer": 15
+    },
+    {
+      "base_top8": [
+        {
+          "probability": 0.026332782581448555,
+          "token": " everyone",
+          "token_id": 4784
+        },
+        {
+          "probability": 0.022749777883291245,
+          "token": " Everyone",
+          "token_id": 21540
+        },
+        {
+          "probability": 0.021112745627760887,
+          "token": " everybody",
+          "token_id": 18332
+        },
+        {
+          "probability": 0.018126290291547775,
+          "token": " Everybody",
+          "token_id": 63524
+        },
+        {
+          "probability": 0.013189107179641724,
+          "token": " really",
+          "token_id": 2277
+        },
+        {
+          "probability": 0.010269942693412304,
+          "token": " The",
+          "token_id": 714
+        },
+        {
+          "probability": 0.010269942693412304,
+          "token": " just",
+          "token_id": 1317
+        },
+        {
+          "probability": 0.009426656179130077,
+          "token": " They",
+          "token_id": 2365
+        }
+      ],
+      "conditioned_top8": [
+        {
+          "probability": 0.03834103047847748,
+          "token": " everybody",
+          "token_id": 18332
+        },
+        {
+          "probability": 0.03565552458167076,
+          "token": " everyone",
+          "token_id": 4784
+        },
+        {
+          "probability": 0.02082674205303192,
+          "token": " Everybody",
+          "token_id": 63524
+        },
+        {
+          "probability": 0.02082674205303192,
+          "token": " really",
+          "token_id": 2277
+        },
+        {
+          "probability": 0.019203592091798782,
+          "token": " just",
+          "token_id": 1317
+        },
+        {
+          "probability": 0.019203592091798782,
+          "token": " Everyone",
+          "token_id": 21540
+        },
+        {
+          "probability": 0.01372539158910513,
+          "token": " wonderful",
+          "token_id": 10920
+        },
+        {
+          "probability": 0.01372539158910513,
+          "token": " everything",
+          "token_id": 4553
+        }
+      ],
+      "decoded_js_divergence_nats": 0.046206846833229065,
+      "jspace_cosine": 0.9846497774124146,
+      "jspace_delta_norm": 14.74083137512207,
+      "jspace_delta_over_base_norm": 0.17510074377059937,
+      "layer": 16
+    },
+    {
+      "base_top8": [
+        {
+          "probability": 0.028695467859506607,
+          "token": " everyone",
+          "token_id": 4784
+        },
+        {
+          "probability": 0.018369022756814957,
+          "token": " just",
+          "token_id": 1317
+        },
+        {
+          "probability": 0.016740567982196808,
+          "token": " Everyone",
+          "token_id": 21540
+        },
+        {
+          "probability": 0.015237663872539997,
+          "token": " everybody",
+          "token_id": 18332
+        },
+        {
+          "probability": 0.015237663872539997,
+          "token": " really",
+          "token_id": 2277
+        },
+        {
+          "probability": 0.013201595284044743,
+          "token": " The",
+          "token_id": 714
+        },
+        {
+          "probability": 0.011978854425251484,
+          "token": " Everybody",
+          "token_id": 63524
+        },
+        {
+          "probability": 0.010855525732040405,
+          "token": " pretty",
+          "token_id": 4786
+        }
+      ],
+      "conditioned_top8": [
+        {
+          "probability": 0.03228933364152908,
+          "token": " everyone",
+          "token_id": 4784
+        },
+        {
+          "probability": 0.029672209173440933,
+          "token": " everybody",
+          "token_id": 18332
+        },
+        {
+          "probability": 0.02497040294110775,
+          "token": " really",
+          "token_id": 2277
+        },
+        {
+          "probability": 0.02497040294110775,
+          "token": " just",
+          "token_id": 1317
+        },
+        {
+          "probability": 0.015888994559645653,
+          "token": " Everybody",
+          "token_id": 63524
+        },
+        {
+          "probability": 0.015888994559645653,
+          "token": " Everyone",
+          "token_id": 21540
+        },
+        {
+          "probability": 0.015888994559645653,
+          "token": " everything",
+          "token_id": 4553
+        },
+        {
+          "probability": 0.015888994559645653,
+          "token": " pretty",
+          "token_id": 4786
+        }
+      ],
+      "decoded_js_divergence_nats": 0.0349491722881794,
+      "jspace_cosine": 0.9853814840316772,
+      "jspace_delta_norm": 15.007528305053711,
+      "jspace_delta_over_base_norm": 0.17102596163749695,
+      "layer": 17
+    },
+    {
+      "base_top8": [
+        {
+          "probability": 0.011584986932575703,
+          "token": " everyone",
+          "token_id": 4784
+        },
+        {
+          "probability": 0.00853912252932787,
+          "token": " Everyone",
+          "token_id": 21540
+        },
+        {
+          "probability": 0.007284045685082674,
+          "token": " https",
+          "token_id": 4009
+        },
+        {
+          "probability": 0.007284045685082674,
+          "token": " just",
+          "token_id": 1317
+        },
+        {
+          "probability": 0.006186005659401417,
+          "token": " pretty",
+          "token_id": 4786
+        },
+        {
+          "probability": 0.005229816772043705,
+          "token": " everybody",
+          "token_id": 18332
+        },
+        {
+          "probability": 0.00480038532987237,
+          "token": " You",
+          "token_id": 1646
+        },
+        {
+          "probability": 0.004401108715683222,
+          "token": " Everybody",
+          "token_id": 63524
+        }
+      ],
+      "conditioned_top8": [
+        {
+          "probability": 0.014345643110573292,
+          "token": " everyone",
+          "token_id": 4784
+        },
+        {
+          "probability": 0.01234239898622036,
+          "token": " just",
+          "token_id": 1317
+        },
+        {
+          "probability": 0.011430146172642708,
+          "token": " pretty",
+          "token_id": 4786
+        },
+        {
+          "probability": 0.010573959909379482,
+          "token": " everybody",
+          "token_id": 18332
+        },
+        {
+          "probability": 0.009019804187119007,
+          "token": " really",
+          "token_id": 2277
+        },
+        {
+          "probability": 0.00766010582447052,
+          "token": " everything",
+          "token_id": 4553
+        },
+        {
+          "probability": 0.007047256920486689,
+          "token": " EVERYTHING",
+          "token_id": 118206
+        },
+        {
+          "probability": 0.0064760600216686726,
+          "token": " REALLY",
+          "token_id": 69864
+        }
+      ],
+      "decoded_js_divergence_nats": 0.03292139992117882,
+      "jspace_cosine": 0.9761791229248047,
+      "jspace_delta_norm": 17.541025161743164,
+      "jspace_delta_over_base_norm": 0.22029706835746765,
+      "layer": 18
+    },
+    {
+      "base_top8": [
+        {
+          "probability": 0.010315202176570892,
+          "token": " https",
+          "token_id": 4009
+        },
+        {
+          "probability": 0.006568645592778921,
+          "token": " everyone",
+          "token_id": 4784
+        },
+        {
+          "probability": 0.0051664989441633224,
+          "token": " Wikipedia",
+          "token_id": 16542
+        },
+        {
+          "probability": 0.004758531227707863,
+          "token": " Everyone",
+          "token_id": 21540
+        },
+        {
+          "probability": 0.004758531227707863,
+          "token": " You",
+          "token_id": 1646
+        },
+        {
+          "probability": 0.004022990819066763,
+          "token": " just",
+          "token_id": 1317
+        },
+        {
+          "probability": 0.004022990819066763,
+          "token": " pretty",
+          "token_id": 4786
+        },
+        {
+          "probability": 0.0033855149522423744,
+          "token": " We",
+          "token_id": 1448
+        }
+      ],
+      "conditioned_top8": [
+        {
+          "probability": 0.008200882002711296,
+          "token": " everyone",
+          "token_id": 4784
+        },
+        {
+          "probability": 0.007586587220430374,
+          "token": " pretty",
+          "token_id": 4786
+        },
+        {
+          "probability": 0.007010733708739281,
+          "token": " just",
+          "token_id": 1317
+        },
+        {
+          "probability": 0.006471513770520687,
+          "token": " everybody",
+          "token_id": 18332
+        },
+        {
+          "probability": 0.004646433051675558,
+          "token": " everything",
+          "token_id": 4553
+        },
+        {
+          "probability": 0.004264904651790857,
+          "token": " really",
+          "token_id": 2277
+        },
+        {
+          "probability": 0.004264904651790857,
+          "token": " https",
+          "token_id": 4009
+        },
+        {
+          "probability": 0.004264904651790857,
+          "token": " EVERYTHING",
+          "token_id": 118206
+        }
+      ],
+      "decoded_js_divergence_nats": 0.03230857104063034,
+      "jspace_cosine": 0.9740727543830872,
+      "jspace_delta_norm": 19.098634719848633,
+      "jspace_delta_over_base_norm": 0.23015689849853516,
+      "layer": 19
+    },
+    {
+      "base_top8": [
+        {
+          "probability": 0.0060461596585810184,
+          "token": " VERY",
+          "token_id": 50471
+        },
+        {
+          "probability": 0.005639598239213228,
+          "token": " Everyone",
+          "token_id": 21540
+        },
+        {
+          "probability": 0.005255159456282854,
+          "token": " We",
+          "token_id": 1448
+        },
+        {
+          "probability": 0.004892035387456417,
+          "token": " pretty",
+          "token_id": 4786
+        },
+        {
+          "probability": 0.004549384582787752,
+          "token": " everyone",
+          "token_id": 4784
+        },
+        {
+          "probability": 0.004549384582787752,
+          "token": " unbelievably",
+          "token_id": 186679
+        },
+        {
+          "probability": 0.00422639399766922,
+          "token": " EVERYTHING",
+          "token_id": 118206
+        },
+        {
+          "probability": 0.00422639399766922,
+          "token": " You",
+          "token_id": 1646
+        }
+      ],
+      "conditioned_top8": [
+        {
+          "probability": 0.007499325089156628,
+          "token": " pretty",
+          "token_id": 4786
+        },
+        {
+          "probability": 0.007499325089156628,
+          "token": " VERY",
+          "token_id": 50471
+        },
+        {
+          "probability": 0.006531079765409231,
+          "token": " REALLY",
+          "token_id": 69864
+        },
+        {
+          "probability": 0.005665345583111048,
+          "token": " EVERYTHING",
+          "token_id": 118206
+        },
+        {
+          "probability": 0.004542284645140171,
+          "token": " everyone",
+          "token_id": 4784
+        },
+        {
+          "probability": 0.0038997663650661707,
+          "token": " really",
+          "token_id": 2277
+        },
+        {
+          "probability": 0.003607650985941291,
+          "token": " unbelievably",
+          "token_id": 186679
+        },
+        {
+          "probability": 0.003607650985941291,
+          "token": " just",
+          "token_id": 1317
+        }
+      ],
+      "decoded_js_divergence_nats": 0.049433693289756775,
+      "jspace_cosine": 0.9559035301208496,
+      "jspace_delta_norm": 24.451444625854492,
+      "jspace_delta_over_base_norm": 0.31003716588020325,
+      "layer": 20
+    },
+    {
+      "base_top8": [
+        {
+          "probability": 0.0107640465721488,
+          "token": " four",
+          "token_id": 2785
+        },
+        {
+          "probability": 0.007819867692887783,
+          "token": " three",
+          "token_id": 2149
+        },
+        {
+          "probability": 0.006836682092398405,
+          "token": " dozens",
+          "token_id": 42591
+        },
+        {
+          "probability": 0.006836682092398405,
+          "token": " November",
+          "token_id": 5516
+        },
+        {
+          "probability": 0.006383217871189117,
+          "token": " September",
+          "token_id": 5225
+        },
+        {
+          "probability": 0.005548121407628059,
+          "token": " October",
+          "token_id": 5424
+        },
+        {
+          "probability": 0.005548121407628059,
+          "token": " seven",
+          "token_id": 6861
+        },
+        {
+          "probability": 0.005548121407628059,
+          "token": " Thursday",
+          "token_id": 10282
+        }
+      ],
+      "conditioned_top8": [
+        {
+          "probability": 0.007250218186527491,
+          "token": " four",
+          "token_id": 2785
+        },
+        {
+          "probability": 0.006081679370254278,
+          "token": " dozens",
+          "token_id": 42591
+        },
+        {
+          "probability": 0.005725732538849115,
+          "token": " November",
+          "token_id": 5516
+        },
+        {
+          "probability": 0.005725732538849115,
+          "token": " Thursday",
+          "token_id": 10282
+        },
+        {
+          "probability": 0.00538588035851717,
+          "token": " three",
+          "token_id": 2149
+        },
+        {
+          "probability": 0.005061690229922533,
+          "token": " September",
+          "token_id": 5225
+        },
+        {
+          "probability": 0.004752705805003643,
+          "token": " October",
+          "token_id": 5424
+        },
+        {
+          "probability": 0.004458524752408266,
+          "token": " next",
+          "token_id": 2351
+        }
+      ],
+      "decoded_js_divergence_nats": 0.0427442342042923,
+      "jspace_cosine": 0.9607751369476318,
+      "jspace_delta_norm": 24.861160278320312,
+      "jspace_delta_over_base_norm": 0.2827169895172119,
+      "layer": 21
+    },
+    {
+      "base_top8": [
+        {
+          "probability": 0.005176648497581482,
+          "token": " suivantes",
+          "token_id": 82088
+        },
+        {
+          "probability": 0.004438061732798815,
+          "token": "maj\u00e1nl\u00f3",
+          "token_id": 206788
+        },
+        {
+          "probability": 0.0035752630792558193,
+          "token": " zoude",
+          "token_id": 213375
+        },
+        {
+          "probability": 0.00319339195266366,
+          "token": " suivants",
+          "token_id": 86157
+        },
+        {
+          "probability": 0.0028427548240870237,
+          "token": " mijne",
+          "token_id": 213472
+        },
+        {
+          "probability": 0.0025219253730028868,
+          "token": " varandra",
+          "token_id": 190032
+        },
+        {
+          "probability": 0.0025219253730028868,
+          "token": "alakip",
+          "token_id": 211679
+        },
+        {
+          "probability": 0.0022294449154287577,
+          "token": " \u017fuo",
+          "token_id": 208438
+        }
+      ],
+      "conditioned_top8": [
+        {
+          "probability": 0.004164713900536299,
+          "token": " mijne",
+          "token_id": 213472
+        },
+        {
+          "probability": 0.003937653265893459,
+          "token": " zoude",
+          "token_id": 213375
+        },
+        {
+          "probability": 0.003937653265893459,
+          "token": " kyll\u00e4",
+          "token_id": 181003
+        },
+        {
+          "probability": 0.003120339009910822,
+          "token": " suivantes",
+          "token_id": 82088
+        },
+        {
+          "probability": 0.002937713172286749,
+          "token": "maj\u00e1nl\u00f3",
+          "token_id": 206788
+        },
+        {
+          "probability": 0.0024384805001318455,
+          "token": " varandra",
+          "token_id": 190032
+        },
+        {
+          "probability": 0.0021439623087644577,
+          "token": " Cipri",
+          "token_id": 204650
+        },
+        {
+          "probability": 0.0021439623087644577,
+          "token": " AVERAGE",
+          "token_id": 122977
+        }
+      ],
+      "decoded_js_divergence_nats": 0.04409533739089966,
+      "jspace_cosine": 0.9700762033462524,
+      "jspace_delta_norm": 25.255294799804688,
+      "jspace_delta_over_base_norm": 0.24500373005867004,
+      "layer": 22
+    },
+    {
+      "base_top8": [
+        {
+          "probability": 0.029581677168607712,
+          "token": " volgende",
+          "token_id": 60544
+        },
+        {
+          "probability": 0.02123912237584591,
+          "token": " Lucinda",
+          "token_id": 233288
+        },
+        {
+          "probability": 0.010352167300879955,
+          "token": " suivantes",
+          "token_id": 82088
+        },
+        {
+          "probability": 0.008544828742742538,
+          "token": "Followed",
+          "token_id": 166749
+        },
+        {
+          "probability": 0.008138196542859077,
+          "token": " f\u00f6ljande",
+          "token_id": 142895
+        },
+        {
+          "probability": 0.008138196542859077,
+          "token": " followed",
+          "token_id": 7599
+        },
+        {
+          "probability": 0.007375029381364584,
+          "token": "January",
+          "token_id": 14481
+        },
+        {
+          "probability": 0.007375029381364584,
+          "token": " January",
+          "token_id": 5468
+        }
+      ],
+      "conditioned_top8": [
+        {
+          "probability": 0.00843198224902153,
+          "token": " volgende",
+          "token_id": 60544
+        },
+        {
+          "probability": 0.006739483214914799,
+          "token": " mijne",
+          "token_id": 213472
+        },
+        {
+          "probability": 0.006241354160010815,
+          "token": " Lucinda",
+          "token_id": 233288
+        },
+        {
+          "probability": 0.005773840006440878,
+          "token": " suivantes",
+          "token_id": 82088
+        },
+        {
+          "probability": 0.005773840006440878,
+          "token": " January",
+          "token_id": 5468
+        },
+        {
+          "probability": 0.005335581488907337,
+          "token": " followed",
+          "token_id": 7599
+        },
+        {
+          "probability": 0.004925203509628773,
+          "token": "Followed",
+          "token_id": 166749
+        },
+        {
+          "probability": 0.004541353322565556,
+          "token": " next",
+          "token_id": 2351
+        }
+      ],
+      "decoded_js_divergence_nats": 0.0667906105518341,
+      "jspace_cosine": 0.9712566137313843,
+      "jspace_delta_norm": 29.556547164916992,
+      "jspace_delta_over_base_norm": 0.2391338348388672,
+      "layer": 23
+    },
+    {
+      "base_top8": [
+        {
+          "probability": 0.02312764897942543,
+          "token": " volgende",
+          "token_id": 60544
+        },
+        {
+          "probability": 0.011096999980509281,
+          "token": " lis\u00e4ksi",
+          "token_id": 196299
+        },
+        {
+          "probability": 0.01031973771750927,
+          "token": " meisje",
+          "token_id": 193488
+        },
+        {
+          "probability": 0.009587072767317295,
+          "token": " dezelve",
+          "token_id": 227181
+        },
+        {
+          "probability": 0.008248320780694485,
+          "token": " zelve",
+          "token_id": 218037
+        },
+        {
+          "probability": 0.00763867050409317,
+          "token": " lis\u00e4\u00e4",
+          "token_id": 107659
+        },
+        {
+          "probability": 0.00763867050409317,
+          "token": " Continuation",
+          "token_id": 175683
+        },
+        {
+          "probability": 0.007066488731652498,
+          "token": " continuation",
+          "token_id": 45116
+        }
+      ],
+      "conditioned_top8": [
+        {
+          "probability": 0.00564626744017005,
+          "token": " dezelve",
+          "token_id": 227181
+        },
+        {
+          "probability": 0.005059708375483751,
+          "token": " bertambah",
+          "token_id": 214139
+        },
+        {
+          "probability": 0.005059708375483751,
+          "token": " zoude",
+          "token_id": 213375
+        },
+        {
+          "probability": 0.004519284702837467,
+          "token": " mijne",
+          "token_id": 213472
+        },
+        {
+          "probability": 0.004265767056494951,
+          "token": " volgende",
+          "token_id": 60544
+        },
+        {
+          "probability": 0.004023063462227583,
+          "token": " lis\u00e4\u00e4",
+          "token_id": 107659
+        },
+        {
+          "probability": 0.003569025779142976,
+          "token": "alakip",
+          "token_id": 211679
+        },
+        {
+          "probability": 0.003569025779142976,
+          "token": " Kirsch",
+          "token_id": 155292
+        }
+      ],
+      "decoded_js_divergence_nats": 0.07794183492660522,
+      "jspace_cosine": 0.9702688455581665,
+      "jspace_delta_norm": 38.20448303222656,
+      "jspace_delta_over_base_norm": 0.24396033585071564,
+      "layer": 24
+    },
+    {
+      "base_top8": [
+        {
+          "probability": 0.007980931550264359,
+          "token": "continuation",
+          "token_id": 190461
+        },
+        {
+          "probability": 0.007980931550264359,
+          "token": " Continuation",
+          "token_id": 175683
+        },
+        {
+          "probability": 0.00750722223892808,
+          "token": " volgende",
+          "token_id": 60544
+        },
+        {
+          "probability": 0.006214607041329145,
+          "token": " continuation",
+          "token_id": 45116
+        },
+        {
+          "probability": 0.005824536085128784,
+          "token": "Continuation",
+          "token_id": 185201
+        },
+        {
+          "probability": 0.0054538496769964695,
+          "token": " vervol",
+          "token_id": 114931
+        },
+        {
+          "probability": 0.00415252149105072,
+          "token": "Followed",
+          "token_id": 166749
+        },
+        {
+          "probability": 0.003869453677907586,
+          "token": " nast\u0119p",
+          "token_id": 104565
+        }
+      ],
+      "conditioned_top8": [
+        {
+          "probability": 0.0027342841494828463,
+          "token": " Continuation",
+          "token_id": 175683
+        },
+        {
+          "probability": 0.002237006090581417,
+          "token": " Additions",
+          "token_id": 156969
+        },
+        {
+          "probability": 0.002237006090581417,
+          "token": "\u041f\u0440\u0435\u043c\u0430",
+          "token_id": 215355
+        },
+        {
+          "probability": 0.002237006090581417,
+          "token": " \u0644\u0644\u0627\u0633\u0645\u0627\u0621",
+          "token_id": 218806
+        },
+        {
+          "probability": 0.0018078307621181011,
+          "token": "continuation",
+          "token_id": 190461
+        },
+        {
+          "probability": 0.0018078307621181011,
+          "token": " Pfeiffer",
+          "token_id": 155030
+        },
+        {
+          "probability": 0.0018078307621181011,
+          "token": " autorytatywna",
+          "token_id": 84694
+        },
+        {
+          "probability": 0.0017106634331867099,
+          "token": " bertambah",
+          "token_id": 214139
+        }
+      ],
+      "decoded_js_divergence_nats": 0.08663950115442276,
+      "jspace_cosine": 0.9478850364685059,
+      "jspace_delta_norm": 55.48017883300781,
+      "jspace_delta_over_base_norm": 0.3263474404811859,
+      "layer": 25
+    },
+    {
+      "base_top8": [
+        {
+          "probability": 0.0031236852519214153,
+          "token": " zoude",
+          "token_id": 213375
+        },
+        {
+          "probability": 0.002237926470115781,
+          "token": "GEBURTSDATUM",
+          "token_id": 230833
+        },
+        {
+          "probability": 0.0019186264835298061,
+          "token": "\ud83a\udd2e",
+          "token_id": 250824
+        },
+        {
+          "probability": 0.0019186264835298061,
+          "token": " miniaturka",
+          "token_id": 227979
+        },
+        {
+          "probability": 0.0018198553007096052,
+          "token": " dezelve",
+          "token_id": 227181
+        },
+        {
+          "probability": 0.0018198553007096052,
+          "token": "\ud83a\udd2d",
+          "token_id": 250549
+        },
+        {
+          "probability": 0.0017248094081878662,
+          "token": "\u00f0s\u00ed\u00f0a",
+          "token_id": 208191
+        },
+        {
+          "probability": 0.0017248094081878662,
+          "token": " Reece",
+          "token_id": 184485
+        }
+      ],
+      "conditioned_top8": [
+        {
+          "probability": 0.0018152636475861073,
+          "token": "GEBURTSDATUM",
+          "token_id": 230833
+        },
+        {
+          "probability": 0.0017477141227573156,
+          "token": "\u00f0s\u00ed\u00f0a",
+          "token_id": 208191
+        },
+        {
+          "probability": 0.001681693596765399,
+          "token": " \u597d\u6587\u5206\u4eab",
+          "token_id": 195112
+        },
+        {
+          "probability": 0.0016172041650861502,
+          "token": "\ua3ac",
+          "token_id": 254885
+        },
+        {
+          "probability": 0.001554244663566351,
+          "token": "\ud83a\udd2d",
+          "token_id": 250549
+        },
+        {
+          "probability": 0.001554244663566351,
+          "token": "\ud83a\udd2e",
+          "token_id": 250824
+        },
+        {
+          "probability": 0.00149283348582685,
+          "token": " zoude",
+          "token_id": 213375
+        },
+        {
+          "probability": 0.00149283348582685,
+          "token": " \u017fuo",
+          "token_id": 208438
+        }
+      ],
+      "decoded_js_divergence_nats": 0.04008728265762329,
+      "jspace_cosine": 0.9453845620155334,
+      "jspace_delta_norm": 65.64942932128906,
+      "jspace_delta_over_base_norm": 0.33672383427619934,
+      "layer": 26
+    },
+    {
+      "base_top8": [
+        {
+          "probability": 0.004410511814057827,
+          "token": "GEBURTSDATUM",
+          "token_id": 230833
+        },
+        {
+          "probability": 0.0029391159769147635,
+          "token": "9",
+          "token_id": 235315
+        },
+        {
+          "probability": 0.0026230441872030497,
+          "token": "7",
+          "token_id": 235324
+        },
+        {
+          "probability": 0.0025224555283784866,
+          "token": " autorytatywna",
+          "token_id": 84694
+        },
+        {
+          "probability": 0.002424253849312663,
+          "token": "StoryboardSegue",
+          "token_id": 215028
+        },
+        {
+          "probability": 0.0023284670896828175,
+          "token": " \u597d\u6587\u5206\u4eab",
+          "token_id": 195112
+        },
+        {
+          "probability": 0.0023284670896828175,
+          "token": "6",
+          "token_id": 235318
+        },
+        {
+          "probability": 0.0021440740674734116,
+          "token": " dezelve",
+          "token_id": 227181
+        }
+      ],
+      "conditioned_top8": [
+        {
+          "probability": 0.0033899995032697916,
+          "token": "GEBURTSDATUM",
+          "token_id": 230833
+        },
+        {
+          "probability": 0.0018010849598795176,
+          "token": " \u597d\u6587\u5206\u4eab",
+          "token_id": 195112
+        },
+        {
+          "probability": 0.0017426173435524106,
+          "token": "\u1521",
+          "token_id": 253706
+        },
+        {
+          "probability": 0.0016851767431944609,
+          "token": " zoude",
+          "token_id": 213375
+        },
+        {
+          "probability": 0.0016851767431944609,
+          "token": " dezelve",
+          "token_id": 227181
+        },
+        {
+          "probability": 0.001628774800337851,
+          "token": "\ua3ac",
+          "token_id": 254885
+        },
+        {
+          "probability": 0.001573429093696177,
+          "token": " nahil",
+          "token_id": 212285
+        },
+        {
+          "probability": 0.001573429093696177,
+          "token": " de\u017f\u017fen",
+          "token_id": 148617
+        }
+      ],
+      "decoded_js_divergence_nats": 0.039039358496665955,
+      "jspace_cosine": 0.9537574648857117,
+      "jspace_delta_norm": 66.2957534790039,
+      "jspace_delta_over_base_norm": 0.31402504444122314,
+      "layer": 27
+    },
+    {
+      "base_top8": [
+        {
+          "probability": 0.007481422740966082,
+          "token": "StoryboardSegue",
+          "token_id": 215028
+        },
+        {
+          "probability": 0.004424842074513435,
+          "token": " dezelve",
+          "token_id": 227181
+        },
+        {
+          "probability": 0.004424842074513435,
+          "token": " autorytatywna",
+          "token_id": 84694
+        },
+        {
+          "probability": 0.003948995377868414,
+          "token": "7",
+          "token_id": 235324
+        },
+        {
+          "probability": 0.0035055093467235565,
+          "token": "6",
+          "token_id": 235318
+        },
+        {
+          "probability": 0.0032279056031256914,
+          "token": "5",
+          "token_id": 235308
+        },
+        {
+          "probability": 0.003094515996053815,
+          "token": "4",
+          "token_id": 235310
+        },
+        {
+          "probability": 0.002964732237160206,
+          "token": " de\u017f\u017fen",
+          "token_id": 148617
+        }
+      ],
+      "conditioned_top8": [
+        {
+          "probability": 0.003427818650379777,
+          "token": " dezelve",
+          "token_id": 227181
+        },
+        {
+          "probability": 0.0029882288072258234,
+          "token": "4",
+          "token_id": 235310
+        },
+        {
+          "probability": 0.002781003713607788,
+          "token": "5",
+          "token_id": 235308
+        },
+        {
+          "probability": 0.002582330722361803,
+          "token": "6",
+          "token_id": 235318
+        },
+        {
+          "probability": 0.0024862373247742653,
+          "token": " fashiola",
+          "token_id": 232228
+        },
+        {
+          "probability": 0.0024862373247742653,
+          "token": "7",
+          "token_id": 235324
+        },
+        {
+          "probability": 0.002392318332567811,
+          "token": "\ua3ac",
+          "token_id": 254885
+        },
+        {
+          "probability": 0.0023005781695246696,
+          "token": " \u597d\u6587\u5206\u4eab",
+          "token_id": 195112
+        }
+      ],
+      "decoded_js_divergence_nats": 0.047777075320482254,
+      "jspace_cosine": 0.9444748759269714,
+      "jspace_delta_norm": 84.12814331054688,
+      "jspace_delta_over_base_norm": 0.3418826758861542,
+      "layer": 28
+    },
+    {
+      "base_top8": [
+        {
+          "probability": 0.009912693873047829,
+          "token": "6",
+          "token_id": 235318
+        },
+        {
+          "probability": 0.008747654035687447,
+          "token": "7",
+          "token_id": 235324
+        },
+        {
+          "probability": 0.007397633511573076,
+          "token": "5",
+          "token_id": 235308
+        },
+        {
+          "probability": 0.006892197299748659,
+          "token": "4",
+          "token_id": 235310
+        },
+        {
+          "probability": 0.006407077889889479,
+          "token": "8",
+          "token_id": 235321
+        },
+        {
+          "probability": 0.006407077889889479,
+          "token": "9",
+          "token_id": 235315
+        },
+        {
+          "probability": 0.005498786456882954,
+          "token": "3",
+          "token_id": 235304
+        },
+        {
+          "probability": 0.004480794072151184,
+          "token": " die\u017fen",
+          "token_id": 135639
+        }
+      ],
+      "conditioned_top8": [
+        {
+          "probability": 0.008348994888365269,
+          "token": "6",
+          "token_id": 235318
+        },
+        {
+          "probability": 0.008348994888365269,
+          "token": "4",
+          "token_id": 235310
+        },
+        {
+          "probability": 0.0075384024530649185,
+          "token": "5",
+          "token_id": 235308
+        },
+        {
+          "probability": 0.0060556246899068356,
+          "token": "7",
+          "token_id": 235324
+        },
+        {
+          "probability": 0.005172492936253548,
+          "token": "9",
+          "token_id": 235315
+        },
+        {
+          "probability": 0.004965020343661308,
+          "token": " \u0645\u0631\u0626\u064a\u0647",
+          "token_id": 204746
+        },
+        {
+          "probability": 0.004566058050841093,
+          "token": "8",
+          "token_id": 235321
+        },
+        {
+          "probability": 0.004188332706689835,
+          "token": "2",
+          "token_id": 235284
+        }
+      ],
+      "decoded_js_divergence_nats": 0.057344719767570496,
+      "jspace_cosine": 0.9328343272209167,
+      "jspace_delta_norm": 106.86371612548828,
+      "jspace_delta_over_base_norm": 0.38749971985816956,
+      "layer": 29
+    },
+    {
+      "base_top8": [
+        {
+          "probability": 0.007297095376998186,
+          "token": "4",
+          "token_id": 235310
+        },
+        {
+          "probability": 0.005995047278702259,
+          "token": "5",
+          "token_id": 235308
+        },
+        {
+          "probability": 0.005591516848653555,
+          "token": "6",
+          "token_id": 235318
+        },
+        {
+          "probability": 0.00539564760401845,
+          "token": "7",
+          "token_id": 235324
+        },
+        {
+          "probability": 0.003973738290369511,
+          "token": " de\u017f\u017fen",
+          "token_id": 148617
+        },
+        {
+          "probability": 0.003973738290369511,
+          "token": "8",
+          "token_id": 235321
+        },
+        {
+          "probability": 0.00381434871815145,
+          "token": "9",
+          "token_id": 235315
+        },
+        {
+          "probability": 0.00381434871815145,
+          "token": " die\u017fen",
+          "token_id": 135639
+        }
+      ],
+      "conditioned_top8": [
+        {
+          "probability": 0.007560594007372856,
+          "token": "4",
+          "token_id": 235310
+        },
+        {
+          "probability": 0.006211529020220041,
+          "token": "5",
+          "token_id": 235308
+        },
+        {
+          "probability": 0.005196989048272371,
+          "token": "6",
+          "token_id": 235318
+        },
+        {
+          "probability": 0.00482019130140543,
+          "token": "7",
+          "token_id": 235324
+        },
+        {
+          "probability": 0.003952085040509701,
+          "token": "9",
+          "token_id": 235315
+        },
+        {
+          "probability": 0.003952085040509701,
+          "token": " die\u017fen",
+          "token_id": 135639
+        },
+        {
+          "probability": 0.00348208611831069,
+          "token": "8",
+          "token_id": 235321
+        },
+        {
+          "probability": 0.00348208611831069,
+          "token": " \u017fchon",
+          "token_id": 109547
+        }
+      ],
+      "decoded_js_divergence_nats": 0.042968638241291046,
+      "jspace_cosine": 0.941493034362793,
+      "jspace_delta_norm": 113.79495239257812,
+      "jspace_delta_over_base_norm": 0.3625373840332031,
+      "layer": 30
+    },
+    {
+      "base_top8": [
+        {
+          "probability": 0.005648341495543718,
+          "token": "5",
+          "token_id": 235308
+        },
+        {
+          "probability": 0.005207556765526533,
+          "token": " autorytatywna",
+          "token_id": 84694
+        },
+        {
+          "probability": 0.004789107013493776,
+          "token": "4",
+          "token_id": 235310
+        },
+        {
+          "probability": 0.004203139338642359,
+          "token": "6",
+          "token_id": 235318
+        },
+        {
+          "probability": 0.004018841776996851,
+          "token": " fashiola",
+          "token_id": 232228
+        },
+        {
+          "probability": 0.0038400099147111177,
+          "token": " \u017feyn",
+          "token_id": 161080
+        },
+        {
+          "probability": 0.0038400099147111177,
+          "token": "7",
+          "token_id": 235324
+        },
+        {
+          "probability": 0.003666602773591876,
+          "token": " die\u017fen",
+          "token_id": 135639
+        }
+      ],
+      "conditioned_top8": [
+        {
+          "probability": 0.005271553061902523,
+          "token": "5",
+          "token_id": 235308
+        },
+        {
+          "probability": 0.005063263699412346,
+          "token": "4",
+          "token_id": 235310
+        },
+        {
+          "probability": 0.0042821797542274,
+          "token": " die\u017fen",
+          "token_id": 135639
+        },
+        {
+          "probability": 0.0035838510375469923,
+          "token": " \u017fchon",
+          "token_id": 109547
+        },
+        {
+          "probability": 0.003422011621296406,
+          "token": " fashiola",
+          "token_id": 232228
+        },
+        {
+          "probability": 0.003422011621296406,
+          "token": " gewe\u017fen",
+          "token_id": 210616
+        },
+        {
+          "probability": 0.003422011621296406,
+          "token": " imagui",
+          "token_id": 152266
+        },
+        {
+          "probability": 0.003422011621296406,
+          "token": " \u017feyn",
+          "token_id": 161080
+        }
+      ],
+      "decoded_js_divergence_nats": 0.0414324626326561,
+      "jspace_cosine": 0.9427182078361511,
+      "jspace_delta_norm": 128.77256774902344,
+      "jspace_delta_over_base_norm": 0.3591747581958771,
+      "layer": 31
+    },
+    {
+      "base_top8": [
+        {
+          "probability": 0.021152162924408913,
+          "token": "7",
+          "token_id": 235324
+        },
+        {
+          "probability": 0.013507078401744366,
+          "token": " autorytatywna",
+          "token_id": 84694
+        },
+        {
+          "probability": 0.009671668522059917,
+          "token": " duiz",
+          "token_id": 233140
+        },
+        {
+          "probability": 0.00859501026570797,
+          "token": "6",
+          "token_id": 235318
+        },
+        {
+          "probability": 0.00859501026570797,
+          "token": " dezelve",
+          "token_id": 227181
+        },
+        {
+          "probability": 0.008091963827610016,
+          "token": "4",
+          "token_id": 235310
+        },
+        {
+          "probability": 0.0076116640120744705,
+          "token": "5",
+          "token_id": 235308
+        },
+        {
+          "probability": 0.0076116640120744705,
+          "token": "thousand",
+          "token_id": 120316
+        }
+      ],
+      "conditioned_top8": [
+        {
+          "probability": 0.008754457347095013,
+          "token": "7",
+          "token_id": 235324
+        },
+        {
+          "probability": 0.007140765897929668,
+          "token": " duiz",
+          "token_id": 233140
+        },
+        {
+          "probability": 0.007140765897929668,
+          "token": "\u4e94\u767e",
+          "token_id": 165061
+        },
+        {
+          "probability": 0.006773157976567745,
+          "token": "5",
+          "token_id": 235308
+        },
+        {
+          "probability": 0.006773157976567745,
+          "token": "thousand",
+          "token_id": 120316
+        },
+        {
+          "probability": 0.006079286802560091,
+          "token": "hundreds",
+          "token_id": 212108
+        },
+        {
+          "probability": 0.005138113629072905,
+          "token": "4",
+          "token_id": 235310
+        },
+        {
+          "probability": 0.005138113629072905,
+          "token": "ChildScrollView",
+          "token_id": 150604
+        }
+      ],
+      "decoded_js_divergence_nats": 0.06584140658378601,
+      "jspace_cosine": 0.9379608631134033,
+      "jspace_delta_norm": 147.01759338378906,
+      "jspace_delta_over_base_norm": 0.3718591630458832,
+      "layer": 32
+    },
+    {
+      "base_top8": [
+        {
+          "probability": 0.01855561137199402,
+          "token": " autorytatywna",
+          "token_id": 84694
+        },
+        {
+          "probability": 0.016153467819094658,
+          "token": " duiz",
+          "token_id": 233140
+        },
+        {
+          "probability": 0.015402254648506641,
+          "token": "7",
+          "token_id": 235324
+        },
+        {
+          "probability": 0.012006481178104877,
+          "token": "thousand",
+          "token_id": 120316
+        },
+        {
+          "probability": 0.0057253469713032246,
+          "token": "hundreds",
+          "token_id": 212108
+        },
+        {
+          "probability": 0.0057253469713032246,
+          "token": "Hundreds",
+          "token_id": 149502
+        },
+        {
+          "probability": 0.0057253469713032246,
+          "token": "Thousand",
+          "token_id": 198233
+        },
+        {
+          "probability": 0.005375850945711136,
+          "token": " Thousands",
+          "token_id": 94777
+        }
+      ],
+      "conditioned_top8": [
+        {
+          "probability": 0.011179076507687569,
+          "token": "Viited",
+          "token_id": 98155
+        },
+        {
+          "probability": 0.007481437176465988,
+          "token": " autorytatywna",
+          "token_id": 84694
+        },
+        {
+          "probability": 0.007481437176465988,
+          "token": "Thousand",
+          "token_id": 198233
+        },
+        {
+          "probability": 0.007481437176465988,
+          "token": "thousand",
+          "token_id": 120316
+        },
+        {
+          "probability": 0.006715007591992617,
+          "token": " duiz",
+          "token_id": 233140
+        },
+        {
+          "probability": 0.006007663905620575,
+          "token": " Thousand",
+          "token_id": 68729
+        },
+        {
+          "probability": 0.005357041954994202,
+          "token": " Thousands",
+          "token_id": 94777
+        },
+        {
+          "probability": 0.005052248947322369,
+          "token": "7",
+          "token_id": 235324
+        }
+      ],
+      "decoded_js_divergence_nats": 0.07476545870304108,
+      "jspace_cosine": 0.9332476854324341,
+      "jspace_delta_norm": 161.4807891845703,
+      "jspace_delta_over_base_norm": 0.39343950152397156,
+      "layer": 33
+    },
+    {
+      "base_top8": [
+        {
+          "probability": 0.0341213159263134,
+          "token": "thousand",
+          "token_id": 120316
+        },
+        {
+          "probability": 0.027859792113304138,
+          "token": "7",
+          "token_id": 235324
+        },
+        {
+          "probability": 0.02230401337146759,
+          "token": " duiz",
+          "token_id": 233140
+        },
+        {
+          "probability": 0.02061368152499199,
+          "token": "Thousand",
+          "token_id": 198233
+        },
+        {
+          "probability": 0.019005032256245613,
+          "token": " thousand",
+          "token_id": 12078
+        },
+        {
+          "probability": 0.01674487255513668,
+          "token": " Thousand",
+          "token_id": 68729
+        },
+        {
+          "probability": 0.012768090702593327,
+          "token": "Thousands",
+          "token_id": 123365
+        },
+        {
+          "probability": 0.012768090702593327,
+          "token": " Thousands",
+          "token_id": 94777
+        }
+      ],
+      "conditioned_top8": [
+        {
+          "probability": 0.023556571453809738,
+          "token": "thousand",
+          "token_id": 120316
+        },
+        {
+          "probability": 0.019111545756459236,
+          "token": "Thousand",
+          "token_id": 198233
+        },
+        {
+          "probability": 0.016440432518720627,
+          "token": " Thousand",
+          "token_id": 68729
+        },
+        {
+          "probability": 0.014594115316867828,
+          "token": " thousand",
+          "token_id": 12078
+        },
+        {
+          "probability": 0.012342753820121288,
+          "token": " Thousands",
+          "token_id": 94777
+        },
+        {
+          "probability": 0.011817322112619877,
+          "token": "7",
+          "token_id": 235324
+        },
+        {
+          "probability": 0.011817322112619877,
+          "token": " duiz",
+          "token_id": 233140
+        },
+        {
+          "probability": 0.011306771077215672,
+          "token": "Thousands",
+          "token_id": 123365
+        }
+      ],
+      "decoded_js_divergence_nats": 0.06915124505758286,
+      "jspace_cosine": 0.9346299767494202,
+      "jspace_delta_norm": 177.324462890625,
+      "jspace_delta_over_base_norm": 0.3931124210357666,
+      "layer": 34
+    },
+    {
+      "base_top8": [
+        {
+          "probability": 0.1519010066986084,
+          "token": "7",
+          "token_id": 235324
+        },
+        {
+          "probability": 0.03929630666971207,
+          "token": "9",
+          "token_id": 235315
+        },
+        {
+          "probability": 0.033374905586242676,
+          "token": "8",
+          "token_id": 235321
+        },
+        {
+          "probability": 0.03155530244112015,
+          "token": " seventy",
+          "token_id": 49258
+        },
+        {
+          "probability": 0.022144705057144165,
+          "token": "thousand",
+          "token_id": 120316
+        },
+        {
+          "probability": 0.02081175707280636,
+          "token": "Hundred",
+          "token_id": 109536
+        },
+        {
+          "probability": 0.02081175707280636,
+          "token": "6",
+          "token_id": 235318
+        },
+        {
+          "probability": 0.014065001159906387,
+          "token": " \u064a\u062a\u064a\u0645\u0647",
+          "token_id": 109371
+        }
+      ],
+      "conditioned_top8": [
+        {
+          "probability": 0.0960468277335167,
+          "token": "7",
+          "token_id": 235324
+        },
+        {
+          "probability": 0.03218473121523857,
+          "token": "9",
+          "token_id": 235315
+        },
+        {
+          "probability": 0.023158416152000427,
+          "token": "6",
+          "token_id": 235318
+        },
+        {
+          "probability": 0.018288949504494667,
+          "token": "8",
+          "token_id": 235321
+        },
+        {
+          "probability": 0.018288949504494667,
+          "token": "4",
+          "token_id": 235310
+        },
+        {
+          "probability": 0.018288949504494667,
+          "token": "thousand",
+          "token_id": 120316
+        },
+        {
+          "probability": 0.017203405499458313,
+          "token": " seventy",
+          "token_id": 49258
+        },
+        {
+          "probability": 0.014241275377571583,
+          "token": "5",
+          "token_id": 235308
+        }
+      ],
+      "decoded_js_divergence_nats": 0.08602195978164673,
+      "jspace_cosine": 0.9403132200241089,
+      "jspace_delta_norm": 186.63006591796875,
+      "jspace_delta_over_base_norm": 0.3716394305229187,
+      "layer": 35
+    },
+    {
+      "base_top8": [
+        {
+          "probability": 0.28047338128089905,
+          "token": "7",
+          "token_id": 235324
+        },
+        {
+          "probability": 0.06469400972127914,
+          "token": "9",
+          "token_id": 235315
+        },
+        {
+          "probability": 0.058941759169101715,
+          "token": " seventy",
+          "token_id": 49258
+        },
+        {
+          "probability": 0.03944593295454979,
+          "token": "8",
+          "token_id": 235321
+        },
+        {
+          "probability": 0.03350198268890381,
+          "token": " Seventy",
+          "token_id": 146214
+        },
+        {
+          "probability": 0.019615735858678818,
+          "token": "6",
+          "token_id": 235318
+        },
+        {
+          "probability": 0.016148949041962624,
+          "token": "thousand",
+          "token_id": 120316
+        },
+        {
+          "probability": 0.014118555001914501,
+          "token": "1",
+          "token_id": 235274
+        }
+      ],
+      "conditioned_top8": [
+        {
+          "probability": 0.12409054487943649,
+          "token": "7",
+          "token_id": 235324
+        },
+        {
+          "probability": 0.04449592903256416,
+          "token": "9",
+          "token_id": 235315
+        },
+        {
+          "probability": 0.03232467919588089,
+          "token": "thousand",
+          "token_id": 120316
+        },
+        {
+          "probability": 0.03056233376264572,
+          "token": "6",
+          "token_id": 235318
+        },
+        {
+          "probability": 0.02421870082616806,
+          "token": "4",
+          "token_id": 235310
+        },
+        {
+          "probability": 0.018926411867141724,
+          "token": "8",
+          "token_id": 235321
+        },
+        {
+          "probability": 0.016640491783618927,
+          "token": "Thousand",
+          "token_id": 198233
+        },
+        {
+          "probability": 0.015581454150378704,
+          "token": " seventy",
+          "token_id": 49258
+        }
+      ],
+      "decoded_js_divergence_nats": 0.14092691242694855,
+      "jspace_cosine": 0.9322095513343811,
+      "jspace_delta_norm": 210.6044464111328,
+      "jspace_delta_over_base_norm": 0.3819138705730438,
+      "layer": 36
+    },
+    {
+      "base_top8": [
+        {
+          "probability": 0.42921969294548035,
+          "token": "7",
+          "token_id": 235324
+        },
+        {
+          "probability": 0.12109098583459854,
+          "token": "9",
+          "token_id": 235315
+        },
+        {
+          "probability": 0.04687568172812462,
+          "token": "8",
+          "token_id": 235321
+        },
+        {
+          "probability": 0.03272593393921852,
+          "token": "6",
+          "token_id": 235318
+        },
+        {
+          "probability": 0.027016889303922653,
+          "token": "2",
+          "token_id": 235284
+        },
+        {
+          "probability": 0.02211683988571167,
+          "token": "4",
+          "token_id": 235310
+        },
+        {
+          "probability": 0.017948312684893608,
+          "token": "1",
+          "token_id": 235274
+        },
+        {
+          "probability": 0.01670810952782631,
+          "token": " seventy",
+          "token_id": 49258
+        }
+      ],
+      "conditioned_top8": [
+        {
+          "probability": 0.20669984817504883,
+          "token": "7",
+          "token_id": 235324
+        },
+        {
+          "probability": 0.08782405406236649,
+          "token": "9",
+          "token_id": 235315
+        },
+        {
+          "probability": 0.043855175375938416,
+          "token": "4",
+          "token_id": 235310
+        },
+        {
+          "probability": 0.03948661684989929,
+          "token": "6",
+          "token_id": 235318
+        },
+        {
+          "probability": 0.026665495708584785,
+          "token": "8",
+          "token_id": 235321
+        },
+        {
+          "probability": 0.022251952439546585,
+          "token": "5",
+          "token_id": 235308
+        },
+        {
+          "probability": 0.017264349386096,
+          "token": "1",
+          "token_id": 235274
+        },
+        {
+          "probability": 0.01146934274584055,
+          "token": "2",
+          "token_id": 235284
+        }
+      ],
+      "decoded_js_divergence_nats": 0.09718488156795502,
+      "jspace_cosine": 0.9505195617675781,
+      "jspace_delta_norm": 217.12464904785156,
+      "jspace_delta_over_base_norm": 0.3265738785266876,
+      "layer": 37
+    },
+    {
+      "base_top8": [
+        {
+          "probability": 0.6313879489898682,
+          "token": "7",
+          "token_id": 235324
+        },
+        {
+          "probability": 0.1233954206109047,
+          "token": "9",
+          "token_id": 235315
+        },
+        {
+          "probability": 0.06138346716761589,
+          "token": "2",
+          "token_id": 235284
+        },
+        {
+          "probability": 0.04814029112458229,
+          "token": "8",
+          "token_id": 235321
+        },
+        {
+          "probability": 0.034811656922101974,
+          "token": "1",
+          "token_id": 235274
+        },
+        {
+          "probability": 0.016918279230594635,
+          "token": "4",
+          "token_id": 235310
+        },
+        {
+          "probability": 0.016918279230594635,
+          "token": "6",
+          "token_id": 235318
+        },
+        {
+          "probability": 0.011338070034980774,
+          "token": "3",
+          "token_id": 235304
+        }
+      ],
+      "conditioned_top8": [
+        {
+          "probability": 0.45507723093032837,
+          "token": "7",
+          "token_id": 235324
+        },
+        {
+          "probability": 0.13801777362823486,
+          "token": "9",
+          "token_id": 235315
+        },
+        {
+          "probability": 0.07043008506298065,
+          "token": "4",
+          "token_id": 235310
+        },
+        {
+          "probability": 0.05342822149395943,
+          "token": "1",
+          "token_id": 235274
+        },
+        {
+          "probability": 0.05043107271194458,
+          "token": "8",
+          "token_id": 235321
+        },
+        {
+          "probability": 0.04481704160571098,
+          "token": "6",
+          "token_id": 235318
+        },
+        {
+          "probability": 0.030793460085988045,
+          "token": "2",
+          "token_id": 235284
+        },
+        {
+          "probability": 0.0219537653028965,
+          "token": "5",
+          "token_id": 235308
+        }
+      ],
+      "decoded_js_divergence_nats": 0.04525633901357651,
+      "jspace_cosine": 0.9637966752052307,
+      "jspace_delta_norm": 231.53163146972656,
+      "jspace_delta_over_base_norm": 0.27417710423469543,
+      "layer": 38
+    },
+    {
+      "base_top8": [
+        {
+          "probability": 0.8132538795471191,
+          "token": "7",
+          "token_id": 235324
+        },
+        {
+          "probability": 0.08941762894392014,
+          "token": "1",
+          "token_id": 235274
+        },
+        {
+          "probability": 0.04220326617360115,
+          "token": "9",
+          "token_id": 235315
+        },
+        {
+          "probability": 0.023125922307372093,
+          "token": "2",
+          "token_id": 235284
+        },
+        {
+          "probability": 0.013336173258721828,
+          "token": "4",
+          "token_id": 235310
+        },
+        {
+          "probability": 0.010248726233839989,
+          "token": "8",
+          "token_id": 235321
+        },
+        {
+          "probability": 0.0027313714381307364,
+          "token": "3",
+          "token_id": 235304
+        },
+        {
+          "probability": 0.0017587965121492743,
+          "token": "6",
+          "token_id": 235318
+        }
+      ],
+      "conditioned_top8": [
+        {
+          "probability": 0.5375709533691406,
+          "token": "7",
+          "token_id": 235324
+        },
+        {
+          "probability": 0.15446795523166656,
+          "token": "4",
+          "token_id": 235310
+        },
+        {
+          "probability": 0.1445004791021347,
+          "token": "1",
+          "token_id": 235274
+        },
+        {
+          "probability": 0.07583131641149521,
+          "token": "9",
+          "token_id": 235315
+        },
+        {
+          "probability": 0.025621751323342323,
+          "token": "2",
+          "token_id": 235284
+        },
+        {
+          "probability": 0.016802065074443817,
+          "token": "5",
+          "token_id": 235308
+        },
+        {
+          "probability": 0.015245847404003143,
+          "token": "6",
+          "token_id": 235318
+        },
+        {
+          "probability": 0.01314612478017807,
+          "token": "8",
+          "token_id": 235321
+        }
+      ],
+      "decoded_js_divergence_nats": 0.06443226337432861,
+      "jspace_cosine": 0.9703914523124695,
+      "jspace_delta_norm": 249.40794372558594,
+      "jspace_delta_over_base_norm": 0.24304336309432983,
+      "layer": 39
+    },
+    {
+      "base_top8": [
+        {
+          "probability": 0.7985239028930664,
+          "token": "7",
+          "token_id": 235324
+        },
+        {
+          "probability": 0.09742746502161026,
+          "token": "1",
+          "token_id": 235274
+        },
+        {
+          "probability": 0.033130768686532974,
+          "token": "2",
+          "token_id": 235284
+        },
+        {
+          "probability": 0.026529576629400253,
+          "token": "9",
+          "token_id": 235315
+        },
+        {
+          "probability": 0.022375494241714478,
+          "token": "4",
+          "token_id": 235310
+        },
+        {
+          "probability": 0.008546501398086548,
+          "token": "3",
+          "token_id": 235304
+        },
+        {
+          "probability": 0.006621303036808968,
+          "token": "8",
+          "token_id": 235321
+        },
+        {
+          "probability": 0.0039032800123095512,
+          "token": "6",
+          "token_id": 235318
+        }
+      ],
+      "conditioned_top8": [
+        {
+          "probability": 0.5704771280288696,
+          "token": "7",
+          "token_id": 235324
+        },
+        {
+          "probability": 0.18290391564369202,
+          "token": "4",
+          "token_id": 235310
+        },
+        {
+          "probability": 0.11847425997257233,
+          "token": "1",
+          "token_id": 235274
+        },
+        {
+          "probability": 0.05282271280884743,
+          "token": "9",
+          "token_id": 235315
+        },
+        {
+          "probability": 0.02396990917623043,
+          "token": "2",
+          "token_id": 235284
+        },
+        {
+          "probability": 0.01710440218448639,
+          "token": "5",
+          "token_id": 235308
+        },
+        {
+          "probability": 0.013563070446252823,
+          "token": "6",
+          "token_id": 235318
+        },
+        {
+          "probability": 0.010693805292248726,
+          "token": "3",
+          "token_id": 235304
+        }
+      ],
+      "decoded_js_divergence_nats": 0.05312557518482208,
+      "jspace_cosine": 0.9832112789154053,
+      "jspace_delta_norm": 247.3889923095703,
+      "jspace_delta_over_base_norm": 0.18247215449810028,
+      "layer": 40
+    }
+  ],
+  "method": {
+    "all_layer_indices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40
+    ],
+    "exact_decoded_token_identity": true,
+    "frontend_source": "apps/webapp/components/jlens/jlens-analysis.tsx::buildSidebar",
+    "neuronpedia_commit": "6e32ddcd553e2bae44b8fc14db36427ec7eaaabe",
+    "neuronpedia_default_layer_indices": [
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40
+    ],
+    "neuronpedia_repository": "https://github.com/hijohnnylin/neuronpedia",
+    "note": "Neuronpedia aggregation counts top-N membership. Probability and logit aggregates below are additional strength diagnostics.",
+    "server_source": "apps/inference/neuronpedia_inference/endpoints/lens/prompt.py::_LensTopKState.process",
+    "top_n": 8,
+    "word_filter": "Neuronpedia-compatible default word-like filter"
+  },
+  "rankings": {
+    "base_minus_conditioned_logit_all_layers": [
+      {
+        "token": " betweenstory",
+        "token_id": 204214,
+        "value": 2.299405574798584
+      },
+      {
+        "token": "\u025a",
+        "token_id": 248111,
+        "value": 2.185006618499756
+      },
+      {
+        "token": "+#+#",
+        "token_id": 183157,
+        "value": 2.0181446075439453
+      },
+      {
+        "token": " &___",
+        "token_id": 149251,
+        "value": 1.963242769241333
+      },
+      {
+        "token": " invokingState",
+        "token_id": 179038,
+        "value": 1.9356818199157715
+      },
+      {
+        "token": "shorts",
+        "token_id": 105534,
+        "value": 1.9266471862792969
+      },
+      {
+        "token": "special",
+        "token_id": 15328,
+        "value": 1.9122395515441895
+      },
+      {
+        "token": "\u025d",
+        "token_id": 251766,
+        "value": 1.901529312133789
+      },
+      {
+        "token": "corner",
+        "token_id": 39801,
+        "value": 1.8912172317504883
+      },
+      {
+        "token": "setcounter",
+        "token_id": 4112,
+        "value": 1.8865675926208496
+      },
+      {
+        "token": "cedar",
+        "token_id": 206011,
+        "value": 1.8759546279907227
+      },
+      {
+        "token": "renal",
+        "token_id": 38375,
+        "value": 1.8653738498687744
+      },
+      {
+        "token": "lower",
+        "token_id": 15964,
+        "value": 1.8309412002563477
+      },
+      {
+        "token": "wool",
+        "token_id": 94649,
+        "value": 1.812577724456787
+      },
+      {
+        "token": "sheet",
+        "token_id": 21760,
+        "value": 1.8023977279663086
+      },
+      {
+        "token": "stro",
+        "token_id": 7360,
+        "value": 1.7974743843078613
+      },
+      {
+        "token": "\ud83d\udc8e",
+        "token_id": 240481,
+        "value": 1.7878732681274414
+      },
+      {
+        "token": "sheets",
+        "token_id": 73343,
+        "value": 1.7769737243652344
+      },
+      {
+        "token": "sert",
+        "token_id": 5866,
+        "value": 1.774766445159912
+      },
+      {
+        "token": "bena",
+        "token_id": 107571,
+        "value": 1.7711968421936035
+      },
+      {
+        "token": "horizontal",
+        "token_id": 26674,
+        "value": 1.770848274230957
+      },
+      {
+        "token": "\u00edn",
+        "token_id": 5486,
+        "value": 1.7662973403930664
+      },
+      {
+        "token": "signal",
+        "token_id": 24335,
+        "value": 1.7517614364624023
+      },
+      {
+        "token": "\ufeff#",
+        "token_id": 122661,
+        "value": 1.7507998943328857
+      },
+      {
+        "token": "tap",
+        "token_id": 14946,
+        "value": 1.7369680404663086
+      },
+      {
+        "token": "dog",
+        "token_id": 12240,
+        "value": 1.7288217544555664
+      },
+      {
+        "token": "\ufe0f\u20e3",
+        "token_id": 115797,
+        "value": 1.7261545658111572
+      },
+      {
+        "token": "density",
+        "token_id": 33924,
+        "value": 1.7225914001464844
+      },
+      {
+        "token": "dates",
+        "token_id": 8621,
+        "value": 1.7162113189697266
+      },
+      {
+        "token": " untere",
+        "token_id": 170704,
+        "value": 1.7074860334396362
+      },
+      {
+        "token": ")\\\\",
+        "token_id": 16579,
+        "value": 1.7072086334228516
+      },
+      {
+        "token": "lap",
+        "token_id": 5412,
+        "value": 1.6970367431640625
+      },
+      {
+        "token": "\n",
+        "token_id": 108,
+        "value": 1.6909894943237305
+      },
+      {
+        "token": "tula",
+        "token_id": 160136,
+        "value": 1.6897525787353516
+      },
+      {
+        "token": "salt",
+        "token_id": 38658,
+        "value": 1.6894965171813965
+      },
+      {
+        "token": "bon",
+        "token_id": 3839,
+        "value": 1.6866998672485352
+      },
+      {
+        "token": "ruary",
+        "token_id": 5038,
+        "value": 1.6794219017028809
+      },
+      {
+        "token": ",\\\\",
+        "token_id": 83936,
+        "value": 1.6760931015014648
+      },
+      {
+        "token": "residual",
+        "token_id": 102370,
+        "value": 1.6757678985595703
+      },
+      {
+        "token": "\u20e3",
+        "token_id": 240056,
+        "value": 1.6683611869812012
+      },
+      {
+        "token": "portion",
+        "token_id": 38569,
+        "value": 1.6613774299621582
+      },
+      {
+        "token": "ountain",
+        "token_id": 4997,
+        "value": 1.654587745666504
+      },
+      {
+        "token": "careous",
+        "token_id": 103273,
+        "value": 1.6528067588806152
+      },
+      {
+        "token": "intro",
+        "token_id": 40625,
+        "value": 1.651820182800293
+      },
+      {
+        "token": "segment",
+        "token_id": 32318,
+        "value": 1.6505742073059082
+      },
+      {
+        "token": "{#",
+        "token_id": 51764,
+        "value": 1.649271011352539
+      },
+      {
+        "token": "stress",
+        "token_id": 54388,
+        "value": 1.6454639434814453
+      },
+      {
+        "token": "heal",
+        "token_id": 88365,
+        "value": 1.6377811431884766
+      },
+      {
+        "token": "plum",
+        "token_id": 97501,
+        "value": 1.627028465270996
+      },
+      {
+        "token": "ership",
+        "token_id": 6118,
+        "value": 1.626692295074463
+      },
+      {
+        "token": "seed",
+        "token_id": 18157,
+        "value": 1.6240143775939941
+      },
+      {
+        "token": "dating",
+        "token_id": 23496,
+        "value": 1.6228337287902832
+      },
+      {
+        "token": "spark",
+        "token_id": 33808,
+        "value": 1.621751308441162
+      },
+      {
+        "token": "resources",
+        "token_id": 18900,
+        "value": 1.6214065551757812
+      },
+      {
+        "token": "etsy",
+        "token_id": 49239,
+        "value": 1.61851167678833
+      },
+      {
+        "token": " m\u00e9rite",
+        "token_id": 113515,
+        "value": 1.6162548065185547
+      },
+      {
+        "token": " calendriers",
+        "token_id": 202377,
+        "value": 1.6161980628967285
+      },
+      {
+        "token": "des",
+        "token_id": 1609,
+        "value": 1.614508867263794
+      },
+      {
+        "token": "upper",
+        "token_id": 23832,
+        "value": 1.613832950592041
+      },
+      {
+        "token": "topis",
+        "token_id": 183547,
+        "value": 1.6048994064331055
+      },
+      {
+        "token": "app",
+        "token_id": 1217,
+        "value": 1.5980796813964844
+      },
+      {
+        "token": "tuck",
+        "token_id": 179285,
+        "value": 1.5947904586791992
+      },
+      {
+        "token": "sweet",
+        "token_id": 31956,
+        "value": 1.5925827026367188
+      },
+      {
+        "token": "honey",
+        "token_id": 62845,
+        "value": 1.5900096893310547
+      },
+      {
+        "token": "initi",
+        "token_id": 31971,
+        "value": 1.584425926208496
+      },
+      {
+        "token": "essential",
+        "token_id": 53763,
+        "value": 1.5818471908569336
+      },
+      {
+        "token": "parti",
+        "token_id": 5848,
+        "value": 1.581249713897705
+      },
+      {
+        "token": "circ",
+        "token_id": 5837,
+        "value": 1.5795927047729492
+      },
+      {
+        "token": "southern",
+        "token_id": 119586,
+        "value": 1.5777654647827148
+      },
+      {
+        "token": "tension",
+        "token_id": 37935,
+        "value": 1.577620506286621
+      },
+      {
+        "token": "sensitive",
+        "token_id": 50623,
+        "value": 1.56687593460083
+      },
+      {
+        "token": "bed",
+        "token_id": 2907,
+        "value": 1.5625290870666504
+      },
+      {
+        "token": "rang",
+        "token_id": 32033,
+        "value": 1.5622048377990723
+      },
+      {
+        "token": "\u26f0",
+        "token_id": 246155,
+        "value": 1.5595588684082031
+      },
+      {
+        "token": "crystal",
+        "token_id": 67319,
+        "value": 1.559103012084961
+      },
+      {
+        "token": "plat",
+        "token_id": 11663,
+        "value": 1.5565109252929688
+      },
+      {
+        "token": "hound",
+        "token_id": 64346,
+        "value": 1.5543327331542969
+      },
+      {
+        "token": "\u017ftand",
+        "token_id": 102178,
+        "value": 1.5503559112548828
+      },
+      {
+        "token": "poro",
+        "token_id": 189893,
+        "value": 1.5493974685668945
+      },
+      {
+        "token": "portal",
+        "token_id": 37956,
+        "value": 1.5489568710327148
+      },
+      {
+        "token": "grain",
+        "token_id": 71676,
+        "value": 1.5475029945373535
+      },
+      {
+        "token": "pressure",
+        "token_id": 39670,
+        "value": 1.5450630187988281
+      },
+      {
+        "token": "sor",
+        "token_id": 12111,
+        "value": 1.5446724891662598
+      },
+      {
+        "token": "droje",
+        "token_id": 100700,
+        "value": 1.5436806678771973
+      },
+      {
+        "token": "senior",
+        "token_id": 60264,
+        "value": 1.540884017944336
+      },
+      {
+        "token": "mountain",
+        "token_id": 53074,
+        "value": 1.5379829406738281
+      },
+      {
+        "token": "port",
+        "token_id": 707,
+        "value": 1.535505771636963
+      },
+      {
+        "token": "focus",
+        "token_id": 17362,
+        "value": 1.5347299575805664
+      },
+      {
+        "token": "southeast",
+        "token_id": 210159,
+        "value": 1.5340995788574219
+      },
+      {
+        "token": "trailer",
+        "token_id": 75621,
+        "value": 1.5332117080688477
+      },
+      {
+        "token": "ports",
+        "token_id": 3126,
+        "value": 1.5313138961791992
+      },
+      {
+        "token": "skim",
+        "token_id": 50813,
+        "value": 1.530440330505371
+      },
+      {
+        "token": "tunnel",
+        "token_id": 98577,
+        "value": 1.527109146118164
+      },
+      {
+        "token": "wis",
+        "token_id": 24227,
+        "value": 1.5259699821472168
+      },
+      {
+        "token": "edge",
+        "token_id": 9926,
+        "value": 1.5256929397583008
+      },
+      {
+        "token": "resid",
+        "token_id": 144283,
+        "value": 1.525467872619629
+      },
+      {
+        "token": "top",
+        "token_id": 2234,
+        "value": 1.5225086212158203
+      },
+      {
+        "token": "baron",
+        "token_id": 131819,
+        "value": 1.5156798362731934
+      },
+      {
+        "token": "pole",
+        "token_id": 14918,
+        "value": 1.5154876708984375
+      },
+      {
+        "token": "dolphin",
+        "token_id": 211161,
+        "value": 1.5154414176940918
+      }
+    ],
+    "base_minus_conditioned_probability_all_layers": [
+      {
+        "token": "\n\n\n",
+        "token_id": 110,
+        "value": 0.04757855832576752
+      },
+      {
+        "token": "7",
+        "token_id": 235324,
+        "value": 0.02831937000155449
+      },
+      {
+        "token": "\n\n",
+        "token_id": 109,
+        "value": 0.0039644306525588036
+      },
+      {
+        "token": " seventy",
+        "token_id": 49258,
+        "value": 0.0018572881817817688
+      },
+      {
+        "token": "2",
+        "token_id": 235284,
+        "value": 0.0017658842261880636
+      },
+      {
+        "token": "8",
+        "token_id": 235321,
+        "value": 0.0014233589172363281
+      },
+      {
+        "token": " volgende",
+        "token_id": 60544,
+        "value": 0.0011693582637235522
+      },
+      {
+        "token": " [",
+        "token_id": 892,
+        "value": 0.0010238976683467627
+      },
+      {
+        "token": " Seventy",
+        "token_id": 146214,
+        "value": 0.0010021827183663845
+      },
+      {
+        "token": " EconPapers",
+        "token_id": 192563,
+        "value": 0.000973318237811327
+      },
+      {
+        "token": " seventh",
+        "token_id": 33659,
+        "value": 0.000617898243945092
+      },
+      {
+        "token": " autorytatywna",
+        "token_id": 84694,
+        "value": 0.0005926891462877393
+      },
+      {
+        "token": " You",
+        "token_id": 1646,
+        "value": 0.0005737700848840177
+      },
+      {
+        "token": " seven",
+        "token_id": 6861,
+        "value": 0.0005396335618570447
+      },
+      {
+        "token": " duiz",
+        "token_id": 233140,
+        "value": 0.0005259144818410277
+      },
+      {
+        "token": "Seven",
+        "token_id": 38522,
+        "value": 0.0005169295473024249
+      },
+      {
+        "token": " Lucinda",
+        "token_id": 233288,
+        "value": 0.00046647663111798465
+      },
+      {
+        "token": " \u064a\u062a\u064a\u0645\u0647",
+        "token_id": 109371,
+        "value": 0.00045499991392716765
+      },
+      {
+        "token": " dezelve",
+        "token_id": 227181,
+        "value": 0.000450865481980145
+      },
+      {
+        "token": "\u2014",
+        "token_id": 235403,
+        "value": 0.0004344047629274428
+      },
+      {
+        "token": " Seventh",
+        "token_id": 64978,
+        "value": 0.00038012387813068926
+      },
+      {
+        "token": " utafitiHapana",
+        "token_id": 223937,
+        "value": 0.0003741250548046082
+      },
+      {
+        "token": " Seven",
+        "token_id": 21117,
+        "value": 0.00037286279257386923
+      },
+      {
+        "token": "seventh",
+        "token_id": 153653,
+        "value": 0.0003649647405836731
+      },
+      {
+        "token": " you",
+        "token_id": 692,
+        "value": 0.0003598501207306981
+      },
+      {
+        "token": "Hundred",
+        "token_id": 109536,
+        "value": 0.0003565842634998262
+      },
+      {
+        "token": " suivantes",
+        "token_id": 82088,
+        "value": 0.00032827589893713593
+      },
+      {
+        "token": "venty",
+        "token_id": 37847,
+        "value": 0.0003236151533201337
+      },
+      {
+        "token": " f\u00f6ljande",
+        "token_id": 142895,
+        "value": 0.00032265292247757316
+      },
+      {
+        "token": " Everyone",
+        "token_id": 21540,
+        "value": 0.00030931050423532724
+      },
+      {
+        "token": " meisje",
+        "token_id": 193488,
+        "value": 0.0003030356310773641
+      },
+      {
+        "token": " https",
+        "token_id": 4009,
+        "value": 0.00030301458900794387
+      },
+      {
+        "token": " They",
+        "token_id": 2365,
+        "value": 0.00028994871536269784
+      },
+      {
+        "token": " Radcliffe",
+        "token_id": 152060,
+        "value": 0.0002748914703261107
+      },
+      {
+        "token": "Seventh",
+        "token_id": 157464,
+        "value": 0.00027315012994222343
+      },
+      {
+        "token": " zelve",
+        "token_id": 218037,
+        "value": 0.0002383651299169287
+      },
+      {
+        "token": "continuation",
+        "token_id": 190461,
+        "value": 0.00023804590455256402
+      },
+      {
+        "token": " lis\u00e4ksi",
+        "token_id": 196299,
+        "value": 0.00023516883084084839
+      },
+      {
+        "token": " l\u00f6yty",
+        "token_id": 154967,
+        "value": 0.0002339654602110386
+      },
+      {
+        "token": " Continuation",
+        "token_id": 175683,
+        "value": 0.000232643389608711
+      },
+      {
+        "token": " continuation",
+        "token_id": 45116,
+        "value": 0.00022671220358461142
+      },
+      {
+        "token": " We",
+        "token_id": 1448,
+        "value": 0.00021725217811763287
+      },
+      {
+        "token": " vervol",
+        "token_id": 114931,
+        "value": 0.00020895243505947292
+      },
+      {
+        "token": "\u201d\uff0c",
+        "token_id": 26076,
+        "value": 0.00020600546849891543
+      },
+      {
+        "token": "StoryboardSegue",
+        "token_id": 215028,
+        "value": 0.00020376464817672968
+      },
+      {
+        "token": " followup",
+        "token_id": 215775,
+        "value": 0.00020101998234167695
+      },
+      {
+        "token": " Essay",
+        "token_id": 57956,
+        "value": 0.0001977678621187806
+      },
+      {
+        "token": " Gual",
+        "token_id": 189048,
+        "value": 0.0001939814683282748
+      },
+      {
+        "token": " tujuh",
+        "token_id": 173165,
+        "value": 0.00019033602438867092
+      },
+      {
+        "token": "Followed",
+        "token_id": 166749,
+        "value": 0.00018649398407433182
+      },
+      {
+        "token": " Your",
+        "token_id": 3883,
+        "value": 0.00018551253015175462
+      },
+      {
+        "token": " Jacqueline",
+        "token_id": 91774,
+        "value": 0.00017432370805181563
+      },
+      {
+        "token": " November",
+        "token_id": 5516,
+        "value": 0.00017273810226470232
+      },
+      {
+        "token": " suivants",
+        "token_id": 86157,
+        "value": 0.00016893786960281432
+      },
+      {
+        "token": " There",
+        "token_id": 2456,
+        "value": 0.0001685887255007401
+      },
+      {
+        "token": "November",
+        "token_id": 14983,
+        "value": 0.00016608223086223006
+      },
+      {
+        "token": ":",
+        "token_id": 235292,
+        "value": 0.0001598807575646788
+      },
+      {
+        "token": " uusi",
+        "token_id": 169061,
+        "value": 0.00015744670236017555
+      },
+      {
+        "token": " $\\",
+        "token_id": 1467,
+        "value": 0.00015704063116572797
+      },
+      {
+        "token": "January",
+        "token_id": 14481,
+        "value": 0.00015124207129701972
+      },
+      {
+        "token": " Seventeen",
+        "token_id": 163672,
+        "value": 0.0001508616842329502
+      },
+      {
+        "token": "+#+",
+        "token_id": 74073,
+        "value": 0.0001507642155047506
+      },
+      {
+        "token": " Lyle",
+        "token_id": 136891,
+        "value": 0.00014914614439476281
+      },
+      {
+        "token": " gekomen",
+        "token_id": 172453,
+        "value": 0.00014819068019278347
+      },
+      {
+        "token": " Wikipedia",
+        "token_id": 16542,
+        "value": 0.00014478281082119793
+      },
+      {
+        "token": " Hundred",
+        "token_id": 53886,
+        "value": 0.00014376523904502392
+      },
+      {
+        "token": "September",
+        "token_id": 14808,
+        "value": 0.00014251901302486658
+      },
+      {
+        "token": "Continuation",
+        "token_id": 185201,
+        "value": 0.00014237822324503213
+      },
+      {
+        "token": "ChildScrollView",
+        "token_id": 150604,
+        "value": 0.00014172098599374294
+      },
+      {
+        "token": "December",
+        "token_id": 15339,
+        "value": 0.00014152935182210058
+      },
+      {
+        "token": " seventeen",
+        "token_id": 66674,
+        "value": 0.00014044370618648827
+      },
+      {
+        "token": " ",
+        "token_id": 235248,
+        "value": 0.0001372999104205519
+      },
+      {
+        "token": "un\u00e4chst",
+        "token_id": 57002,
+        "value": 0.00013466834207065403
+      },
+      {
+        "token": "3",
+        "token_id": 235304,
+        "value": 0.00013182731345295906
+      },
+      {
+        "token": " September",
+        "token_id": 5225,
+        "value": 0.00013140353257767856
+      },
+      {
+        "token": "\u043b\u0442\u0435\u043c\u0435\u043b\u0435\u0440",
+        "token_id": 179326,
+        "value": 0.00012987916124984622
+      },
+      {
+        "token": "Thirteen",
+        "token_id": 228354,
+        "value": 0.00012780784163624048
+      },
+      {
+        "token": " volgen",
+        "token_id": 135259,
+        "value": 0.0001243807637365535
+      },
+      {
+        "token": "\u25a0",
+        "token_id": 236119,
+        "value": 0.00012319174129515886
+      },
+      {
+        "token": "Lady",
+        "token_id": 36911,
+        "value": 0.00012041519221384078
+      },
+      {
+        "token": "\u7e7c\u7e8c",
+        "token_id": 61231,
+        "value": 0.0001192873387481086
+      },
+      {
+        "token": " \\",
+        "token_id": 730,
+        "value": 0.00011741794151021168
+      },
+      {
+        "token": "\uff17",
+        "token_id": 238181,
+        "value": 0.0001173162818304263
+      },
+      {
+        "token": " December",
+        "token_id": 5824,
+        "value": 0.00011508713942021132
+      },
+      {
+        "token": " thirteen",
+        "token_id": 53599,
+        "value": 0.00011452485341578722
+      },
+      {
+        "token": "Wikipedia",
+        "token_id": 59167,
+        "value": 0.0001138092193286866
+      },
+      {
+        "token": "antaranya",
+        "token_id": 157647,
+        "value": 0.00011167774209752679
+      },
+      {
+        "token": "Continuing",
+        "token_id": 121869,
+        "value": 0.00010732212103903294
+      },
+      {
+        "token": " nast\u0119p",
+        "token_id": 104565,
+        "value": 0.00010593733168207109
+      },
+      {
+        "token": " Newbury",
+        "token_id": 146857,
+        "value": 0.00010565700358711183
+      },
+      {
+        "token": "wonderful",
+        "token_id": 120976,
+        "value": 0.00010437635501148179
+      },
+      {
+        "token": " Write",
+        "token_id": 15615,
+        "value": 0.00010386702342657372
+      },
+      {
+        "token": "\u2087",
+        "token_id": 251775,
+        "value": 0.00010385781206423417
+      },
+      {
+        "token": "seven",
+        "token_id": 31033,
+        "value": 0.00010181502148043364
+      },
+      {
+        "token": "July",
+        "token_id": 11727,
+        "value": 0.00010116846533492208
+      },
+      {
+        "token": " Wonderful",
+        "token_id": 74297,
+        "value": 9.991656406782568e-05
+      },
+      {
+        "token": " Cheryl",
+        "token_id": 87568,
+        "value": 9.92660061456263e-05
+      },
+      {
+        "token": " What",
+        "token_id": 2439,
+        "value": 9.816270903684199e-05
+      },
+      {
+        "token": " tausend",
+        "token_id": 200258,
+        "value": 9.49631939874962e-05
+      },
+      {
+        "token": " sequ\u00eancia",
+        "token_id": 188963,
+        "value": 9.472123929299414e-05
+      }
+    ],
+    "base_minus_conditioned_top8_count_all_layers": [
+      {
+        "token": " You",
+        "token_id": 1646,
+        "value": 9.0
+      },
+      {
+        "token": " We",
+        "token_id": 1448,
+        "value": 5.0
+      },
+      {
+        "token": " you",
+        "token_id": 692,
+        "value": 4.0
+      },
+      {
+        "token": " Everyone",
+        "token_id": 21540,
+        "value": 4.0
+      },
+      {
+        "token": "6",
+        "token_id": 235318,
+        "value": 3.0
+      },
+      {
+        "token": " autorytatywna",
+        "token_id": 84694,
+        "value": 3.0
+      },
+      {
+        "token": "3",
+        "token_id": 235304,
+        "value": 3.0
+      },
+      {
+        "token": "7",
+        "token_id": 235324,
+        "value": 2.0
+      },
+      {
+        "token": " people",
+        "token_id": 1461,
+        "value": 2.0
+      },
+      {
+        "token": " dezelve",
+        "token_id": 227181,
+        "value": 2.0
+      },
+      {
+        "token": "StoryboardSegue",
+        "token_id": 215028,
+        "value": 2.0
+      },
+      {
+        "token": " continuation",
+        "token_id": 45116,
+        "value": 2.0
+      },
+      {
+        "token": " The",
+        "token_id": 714,
+        "value": 2.0
+      },
+      {
+        "token": " hou\u017fe",
+        "token_id": 190193,
+        "value": 1.0
+      },
+      {
+        "token": " die\u017fen",
+        "token_id": 135639,
+        "value": 1.0
+      },
+      {
+        "token": " Things",
+        "token_id": 19296,
+        "value": 1.0
+      },
+      {
+        "token": "Continuation",
+        "token_id": 185201,
+        "value": 1.0
+      },
+      {
+        "token": " Seventy",
+        "token_id": 146214,
+        "value": 1.0
+      },
+      {
+        "token": " \u064a\u062a\u064a\u0645\u0647",
+        "token_id": 109371,
+        "value": 1.0
+      },
+      {
+        "token": " f\u00f6ljande",
+        "token_id": 142895,
+        "value": 1.0
+      },
+      {
+        "token": "9",
+        "token_id": 235315,
+        "value": 1.0
+      },
+      {
+        "token": " meisje",
+        "token_id": 193488,
+        "value": 1.0
+      },
+      {
+        "token": " lis\u00e4ksi",
+        "token_id": 196299,
+        "value": 1.0
+      },
+      {
+        "token": " MATTERS",
+        "token_id": 193169,
+        "value": 1.0
+      },
+      {
+        "token": " Continuation",
+        "token_id": 175683,
+        "value": 1.0
+      },
+      {
+        "token": " oc\u00e9ano",
+        "token_id": 164165,
+        "value": 1.0
+      },
+      {
+        "token": " nast\u0119p",
+        "token_id": 104565,
+        "value": 1.0
+      },
+      {
+        "token": "Wesley",
+        "token_id": 100654,
+        "value": 1.0
+      },
+      {
+        "token": " suivants",
+        "token_id": 86157,
+        "value": 1.0
+      },
+      {
+        "token": " volgende",
+        "token_id": 60544,
+        "value": 1.0
+      },
+      {
+        "token": " Reverend",
+        "token_id": 81358,
+        "value": 1.0
+      },
+      {
+        "token": " seventy",
+        "token_id": 49258,
+        "value": 1.0
+      },
+      {
+        "token": " viewDidLoad",
+        "token_id": 47855,
+        "value": 1.0
+      },
+      {
+        "token": "Followed",
+        "token_id": 166749,
+        "value": 1.0
+      },
+      {
+        "token": "1",
+        "token_id": 235274,
+        "value": 1.0
+      },
+      {
+        "token": " vervol",
+        "token_id": 114931,
+        "value": 1.0
+      },
+      {
+        "token": "8",
+        "token_id": 235321,
+        "value": 1.0
+      },
+      {
+        "token": " miniaturka",
+        "token_id": 227979,
+        "value": 1.0
+      },
+      {
+        "token": " zelve",
+        "token_id": 218037,
+        "value": 1.0
+      },
+      {
+        "token": " plufieurs",
+        "token_id": 207398,
+        "value": 1.0
+      },
+      {
+        "token": " Reece",
+        "token_id": 184485,
+        "value": 1.0
+      },
+      {
+        "token": " They",
+        "token_id": 2365,
+        "value": 1.0
+      },
+      {
+        "token": "Religious",
+        "token_id": 114255,
+        "value": 1.0
+      },
+      {
+        "token": "Hundred",
+        "token_id": 109536,
+        "value": 1.0
+      },
+      {
+        "token": "Pennsylvania",
+        "token_id": 104344,
+        "value": 1.0
+      },
+      {
+        "token": " seven",
+        "token_id": 6861,
+        "value": 1.0
+      },
+      {
+        "token": " Everybody",
+        "token_id": 63524,
+        "value": 1.0
+      },
+      {
+        "token": "\u043d\u043e\u0432\u043d\u0438\u0448\u0442\u0432\u043e",
+        "token_id": 78399,
+        "value": 1.0
+      },
+      {
+        "token": " de\u017f\u017fen",
+        "token_id": 148617,
+        "value": 1.0
+      },
+      {
+        "token": " https",
+        "token_id": 4009,
+        "value": 1.0
+      },
+      {
+        "token": "We",
+        "token_id": 1734,
+        "value": 1.0
+      },
+      {
+        "token": "January",
+        "token_id": 14481,
+        "value": 1.0
+      },
+      {
+        "token": " Wikipedia",
+        "token_id": 16542,
+        "value": 1.0
+      },
+      {
+        "token": "Hundreds",
+        "token_id": 149502,
+        "value": 1.0
+      },
+      {
+        "token": "The",
+        "token_id": 651,
+        "value": 1.0
+      },
+      {
+        "token": " I",
+        "token_id": 590,
+        "value": 1.0
+      },
+      {
+        "token": "<unused57>",
+        "token_id": 64,
+        "value": -0.0
+      },
+      {
+        "token": "<unused56>",
+        "token_id": 63,
+        "value": -0.0
+      },
+      {
+        "token": "<unused24>",
+        "token_id": 31,
+        "value": -0.0
+      },
+      {
+        "token": "<unused8>",
+        "token_id": 15,
+        "value": -0.0
+      },
+      {
+        "token": "<unused58>",
+        "token_id": 65,
+        "value": -0.0
+      },
+      {
+        "token": "<unused25>",
+        "token_id": 32,
+        "value": -0.0
+      },
+      {
+        "token": "<unused59>",
+        "token_id": 66,
+        "value": -0.0
+      },
+      {
+        "token": "<unused60>",
+        "token_id": 67,
+        "value": -0.0
+      },
+      {
+        "token": "<unused26>",
+        "token_id": 33,
+        "value": -0.0
+      },
+      {
+        "token": "<unused61>",
+        "token_id": 68,
+        "value": -0.0
+      },
+      {
+        "token": "<unused62>",
+        "token_id": 69,
+        "value": -0.0
+      },
+      {
+        "token": "<unused0>",
+        "token_id": 7,
+        "value": -0.0
+      },
+      {
+        "token": "<unused9>",
+        "token_id": 16,
+        "value": -0.0
+      },
+      {
+        "token": "<unused27>",
+        "token_id": 34,
+        "value": -0.0
+      },
+      {
+        "token": "<unused63>",
+        "token_id": 70,
+        "value": -0.0
+      },
+      {
+        "token": "<unused64>",
+        "token_id": 71,
+        "value": -0.0
+      },
+      {
+        "token": "<unused28>",
+        "token_id": 35,
+        "value": -0.0
+      },
+      {
+        "token": "<unused65>",
+        "token_id": 72,
+        "value": -0.0
+      },
+      {
+        "token": "<unused66>",
+        "token_id": 73,
+        "value": -0.0
+      },
+      {
+        "token": "<unused10>",
+        "token_id": 17,
+        "value": -0.0
+      },
+      {
+        "token": "<unused29>",
+        "token_id": 36,
+        "value": -0.0
+      },
+      {
+        "token": "<unused67>",
+        "token_id": 74,
+        "value": -0.0
+      },
+      {
+        "token": "<unused68>",
+        "token_id": 75,
+        "value": -0.0
+      },
+      {
+        "token": "<unused30>",
+        "token_id": 37,
+        "value": -0.0
+      },
+      {
+        "token": "<unused69>",
+        "token_id": 76,
+        "value": -0.0
+      },
+      {
+        "token": "<unused70>",
+        "token_id": 77,
+        "value": -0.0
+      },
+      {
+        "token": "<unk>",
+        "token_id": 3,
+        "value": -0.0
+      },
+      {
+        "token": "<unused1>",
+        "token_id": 8,
+        "value": -0.0
+      },
+      {
+        "token": "<unused11>",
+        "token_id": 18,
+        "value": -0.0
+      },
+      {
+        "token": "<unused31>",
+        "token_id": 38,
+        "value": -0.0
+      },
+      {
+        "token": "<unused71>",
+        "token_id": 78,
+        "value": -0.0
+      },
+      {
+        "token": "<unused72>",
+        "token_id": 79,
+        "value": -0.0
+      },
+      {
+        "token": "<unused32>",
+        "token_id": 39,
+        "value": -0.0
+      },
+      {
+        "token": "<unused73>",
+        "token_id": 80,
+        "value": -0.0
+      },
+      {
+        "token": "<unused74>",
+        "token_id": 81,
+        "value": -0.0
+      },
+      {
+        "token": "<unused12>",
+        "token_id": 19,
+        "value": -0.0
+      },
+      {
+        "token": "<unused33>",
+        "token_id": 40,
+        "value": -0.0
+      },
+      {
+        "token": "<unused75>",
+        "token_id": 82,
+        "value": -0.0
+      },
+      {
+        "token": "<unused76>",
+        "token_id": 83,
+        "value": -0.0
+      },
+      {
+        "token": "<unused34>",
+        "token_id": 41,
+        "value": -0.0
+      },
+      {
+        "token": "<unused77>",
+        "token_id": 84,
+        "value": -0.0
+      },
+      {
+        "token": "<unused78>",
+        "token_id": 85,
+        "value": -0.0
+      },
+      {
+        "token": "<unused2>",
+        "token_id": 9,
+        "value": -0.0
+      },
+      {
+        "token": "<unused13>",
+        "token_id": 20,
+        "value": -0.0
+      }
+    ],
+    "conditioned_minus_base_logit_all_layers": [
+      {
+        "token": " AssemblyProduct",
+        "token_id": 113239,
+        "value": 3.826373815536499
+      },
+      {
+        "token": "\uff1a\u201c\u2026\u2026\u201d",
+        "token_id": 114080,
+        "value": 3.4855942726135254
+      },
+      {
+        "token": "\u4e2d\u7565",
+        "token_id": 222331,
+        "value": 3.442753314971924
+      },
+      {
+        "token": " iprot",
+        "token_id": 129352,
+        "value": 3.404700756072998
+      },
+      {
+        "token": " AssemblyCulture",
+        "token_id": 86434,
+        "value": 3.2695586681365967
+      },
+      {
+        "token": "</blockquote>",
+        "token_id": 198,
+        "value": 3.2648072242736816
+      },
+      {
+        "token": " AssemblyCompany",
+        "token_id": 89107,
+        "value": 3.2125542163848877
+      },
+      {
+        "token": "interopRequire",
+        "token_id": 146827,
+        "value": 3.1529531478881836
+      },
+      {
+        "token": " proxy",
+        "token_id": 28658,
+        "value": 3.106534957885742
+      },
+      {
+        "token": "\u201c\u2026\u201d",
+        "token_id": 116499,
+        "value": 3.0809597969055176
+      },
+      {
+        "token": " >=\",",
+        "token_id": 210036,
+        "value": 3.0755841732025146
+      },
+      {
+        "token": "PreExecute",
+        "token_id": 158831,
+        "value": 3.0541348457336426
+      },
+      {
+        "token": " proxies",
+        "token_id": 142223,
+        "value": 3.03513765335083
+      },
+      {
+        "token": "unhofer",
+        "token_id": 171032,
+        "value": 3.0240585803985596
+      },
+      {
+        "token": " resourceCulture",
+        "token_id": 94695,
+        "value": 3.02043080329895
+      },
+      {
+        "token": " mocked",
+        "token_id": 105682,
+        "value": 3.0011696815490723
+      },
+      {
+        "token": " d\u00e9p",
+        "token_id": 33447,
+        "value": 2.986102342605591
+      },
+      {
+        "token": "<bos>",
+        "token_id": 2,
+        "value": 2.9836459159851074
+      },
+      {
+        "token": "hoeddwyd",
+        "token_id": 172058,
+        "value": 2.9567861557006836
+      },
+      {
+        "token": " \u2026\u201d",
+        "token_id": 159177,
+        "value": 2.9428486824035645
+      },
+      {
+        "token": " wikihow",
+        "token_id": 231330,
+        "value": 2.931612968444824
+      },
+      {
+        "token": "\u041a\u043b\u0438\u043c\u0430\u0442\u044b",
+        "token_id": 213974,
+        "value": 2.9259583950042725
+      },
+      {
+        "token": " \"-\";",
+        "token_id": 180829,
+        "value": 2.91548752784729
+      },
+      {
+        "token": " Proxy",
+        "token_id": 65271,
+        "value": 2.9130148887634277
+      },
+      {
+        "token": "*/;",
+        "token_id": 156249,
+        "value": 2.894012928009033
+      },
+      {
+        "token": " \"'\");",
+        "token_id": 217109,
+        "value": 2.8892714977264404
+      },
+      {
+        "token": "GIVEREF",
+        "token_id": 211465,
+        "value": 2.85939884185791
+      },
+      {
+        "token": " sumpay",
+        "token_id": 140703,
+        "value": 2.8109652996063232
+      },
+      {
+        "token": "Wrk",
+        "token_id": 230266,
+        "value": 2.810147523880005
+      },
+      {
+        "token": " \"'\";",
+        "token_id": 156952,
+        "value": 2.8027658462524414
+      },
+      {
+        "token": " Wartawan",
+        "token_id": 224772,
+        "value": 2.8005876541137695
+      },
+      {
+        "token": ";*/",
+        "token_id": 108574,
+        "value": 2.7850379943847656
+      },
+      {
+        "token": "Vtbl",
+        "token_id": 206037,
+        "value": 2.781667947769165
+      },
+      {
+        "token": " fails",
+        "token_id": 21326,
+        "value": 2.7805562019348145
+      },
+      {
+        "token": " imago",
+        "token_id": 208012,
+        "value": 2.7576355934143066
+      },
+      {
+        "token": "Parameteri",
+        "token_id": 228465,
+        "value": 2.7521910667419434
+      },
+      {
+        "token": "=?\";",
+        "token_id": 222108,
+        "value": 2.747831344604492
+      },
+      {
+        "token": " \u201c(",
+        "token_id": 166395,
+        "value": 2.7434744834899902
+      },
+      {
+        "token": " \"...\"",
+        "token_id": 159853,
+        "value": 2.7424962520599365
+      },
+      {
+        "token": "\"]];",
+        "token_id": 193181,
+        "value": 2.7423155307769775
+      },
+      {
+        "token": " pretends",
+        "token_id": 176474,
+        "value": 2.732257843017578
+      },
+      {
+        "token": " WHY",
+        "token_id": 62583,
+        "value": 2.7276906967163086
+      },
+      {
+        "token": "UseVisualStyle",
+        "token_id": 49322,
+        "value": 2.7256646156311035
+      },
+      {
+        "token": " blamed",
+        "token_id": 59525,
+        "value": 2.7224206924438477
+      },
+      {
+        "token": " modelled",
+        "token_id": 103736,
+        "value": 2.7210960388183594
+      },
+      {
+        "token": "createClass",
+        "token_id": 150708,
+        "value": 2.7194976806640625
+      },
+      {
+        "token": " \u201c\u00bf",
+        "token_id": 185208,
+        "value": 2.713898181915283
+      },
+      {
+        "token": " Vorbe",
+        "token_id": 229699,
+        "value": 2.7121362686157227
+      },
+      {
+        "token": " PLAINTIFF",
+        "token_id": 185778,
+        "value": 2.7090206146240234
+      },
+      {
+        "token": " laug",
+        "token_id": 23900,
+        "value": 2.7026171684265137
+      },
+      {
+        "token": " blames",
+        "token_id": 164092,
+        "value": 2.697995662689209
+      },
+      {
+        "token": " Prox",
+        "token_id": 175188,
+        "value": 2.6959228515625
+      },
+      {
+        "token": "MethodImpl",
+        "token_id": 122682,
+        "value": 2.695265293121338
+      },
+      {
+        "token": " failing",
+        "token_id": 30314,
+        "value": 2.6915206909179688
+      },
+      {
+        "token": "++;",
+        "token_id": 3754,
+        "value": 2.6794605255126953
+      },
+      {
+        "token": "\u201c\u2026\u2026\u201d",
+        "token_id": 67915,
+        "value": 2.678964614868164
+      },
+      {
+        "token": " analogy",
+        "token_id": 53688,
+        "value": 2.676863670349121
+      },
+      {
+        "token": "'];?>",
+        "token_id": 120676,
+        "value": 2.6751537322998047
+      },
+      {
+        "token": " ridiculed",
+        "token_id": 196857,
+        "value": 2.6738080978393555
+      },
+      {
+        "token": "\u0524",
+        "token_id": 251178,
+        "value": 2.6712186336517334
+      },
+      {
+        "token": " ++;",
+        "token_id": 58188,
+        "value": 2.661937952041626
+      },
+      {
+        "token": " motive",
+        "token_id": 41937,
+        "value": 2.659712076187134
+      },
+      {
+        "token": " \u201c\u2026",
+        "token_id": 131948,
+        "value": 2.655473232269287
+      },
+      {
+        "token": "++];",
+        "token_id": 102547,
+        "value": 2.6520278453826904
+      },
+      {
+        "token": "URLEncoder",
+        "token_id": 214601,
+        "value": 2.64583683013916
+      },
+      {
+        "token": " voters",
+        "token_id": 28242,
+        "value": 2.636172294616699
+      },
+      {
+        "token": " USSR",
+        "token_id": 53466,
+        "value": 2.635753631591797
+      },
+      {
+        "token": " Pourquoi",
+        "token_id": 78961,
+        "value": 2.6353349685668945
+      },
+      {
+        "token": " FileReader",
+        "token_id": 102482,
+        "value": 2.62191104888916
+      },
+      {
+        "token": "SharedDtor",
+        "token_id": 231400,
+        "value": 2.606926441192627
+      },
+      {
+        "token": "();*/",
+        "token_id": 191247,
+        "value": 2.6047439575195312
+      },
+      {
+        "token": " \u2026.",
+        "token_id": 64966,
+        "value": 2.604691982269287
+      },
+      {
+        "token": "\"\";",
+        "token_id": 191418,
+        "value": 2.6046793460845947
+      },
+      {
+        "token": "WriteTagHelper",
+        "token_id": 183225,
+        "value": 2.6032323837280273
+      },
+      {
+        "token": "]\";",
+        "token_id": 152092,
+        "value": 2.601627826690674
+      },
+      {
+        "token": "OfDay",
+        "token_id": 139981,
+        "value": 2.601534605026245
+      },
+      {
+        "token": "++);",
+        "token_id": 93131,
+        "value": 2.599487543106079
+      },
+      {
+        "token": " Claimant",
+        "token_id": 228464,
+        "value": 2.5928354263305664
+      },
+      {
+        "token": " saksi",
+        "token_id": 184417,
+        "value": 2.592709541320801
+      },
+      {
+        "token": " Warum",
+        "token_id": 89475,
+        "value": 2.591106414794922
+      },
+      {
+        "token": "OfWork",
+        "token_id": 80949,
+        "value": 2.590712308883667
+      },
+      {
+        "token": " \u2026\u2026",
+        "token_id": 81831,
+        "value": 2.5895166397094727
+      },
+      {
+        "token": "Diweddarwch",
+        "token_id": 189302,
+        "value": 2.586886167526245
+      },
+      {
+        "token": " Hvor",
+        "token_id": 153578,
+        "value": 2.584402084350586
+      },
+      {
+        "token": " =\"\";",
+        "token_id": 170152,
+        "value": 2.5755653381347656
+      },
+      {
+        "token": " Downvote",
+        "token_id": 158722,
+        "value": 2.5744476318359375
+      },
+      {
+        "token": " \")\";",
+        "token_id": 122185,
+        "value": 2.5733628273010254
+      },
+      {
+        "token": "PROLOG",
+        "token_id": 205453,
+        "value": 2.567326545715332
+      },
+      {
+        "token": " />';",
+        "token_id": 216725,
+        "value": 2.5654096603393555
+      },
+      {
+        "token": " modus",
+        "token_id": 137959,
+        "value": 2.562887191772461
+      },
+      {
+        "token": "Waarom",
+        "token_id": 133175,
+        "value": 2.5610790252685547
+      },
+      {
+        "token": "Erreferentziak",
+        "token_id": 100526,
+        "value": 2.5601582527160645
+      },
+      {
+        "token": " blaming",
+        "token_id": 100445,
+        "value": 2.5601162910461426
+      },
+      {
+        "token": " spying",
+        "token_id": 173456,
+        "value": 2.5594005584716797
+      },
+      {
+        "token": " protege",
+        "token_id": 128259,
+        "value": 2.557145595550537
+      },
+      {
+        "token": "\ufe4d\ufe4d\ufe4d",
+        "token_id": 209884,
+        "value": 2.5569493770599365
+      },
+      {
+        "token": ")))));",
+        "token_id": 138629,
+        "value": 2.5533127784729004
+      },
+      {
+        "token": " employment",
+        "token_id": 12245,
+        "value": 2.550159215927124
+      },
+      {
+        "token": "WindowListener",
+        "token_id": 162856,
+        "value": 2.5491199493408203
+      },
+      {
+        "token": "\u2019.\u201d",
+        "token_id": 214566,
+        "value": 2.5483245849609375
+      }
+    ],
+    "conditioned_minus_base_probability_all_layers": [
+      {
+        "token": "<eos>",
+        "token_id": 1,
+        "value": 0.020223215222358704
+      },
+      {
+        "token": "4",
+        "token_id": 235310,
+        "value": 0.009680671617388725
+      },
+      {
+        "token": " \u2014",
+        "token_id": 2062,
+        "value": 0.00576779805123806
+      },
+      {
+        "token": "1",
+        "token_id": 235274,
+        "value": 0.0020454730838537216
+      },
+      {
+        "token": " just",
+        "token_id": 1317,
+        "value": 0.0017581447027623653
+      },
+      {
+        "token": " everybody",
+        "token_id": 18332,
+        "value": 0.0016027216333895922
+      },
+      {
+        "token": "5",
+        "token_id": 235308,
+        "value": 0.001594629604369402
+      },
+      {
+        "token": "6",
+        "token_id": 235318,
+        "value": 0.0014358425978571177
+      },
+      {
+        "token": " really",
+        "token_id": 2277,
+        "value": 0.0012313127517700195
+      },
+      {
+        "token": " everything",
+        "token_id": 4553,
+        "value": 0.0010990708833560348
+      },
+      {
+        "token": " \u2026",
+        "token_id": 7317,
+        "value": 0.0010235586669296026
+      },
+      {
+        "token": " \u2014\u2014",
+        "token_id": 72769,
+        "value": 0.000981752178631723
+      },
+      {
+        "token": " everyone",
+        "token_id": 4784,
+        "value": 0.0008621625602245331
+      },
+      {
+        "token": " \u201c",
+        "token_id": 1080,
+        "value": 0.0007836863514967263
+      },
+      {
+        "token": " [...]",
+        "token_id": 48241,
+        "value": 0.0007142256945371628
+      },
+      {
+        "token": " ...",
+        "token_id": 2804,
+        "value": 0.000710757914930582
+      },
+      {
+        "token": "Thousand",
+        "token_id": 198233,
+        "value": 0.0006849335040897131
+      },
+      {
+        "token": " pretty",
+        "token_id": 4786,
+        "value": 0.0006426173495128751
+      },
+      {
+        "token": "Viited",
+        "token_id": 98155,
+        "value": 0.0005554449162445962
+      },
+      {
+        "token": " EVERYTHING",
+        "token_id": 118206,
+        "value": 0.0005526774330064654
+      },
+      {
+        "token": "\u4e00\u5343",
+        "token_id": 174497,
+        "value": 0.0005347025580704212
+      },
+      {
+        "token": " \u300a",
+        "token_id": 29651,
+        "value": 0.0005244250642135739
+      },
+      {
+        "token": " ,",
+        "token_id": 1688,
+        "value": 0.0005165101028978825
+      },
+      {
+        "token": " the",
+        "token_id": 573,
+        "value": 0.0004946737317368388
+      },
+      {
+        "token": " REALLY",
+        "token_id": 69864,
+        "value": 0.00048655952559784055
+      },
+      {
+        "token": "providedIn",
+        "token_id": 70026,
+        "value": 0.00048178917495533824
+      },
+      {
+        "token": "\u4e94\u767e",
+        "token_id": 165061,
+        "value": 0.00046517132432200015
+      },
+      {
+        "token": " wonderful",
+        "token_id": 10920,
+        "value": 0.0004461173084564507
+      },
+      {
+        "token": " somebody",
+        "token_id": 23059,
+        "value": 0.0004253278602845967
+      },
+      {
+        "token": " [\u2026]",
+        "token_id": 35067,
+        "value": 0.000425171572715044
+      },
+      {
+        "token": " Thousand",
+        "token_id": 68729,
+        "value": 0.0004239184781908989
+      },
+      {
+        "token": " something",
+        "token_id": 2775,
+        "value": 0.00042060023406520486
+      },
+      {
+        "token": " wonderfully",
+        "token_id": 78319,
+        "value": 0.0003929090453311801
+      },
+      {
+        "token": "....",
+        "token_id": 1376,
+        "value": 0.000382182071916759
+      },
+      {
+        "token": "\u2026",
+        "token_id": 235417,
+        "value": 0.0003732271143235266
+      },
+      {
+        "token": "$[",
+        "token_id": 55712,
+        "value": 0.00035765161737799644
+      },
+      {
+        "token": " $=$",
+        "token_id": 26686,
+        "value": 0.0003563975333236158
+      },
+      {
+        "token": "R\u00fcyada",
+        "token_id": 170269,
+        "value": 0.0003363214782439172
+      },
+      {
+        "token": " every",
+        "token_id": 1535,
+        "value": 0.000332786759827286
+      },
+      {
+        "token": " things",
+        "token_id": 2652,
+        "value": 0.0003270271117798984
+      },
+      {
+        "token": " absolutely",
+        "token_id": 11222,
+        "value": 0.0003195125609636307
+      },
+      {
+        "token": " people",
+        "token_id": 1461,
+        "value": 0.00031041260808706284
+      },
+      {
+        "token": "[...]",
+        "token_id": 31777,
+        "value": 0.00030926777981221676
+      },
+      {
+        "token": " Everybody",
+        "token_id": 63524,
+        "value": 0.00029791821725666523
+      },
+      {
+        "token": " probably",
+        "token_id": 4485,
+        "value": 0.0002717814641073346
+      },
+      {
+        "token": "PhysRevD",
+        "token_id": 191788,
+        "value": 0.0002639025915414095
+      },
+      {
+        "token": "\ufe67",
+        "token_id": 254798,
+        "value": 0.00024902785662561655
+      },
+      {
+        "token": " lovely",
+        "token_id": 13456,
+        "value": 0.00024002944701351225
+      },
+      {
+        "token": "\u1521",
+        "token_id": 253706,
+        "value": 0.00023975590011104941
+      },
+      {
+        "token": " Impossible",
+        "token_id": 97862,
+        "value": 0.00022810534574091434
+      },
+      {
+        "token": " Thousands",
+        "token_id": 94777,
+        "value": 0.00022781960433349013
+      },
+      {
+        "token": "RegressionTest",
+        "token_id": 157911,
+        "value": 0.00022570625878870487
+      },
+      {
+        "token": " simply",
+        "token_id": 6574,
+        "value": 0.00022554640599992126
+      },
+      {
+        "token": ",$",
+        "token_id": 16668,
+        "value": 0.00022232055198401213
+      },
+      {
+        "token": " nobody",
+        "token_id": 21566,
+        "value": 0.0002176624839194119
+      },
+      {
+        "token": "\ud83a\udd2d",
+        "token_id": 250549,
+        "value": 0.00021512393141165376
+      },
+      {
+        "token": " they",
+        "token_id": 984,
+        "value": 0.00021197990281507373
+      },
+      {
+        "token": " nahil",
+        "token_id": 212285,
+        "value": 0.00020522228442132473
+      },
+      {
+        "token": "\u2e0f",
+        "token_id": 255420,
+        "value": 0.00019941767095588148
+      },
+      {
+        "token": " Everything",
+        "token_id": 23177,
+        "value": 0.0001970253069885075
+      },
+      {
+        "token": " imagui",
+        "token_id": 152266,
+        "value": 0.00019157910719513893
+      },
+      {
+        "token": "......",
+        "token_id": 9650,
+        "value": 0.0001894252491183579
+      },
+      {
+        "token": "Again",
+        "token_id": 24967,
+        "value": 0.0001875033776741475
+      },
+      {
+        "token": " EVERYONE",
+        "token_id": 139694,
+        "value": 0.0001851546112447977
+      },
+      {
+        "token": " everywhere",
+        "token_id": 17165,
+        "value": 0.00018119547166861594
+      },
+      {
+        "token": " SOMETHING",
+        "token_id": 142694,
+        "value": 0.00017925517749972641
+      },
+      {
+        "token": " \uff1a",
+        "token_id": 36083,
+        "value": 0.0001745564368320629
+      },
+      {
+        "token": " unbelievably",
+        "token_id": 186679,
+        "value": 0.00017040478996932507
+      },
+      {
+        "token": "Manbalar",
+        "token_id": 110633,
+        "value": 0.00016924834926612675
+      },
+      {
+        "token": " someone",
+        "token_id": 4630,
+        "value": 0.00016868569946382195
+      },
+      {
+        "token": "\u2026.",
+        "token_id": 13354,
+        "value": 0.00016773662355262786
+      },
+      {
+        "token": "...",
+        "token_id": 955,
+        "value": 0.00016323290765285492
+      },
+      {
+        "token": " amazingly",
+        "token_id": 99518,
+        "value": 0.0001625365111976862
+      },
+      {
+        "token": " Wa\u017f\u017fer",
+        "token_id": 195121,
+        "value": 0.00015991544933058321
+      },
+      {
+        "token": "<end_of_turn>",
+        "token_id": 107,
+        "value": 0.00015822506975382566
+      },
+      {
+        "token": " Britain",
+        "token_id": 14401,
+        "value": 0.00015700998483225703
+      },
+      {
+        "token": " VERY",
+        "token_id": 50471,
+        "value": 0.00015596457524225116
+      },
+      {
+        "token": " ModelExpression",
+        "token_id": 152539,
+        "value": 0.00015396391972899437
+      },
+      {
+        "token": " indruk",
+        "token_id": 211958,
+        "value": 0.0001510967849753797
+      },
+      {
+        "token": "tangentMode",
+        "token_id": 69613,
+        "value": 0.00015056112897582352
+      },
+      {
+        "token": ".....",
+        "token_id": 6554,
+        "value": 0.00014965554873924702
+      },
+      {
+        "token": " little",
+        "token_id": 2356,
+        "value": 0.00014937353262212127
+      },
+      {
+        "token": " \u25cf",
+        "token_id": 42939,
+        "value": 0.00014780214405618608
+      },
+      {
+        "token": "\ufb97",
+        "token_id": 255382,
+        "value": 0.0001472436124458909
+      },
+      {
+        "token": "\u2026\u2026",
+        "token_id": 3642,
+        "value": 0.000146783102536574
+      },
+      {
+        "token": " Wei\u017fe",
+        "token_id": 233201,
+        "value": 0.00014609142090193927
+      },
+      {
+        "token": "$($",
+        "token_id": 206497,
+        "value": 0.00014479761011898518
+      },
+      {
+        "token": "\uec4c",
+        "token_id": 255795,
+        "value": 0.0001447164686396718
+      },
+      {
+        "token": " almost",
+        "token_id": 4461,
+        "value": 0.0001446015085093677
+      },
+      {
+        "token": " \u2015",
+        "token_id": 36347,
+        "value": 0.0001438518229406327
+      },
+      {
+        "token": " \"",
+        "token_id": 664,
+        "value": 0.0001428665709681809
+      },
+      {
+        "token": "basicConfig",
+        "token_id": 224152,
+        "value": 0.000142318443977274
+      },
+      {
+        "token": " Unknown",
+        "token_id": 34000,
+        "value": 0.00014135960373096168
+      },
+      {
+        "token": " very",
+        "token_id": 1508,
+        "value": 0.00014074385398998857
+      },
+      {
+        "token": " $:$",
+        "token_id": 210689,
+        "value": 0.00014059888781048357
+      },
+      {
+        "token": " Hundreds",
+        "token_id": 117529,
+        "value": 0.0001403719070367515
+      },
+      {
+        "token": " Doom",
+        "token_id": 68973,
+        "value": 0.00013922466314397752
+      },
+      {
+        "token": "Fifty",
+        "token_id": 133854,
+        "value": 0.00013867064262740314
+      },
+      {
+        "token": " die\u017fes",
+        "token_id": 116622,
+        "value": 0.00013845821376889944
+      },
+      {
+        "token": "$\\",
+        "token_id": 2530,
+        "value": 0.00013802258763462305
+      }
+    ],
+    "conditioned_minus_base_top8_count_all_layers": [
+      {
+        "token": " everything",
+        "token_id": 4553,
+        "value": 12.0
+      },
+      {
+        "token": "5",
+        "token_id": 235308,
+        "value": 5.0
+      },
+      {
+        "token": " really",
+        "token_id": 2277,
+        "value": 5.0
+      },
+      {
+        "token": "\ua3ac",
+        "token_id": 254885,
+        "value": 3.0
+      },
+      {
+        "token": " everybody",
+        "token_id": 18332,
+        "value": 3.0
+      },
+      {
+        "token": " next",
+        "token_id": 2351,
+        "value": 2.0
+      },
+      {
+        "token": " bertambah",
+        "token_id": 214139,
+        "value": 2.0
+      },
+      {
+        "token": " zoude",
+        "token_id": 213375,
+        "value": 2.0
+      },
+      {
+        "token": " mijne",
+        "token_id": 213472,
+        "value": 2.0
+      },
+      {
+        "token": " REALLY",
+        "token_id": 69864,
+        "value": 2.0
+      },
+      {
+        "token": "4",
+        "token_id": 235310,
+        "value": 2.0
+      },
+      {
+        "token": " wonderful",
+        "token_id": 10920,
+        "value": 2.0
+      },
+      {
+        "token": " \u597d\u6587\u5206\u4eab",
+        "token_id": 195112,
+        "value": 2.0
+      },
+      {
+        "token": " EVERYTHING",
+        "token_id": 118206,
+        "value": 2.0
+      },
+      {
+        "token": " \u017fchon",
+        "token_id": 109547,
+        "value": 2.0
+      },
+      {
+        "token": "tangentMode",
+        "token_id": 69613,
+        "value": 1.0
+      },
+      {
+        "token": " things",
+        "token_id": 2652,
+        "value": 1.0
+      },
+      {
+        "token": " Thousand",
+        "token_id": 68729,
+        "value": 1.0
+      },
+      {
+        "token": "findpost",
+        "token_id": 181355,
+        "value": 1.0
+      },
+      {
+        "token": " Wa\u017f\u017fer",
+        "token_id": 195121,
+        "value": 1.0
+      },
+      {
+        "token": " Gei\u017ft",
+        "token_id": 225573,
+        "value": 1.0
+      },
+      {
+        "token": "\u4e94\u767e",
+        "token_id": 165061,
+        "value": 1.0
+      },
+      {
+        "token": "\u1521",
+        "token_id": 253706,
+        "value": 1.0
+      },
+      {
+        "token": " Wheatley",
+        "token_id": 221551,
+        "value": 1.0
+      },
+      {
+        "token": "\u041f\u0440\u0435\u043c\u0430",
+        "token_id": 215355,
+        "value": 1.0
+      },
+      {
+        "token": " \u0644\u0644\u0627\u0633\u0645\u0627\u0621",
+        "token_id": 218806,
+        "value": 1.0
+      },
+      {
+        "token": " nahil",
+        "token_id": 212285,
+        "value": 1.0
+      },
+      {
+        "token": " gewe\u017fen",
+        "token_id": 210616,
+        "value": 1.0
+      },
+      {
+        "token": " kyll\u00e4",
+        "token_id": 181003,
+        "value": 1.0
+      },
+      {
+        "token": "R\u00fcyada",
+        "token_id": 170269,
+        "value": 1.0
+      },
+      {
+        "token": " Kirsch",
+        "token_id": 155292,
+        "value": 1.0
+      },
+      {
+        "token": " AVERAGE",
+        "token_id": 122977,
+        "value": 1.0
+      },
+      {
+        "token": " \u0645\u0631\u0626\u064a\u0647",
+        "token_id": 204746,
+        "value": 1.0
+      },
+      {
+        "token": " Pfeiffer",
+        "token_id": 155030,
+        "value": 1.0
+      },
+      {
+        "token": "Viited",
+        "token_id": 98155,
+        "value": 1.0
+      },
+      {
+        "token": "2",
+        "token_id": 235284,
+        "value": 1.0
+      },
+      {
+        "token": "Thousand",
+        "token_id": 198233,
+        "value": 1.0
+      },
+      {
+        "token": " fashiola",
+        "token_id": 232228,
+        "value": 1.0
+      },
+      {
+        "token": "Routledge",
+        "token_id": 228461,
+        "value": 1.0
+      },
+      {
+        "token": " nonUne",
+        "token_id": 227423,
+        "value": 1.0
+      },
+      {
+        "token": " Matters",
+        "token_id": 55422,
+        "value": 1.0
+      },
+      {
+        "token": " simply",
+        "token_id": 6574,
+        "value": 1.0
+      },
+      {
+        "token": " EconPapers",
+        "token_id": 192563,
+        "value": 1.0
+      },
+      {
+        "token": "PhysRevD",
+        "token_id": 191788,
+        "value": 1.0
+      },
+      {
+        "token": " Additions",
+        "token_id": 156969,
+        "value": 1.0
+      },
+      {
+        "token": " Cipri",
+        "token_id": 204650,
+        "value": 1.0
+      },
+      {
+        "token": "ChildScrollView",
+        "token_id": 150604,
+        "value": 1.0
+      },
+      {
+        "token": " imagui",
+        "token_id": 152266,
+        "value": 1.0
+      },
+      {
+        "token": " THE",
+        "token_id": 2317,
+        "value": 1.0
+      },
+      {
+        "token": " Palgrave",
+        "token_id": 205148,
+        "value": 1.0
+      },
+      {
+        "token": " wonderfully",
+        "token_id": 78319,
+        "value": 1.0
+      },
+      {
+        "token": " just",
+        "token_id": 1317,
+        "value": 1.0
+      },
+      {
+        "token": " they",
+        "token_id": 984,
+        "value": 1.0
+      },
+      {
+        "token": "<unused57>",
+        "token_id": 64,
+        "value": 0.0
+      },
+      {
+        "token": "<unused25>",
+        "token_id": 32,
+        "value": 0.0
+      },
+      {
+        "token": "<unused59>",
+        "token_id": 66,
+        "value": 0.0
+      },
+      {
+        "token": "<unused61>",
+        "token_id": 68,
+        "value": 0.0
+      },
+      {
+        "token": "<unused56>",
+        "token_id": 63,
+        "value": 0.0
+      },
+      {
+        "token": "<unused24>",
+        "token_id": 31,
+        "value": 0.0
+      },
+      {
+        "token": "<unused58>",
+        "token_id": 65,
+        "value": 0.0
+      },
+      {
+        "token": "<unused8>",
+        "token_id": 15,
+        "value": 0.0
+      },
+      {
+        "token": "<unused60>",
+        "token_id": 67,
+        "value": 0.0
+      },
+      {
+        "token": "<unused26>",
+        "token_id": 33,
+        "value": 0.0
+      },
+      {
+        "token": "<unused0>",
+        "token_id": 7,
+        "value": 0.0
+      },
+      {
+        "token": "<unused62>",
+        "token_id": 69,
+        "value": 0.0
+      },
+      {
+        "token": "<unused9>",
+        "token_id": 16,
+        "value": 0.0
+      },
+      {
+        "token": "<unused27>",
+        "token_id": 34,
+        "value": 0.0
+      },
+      {
+        "token": "<unused63>",
+        "token_id": 70,
+        "value": 0.0
+      },
+      {
+        "token": "<unused64>",
+        "token_id": 71,
+        "value": 0.0
+      },
+      {
+        "token": "<unused28>",
+        "token_id": 35,
+        "value": 0.0
+      },
+      {
+        "token": "<unused65>",
+        "token_id": 72,
+        "value": 0.0
+      },
+      {
+        "token": "<unused66>",
+        "token_id": 73,
+        "value": 0.0
+      },
+      {
+        "token": "<unused10>",
+        "token_id": 17,
+        "value": 0.0
+      },
+      {
+        "token": "<unused29>",
+        "token_id": 36,
+        "value": 0.0
+      },
+      {
+        "token": "<unused67>",
+        "token_id": 74,
+        "value": 0.0
+      },
+      {
+        "token": "<unused68>",
+        "token_id": 75,
+        "value": 0.0
+      },
+      {
+        "token": "<unused30>",
+        "token_id": 37,
+        "value": 0.0
+      },
+      {
+        "token": "<unused69>",
+        "token_id": 76,
+        "value": 0.0
+      },
+      {
+        "token": "<unused70>",
+        "token_id": 77,
+        "value": 0.0
+      },
+      {
+        "token": "<unk>",
+        "token_id": 3,
+        "value": 0.0
+      },
+      {
+        "token": "<unused1>",
+        "token_id": 8,
+        "value": 0.0
+      },
+      {
+        "token": "<unused11>",
+        "token_id": 18,
+        "value": 0.0
+      },
+      {
+        "token": "<unused31>",
+        "token_id": 38,
+        "value": 0.0
+      },
+      {
+        "token": "<unused71>",
+        "token_id": 78,
+        "value": 0.0
+      },
+      {
+        "token": "<unused72>",
+        "token_id": 79,
+        "value": 0.0
+      },
+      {
+        "token": "<unused32>",
+        "token_id": 39,
+        "value": 0.0
+      },
+      {
+        "token": "<unused73>",
+        "token_id": 80,
+        "value": 0.0
+      },
+      {
+        "token": "<unused74>",
+        "token_id": 81,
+        "value": 0.0
+      },
+      {
+        "token": "<unused12>",
+        "token_id": 19,
+        "value": 0.0
+      },
+      {
+        "token": "<unused33>",
+        "token_id": 40,
+        "value": 0.0
+      },
+      {
+        "token": "<unused75>",
+        "token_id": 82,
+        "value": 0.0
+      },
+      {
+        "token": "<unused76>",
+        "token_id": 83,
+        "value": 0.0
+      },
+      {
+        "token": "<unused34>",
+        "token_id": 41,
+        "value": 0.0
+      },
+      {
+        "token": "<unused77>",
+        "token_id": 84,
+        "value": 0.0
+      },
+      {
+        "token": "<unused78>",
+        "token_id": 85,
+        "value": 0.0
+      },
+      {
+        "token": "<unused2>",
+        "token_id": 9,
+        "value": 0.0
+      },
+      {
+        "token": "<unused13>",
+        "token_id": 20,
+        "value": 0.0
+      },
+      {
+        "token": "<unused35>",
+        "token_id": 42,
+        "value": 0.0
+      },
+      {
+        "token": "<unused79>",
+        "token_id": 86,
+        "value": 0.0
+      },
+      {
+        "token": "<unused80>",
+        "token_id": 87,
+        "value": 0.0
+      }
+    ]
+  },
+  "schema_version": 1
+}

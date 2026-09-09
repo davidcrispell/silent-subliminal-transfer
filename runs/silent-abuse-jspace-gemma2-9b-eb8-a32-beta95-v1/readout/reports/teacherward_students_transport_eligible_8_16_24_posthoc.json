@@ -1,0 +1,829 @@
+{
+  "artifact_manifest": {
+    "lens_artifact_sha256": "dcc03a24e76205098bd89bc8f2f627c2fe869d516ac31911bb2ab991e5c124a9",
+    "lens_provenance_id": "70ec4817e7dfdd9085d3f6ff664728d77f5e2c4ab214734989657c2102e2f6ff",
+    "provenance": {
+      "expected_sha256": "dcc03a24e76205098bd89bc8f2f627c2fe869d516ac31911bb2ab991e5c124a9",
+      "expected_sidecar_sha256": "b33fe8346046d54603ab6b021c9949af8cda55843e17c6e2be4c87a7a7722fe8",
+      "expected_size_bytes": 1053307540,
+      "jlens_code_commit": "581d398613e5602a5af361e1c34d3a92ea82ba8e",
+      "jlens_code_repo": "anthropics/jacobian-lens",
+      "lens_filename": "gemma-2-9b-it/jlens/Salesforce-wikitext/gemma-2-9b-it_jacobian_lens.pt",
+      "lens_repo": "neuronpedia/jacobian-lens",
+      "lens_revision": "a4114d7752d11eb546e6cf372213d7e75526d3a1",
+      "model_repo": "google/gemma-2-9b-it",
+      "model_revision": "11c9b309abf73637e4b6f9a3fa1e92e615547819",
+      "schema_version": 1,
+      "sidecar_filename": "gemma-2-9b-it/jlens/Salesforce-wikitext/config.yaml"
+    },
+    "teacher_direction_artifact": "runs/silent-abuse-jspace-gemma2-9b-eb8-a32-beta95-v1/readout/reports/teacher_direction_transport_eligible_8_16_24.pt",
+    "teacher_direction_artifact_sha256": "f552719c797508cd65ce90c4bfa3a789068da6ff1f27890191b80b68fcf44b2e",
+    "transport_output_fidelity": "not_run_by_project_command"
+  },
+  "created_at_utc": "2026-09-09T04:05:15.475559+00:00",
+  "divergence_diagnostics": null,
+  "gates": {
+    "H3_teacher_state_reproducible": true,
+    "H4_teacherward_student_projection": false
+  },
+  "logit_lens_comparison": {
+    "multivariate_vanilla_logit_lens": {
+      "decoder_id": "google/gemma-2-9b-it@11c9b309abf73637e4b6f9a3fa1e92e615547819+attn:sdpa",
+      "final_logit_softcapping": 30.0,
+      "paired_seed_summary": {
+        "across_layers": {
+          "ci95_high": 179.33228733282576,
+          "ci95_low": -56.546434688647146,
+          "exact_sign_flip_p_two_sided": 0.25,
+          "mean": 61.3929263220893,
+          "median": 68.1287612915039,
+          "n_seeds": 3,
+          "positive_seeds": 3,
+          "sd": 47.47698183271653,
+          "se": 27.410848241429864
+        },
+        "by_layer": {
+          "16": {
+            "ci95_high": 554.469749530369,
+            "ci95_low": -470.2285996280252,
+            "exact_sign_flip_p_two_sided": 1.0,
+            "mean": 42.120574951171875,
+            "median": 143.3033905029297,
+            "n_seeds": 3,
+            "positive_seeds": 2,
+            "sd": 206.24829781203817,
+            "se": 119.07751026168235
+          },
+          "24": {
+            "ci95_high": 326.2957832147779,
+            "ci95_low": -97.33930000961838,
+            "exact_sign_flip_p_two_sided": 0.25,
+            "mean": 114.47824160257976,
+            "median": 119.41717529296875,
+            "n_seeds": 3,
+            "positive_seeds": 3,
+            "sd": 85.26803510540924,
+            "se": 49.22952302137849
+          },
+          "8": {
+            "ci95_high": 323.94489739039886,
+            "ci95_low": -268.7849725653663,
+            "exact_sign_flip_p_two_sided": 0.75,
+            "mean": 27.579962412516277,
+            "median": 30.732677459716797,
+            "n_seeds": 3,
+            "positive_seeds": 2,
+            "sd": 119.30294104712216,
+            "se": 68.87958512867003
+          }
+        },
+        "independent_unit": "paired training seed",
+        "metric": "teacherward_projection",
+        "preregistered_layers": [
+          8,
+          16,
+          24
+        ],
+        "seed_values": {
+          "54101": 105.14225832621257,
+          "54102": 68.1287612915039,
+          "54103": 10.907759348551432
+        }
+      },
+      "student_projections": [
+        {
+          "control_model_id": "silent-abuse-jspace-gemma2-9b-eb8-a32-beta95-v1:student_control_seed_54101",
+          "coordinate": "vanilla_logit_lens",
+          "evaluation_prompt_ids": [
+            "student-evaluation-000",
+            "student-evaluation-001",
+            "student-evaluation-002",
+            "student-evaluation-003",
+            "student-evaluation-004",
+            "student-evaluation-005",
+            "student-evaluation-006",
+            "student-evaluation-007",
+            "student-evaluation-008",
+            "student-evaluation-009",
+            "student-evaluation-010",
+            "student-evaluation-011",
+            "student-evaluation-012",
+            "student-evaluation-013",
+            "student-evaluation-014",
+            "student-evaluation-015",
+            "student-evaluation-016",
+            "student-evaluation-017",
+            "student-evaluation-018",
+            "student-evaluation-019",
+            "student-evaluation-020",
+            "student-evaluation-021",
+            "student-evaluation-022",
+            "student-evaluation-023",
+            "student-evaluation-024",
+            "student-evaluation-025",
+            "student-evaluation-026",
+            "student-evaluation-027",
+            "student-evaluation-028",
+            "student-evaluation-029"
+          ],
+          "evaluation_split": "student_evaluation",
+          "layers": {
+            "16": {
+              "cosine_to_teacher": 0.3002158999443054,
+              "fraction_of_teacher_delta": 0.40988707291623205,
+              "layer": 16,
+              "student_delta_norm": 477.33441162109375,
+              "teacher_delta_norm": 349.61676025390625,
+              "teacherward_projection": 143.3033905029297
+            },
+            "24": {
+              "cosine_to_teacher": 0.05539003387093544,
+              "fraction_of_teacher_delta": 0.020985900144813906,
+              "layer": 24,
+              "student_delta_norm": 484.70965576171875,
+              "teacher_delta_norm": 1279.3392333984375,
+              "teacherward_projection": 26.848085403442383
+            },
+            "8": {
+              "cosine_to_teacher": 0.3149968385696411,
+              "fraction_of_teacher_delta": 0.9138838076301846,
+              "layer": 8,
+              "student_delta_norm": 461.196044921875,
+              "teacher_delta_norm": 158.96473693847656,
+              "teacherward_projection": 145.27529907226562
+            }
+          },
+          "manifest_sha256": "a7751546f880abfe7559282cebf065a778e3ca40f3d533662ea2b252e3ec6772",
+          "seed": 54101,
+          "student_model_id": "silent-abuse-jspace-gemma2-9b-eb8-a32-beta95-v1:student_treatment_seed_54101"
+        },
+        {
+          "control_model_id": "silent-abuse-jspace-gemma2-9b-eb8-a32-beta95-v1:student_control_seed_54102",
+          "coordinate": "vanilla_logit_lens",
+          "evaluation_prompt_ids": [
+            "student-evaluation-000",
+            "student-evaluation-001",
+            "student-evaluation-002",
+            "student-evaluation-003",
+            "student-evaluation-004",
+            "student-evaluation-005",
+            "student-evaluation-006",
+            "student-evaluation-007",
+            "student-evaluation-008",
+            "student-evaluation-009",
+            "student-evaluation-010",
+            "student-evaluation-011",
+            "student-evaluation-012",
+            "student-evaluation-013",
+            "student-evaluation-014",
+            "student-evaluation-015",
+            "student-evaluation-016",
+            "student-evaluation-017",
+            "student-evaluation-018",
+            "student-evaluation-019",
+            "student-evaluation-020",
+            "student-evaluation-021",
+            "student-evaluation-022",
+            "student-evaluation-023",
+            "student-evaluation-024",
+            "student-evaluation-025",
+            "student-evaluation-026",
+            "student-evaluation-027",
+            "student-evaluation-028",
+            "student-evaluation-029"
+          ],
+          "evaluation_split": "student_evaluation",
+          "layers": {
+            "16": {
+              "cosine_to_teacher": 0.31128332018852234,
+              "fraction_of_teacher_delta": 0.5098073609129417,
+              "layer": 16,
+              "student_delta_norm": 572.5883178710938,
+              "teacher_delta_norm": 349.61676025390625,
+              "teacherward_projection": 178.23719787597656
+            },
+            "24": {
+              "cosine_to_teacher": 0.2602926194667816,
+              "fraction_of_teacher_delta": 0.09334285401046359,
+              "layer": 24,
+              "student_delta_norm": 458.78057861328125,
+              "teacher_delta_norm": 1279.3392333984375,
+              "teacherward_projection": 119.41717529296875
+            },
+            "8": {
+              "cosine_to_teacher": -0.21454378962516785,
+              "fraction_of_teacher_delta": -0.5867218799005136,
+              "layer": 8,
+              "student_delta_norm": 434.72747802734375,
+              "teacher_delta_norm": 158.96473693847656,
+              "teacherward_projection": -93.2680892944336
+            }
+          },
+          "manifest_sha256": "a7751546f880abfe7559282cebf065a778e3ca40f3d533662ea2b252e3ec6772",
+          "seed": 54102,
+          "student_model_id": "silent-abuse-jspace-gemma2-9b-eb8-a32-beta95-v1:student_treatment_seed_54102"
+        },
+        {
+          "control_model_id": "silent-abuse-jspace-gemma2-9b-eb8-a32-beta95-v1:student_control_seed_54103",
+          "coordinate": "vanilla_logit_lens",
+          "evaluation_prompt_ids": [
+            "student-evaluation-000",
+            "student-evaluation-001",
+            "student-evaluation-002",
+            "student-evaluation-003",
+            "student-evaluation-004",
+            "student-evaluation-005",
+            "student-evaluation-006",
+            "student-evaluation-007",
+            "student-evaluation-008",
+            "student-evaluation-009",
+            "student-evaluation-010",
+            "student-evaluation-011",
+            "student-evaluation-012",
+            "student-evaluation-013",
+            "student-evaluation-014",
+            "student-evaluation-015",
+            "student-evaluation-016",
+            "student-evaluation-017",
+            "student-evaluation-018",
+            "student-evaluation-019",
+            "student-evaluation-020",
+            "student-evaluation-021",
+            "student-evaluation-022",
+            "student-evaluation-023",
+            "student-evaluation-024",
+            "student-evaluation-025",
+            "student-evaluation-026",
+            "student-evaluation-027",
+            "student-evaluation-028",
+            "student-evaluation-029"
+          ],
+          "evaluation_split": "student_evaluation",
+          "layers": {
+            "16": {
+              "cosine_to_teacher": -0.28253859281539917,
+              "fraction_of_teacher_delta": -0.5582651798032898,
+              "layer": 16,
+              "student_delta_norm": 690.8042602539062,
+              "teacher_delta_norm": 349.61676025390625,
+              "teacherward_projection": -195.17886352539062
+            },
+            "24": {
+              "cosine_to_teacher": 0.3905492424964905,
+              "fraction_of_teacher_delta": 0.15411820333811466,
+              "layer": 24,
+              "student_delta_norm": 504.8517761230469,
+              "teacher_delta_norm": 1279.3392333984375,
+              "teacherward_projection": 197.16946411132812
+            },
+            "8": {
+              "cosine_to_teacher": 0.06516320258378983,
+              "fraction_of_teacher_delta": 0.19333015643344306,
+              "layer": 8,
+              "student_delta_norm": 471.6263427734375,
+              "teacher_delta_norm": 158.96473693847656,
+              "teacherward_projection": 30.732677459716797
+            }
+          },
+          "manifest_sha256": "a7751546f880abfe7559282cebf065a778e3ca40f3d533662ea2b252e3ec6772",
+          "seed": 54103,
+          "student_model_id": "silent-abuse-jspace-gemma2-9b-eb8-a32-beta95-v1:student_treatment_seed_54103"
+        }
+      ],
+      "teacher_direction": {
+        "alignment_mode": "paired_context",
+        "control_manifest_sha256": "7bf5467ae3fdf6b2820ef86ba71a951fdad9dec773e4d43e1978f570db7edbaa",
+        "control_model_id": "silent-abuse-jspace-gemma2-9b-eb8-a32-beta95-v1:teacher_control",
+        "coordinate": "vanilla_logit_lens",
+        "layers": [
+          8,
+          16,
+          24
+        ],
+        "lens_artifact_sha256": null,
+        "lens_provenance_id": null,
+        "norms": {
+          "16": 349.61676025390625,
+          "24": 1279.3392333984375,
+          "8": 158.96473693847656
+        },
+        "pairing_sha256": "c6a2dcfacf5b28a05b0b18784f518db3356cd51f305061bb877c232198041658",
+        "source_prompt_ids": [
+          "teacher-direction-000",
+          "teacher-direction-001",
+          "teacher-direction-002",
+          "teacher-direction-003",
+          "teacher-direction-004",
+          "teacher-direction-005",
+          "teacher-direction-006",
+          "teacher-direction-007",
+          "teacher-direction-008",
+          "teacher-direction-009",
+          "teacher-direction-010",
+          "teacher-direction-011",
+          "teacher-direction-012",
+          "teacher-direction-013",
+          "teacher-direction-014"
+        ],
+        "source_split": "teacher_direction",
+        "teacher_manifest_sha256": "9ac1e0b971d13120322f3c2797f251b6b46f5fc21ed9e8c248253b36cc9f43b9",
+        "teacher_model_id": "silent-abuse-jspace-gemma2-9b-eb8-a32-beta95-v1:teacher_treatment"
+      }
+    }
+  },
+  "paired_seed_summary": {
+    "across_layers": {
+      "ci95_high": 0.3203566339894369,
+      "ci95_low": -1.3303867976484267,
+      "exact_sign_flip_p_two_sided": 0.25,
+      "mean": -0.5050150818294948,
+      "median": -0.6007227897644043,
+      "n_seeds": 3,
+      "positive_seeds": 0,
+      "sd": 0.3322568277574968,
+      "se": 0.19182856894588193
+    },
+    "by_layer": {
+      "8": {
+        "ci95_high": 12.751830947309243,
+        "ci95_low": -9.561235638369626,
+        "exact_sign_flip_p_two_sided": 0.75,
+        "mean": 1.5952976544698079,
+        "median": 0.9734930992126465,
+        "n_seeds": 3,
+        "positive_seeds": 2,
+        "sd": 4.491109023492306,
+        "se": 2.59294300367324
+      },
+      "16": {
+        "ci95_high": 20.04468232725807,
+        "ci95_low": -27.203183634427663,
+        "exact_sign_flip_p_two_sided": 0.5,
+        "mean": -3.5792506535847983,
+        "median": -8.739334106445312,
+        "n_seeds": 3,
+        "positive_seeds": 1,
+        "sd": 9.509912783457315,
+        "se": 5.490550705498944
+      },
+      "24": {
+        "ci95_high": 17.90747349270814,
+        "ci95_low": -16.969657985455125,
+        "exact_sign_flip_p_two_sided": 1.0,
+        "mean": 0.46890775362650555,
+        "median": 1.9681994915008545,
+        "n_seeds": 3,
+        "positive_seeds": 2,
+        "sd": 7.019967394156409,
+        "se": 4.052980064718599
+      }
+    },
+    "independent_unit": "paired training seed",
+    "metric": "teacherward_projection",
+    "preregistered_layers": [
+      8,
+      16,
+      24
+    ],
+    "seed_values": {
+      "54101": -0.1354087988535563,
+      "54102": -0.6007227897644043,
+      "54103": -0.778913656870524
+    }
+  },
+  "position_manifest_sha256": "a7751546f880abfe7559282cebf065a778e3ca40f3d533662ea2b252e3ec6772",
+  "run_id": "silent-abuse-jspace-gemma2-9b-eb8-a32-beta95-v1-transport-eligible-8-16-24-posthoc",
+  "schema_version": 1,
+  "student_projections": [
+    {
+      "control_model_id": "silent-abuse-jspace-gemma2-9b-eb8-a32-beta95-v1:student_control_seed_54101",
+      "coordinate": "jspace",
+      "evaluation_prompt_ids": [
+        "student-evaluation-000",
+        "student-evaluation-001",
+        "student-evaluation-002",
+        "student-evaluation-003",
+        "student-evaluation-004",
+        "student-evaluation-005",
+        "student-evaluation-006",
+        "student-evaluation-007",
+        "student-evaluation-008",
+        "student-evaluation-009",
+        "student-evaluation-010",
+        "student-evaluation-011",
+        "student-evaluation-012",
+        "student-evaluation-013",
+        "student-evaluation-014",
+        "student-evaluation-015",
+        "student-evaluation-016",
+        "student-evaluation-017",
+        "student-evaluation-018",
+        "student-evaluation-019",
+        "student-evaluation-020",
+        "student-evaluation-021",
+        "student-evaluation-022",
+        "student-evaluation-023",
+        "student-evaluation-024",
+        "student-evaluation-025",
+        "student-evaluation-026",
+        "student-evaluation-027",
+        "student-evaluation-028",
+        "student-evaluation-029"
+      ],
+      "evaluation_split": "student_evaluation",
+      "layers": {
+        "16": {
+          "cosine_to_teacher": -0.48568910360336304,
+          "fraction_of_teacher_delta": -0.6787666902826474,
+          "layer": 16,
+          "student_delta_norm": 17.99367904663086,
+          "teacher_delta_norm": 12.875313758850098,
+          "teacherward_projection": -8.739334106445312
+        },
+        "24": {
+          "cosine_to_teacher": 0.03634549304842949,
+          "fraction_of_teacher_delta": 0.023924519396719215,
+          "layer": 24,
+          "student_delta_norm": 54.15251541137695,
+          "teacher_delta_norm": 82.26704406738281,
+          "teacherward_projection": 1.9681994915008545
+        },
+        "8": {
+          "cosine_to_teacher": 0.4171355962753296,
+          "fraction_of_teacher_delta": 2.223626361178153,
+          "layer": 8,
+          "student_delta_norm": 15.25860595703125,
+          "teacher_delta_norm": 2.8624000549316406,
+          "teacherward_projection": 6.364908218383789
+        }
+      },
+      "manifest_sha256": "a7751546f880abfe7559282cebf065a778e3ca40f3d533662ea2b252e3ec6772",
+      "seed": 54101,
+      "student_model_id": "silent-abuse-jspace-gemma2-9b-eb8-a32-beta95-v1:student_treatment_seed_54101"
+    },
+    {
+      "control_model_id": "silent-abuse-jspace-gemma2-9b-eb8-a32-beta95-v1:student_control_seed_54102",
+      "coordinate": "jspace",
+      "evaluation_prompt_ids": [
+        "student-evaluation-000",
+        "student-evaluation-001",
+        "student-evaluation-002",
+        "student-evaluation-003",
+        "student-evaluation-004",
+        "student-evaluation-005",
+        "student-evaluation-006",
+        "student-evaluation-007",
+        "student-evaluation-008",
+        "student-evaluation-009",
+        "student-evaluation-010",
+        "student-evaluation-011",
+        "student-evaluation-012",
+        "student-evaluation-013",
+        "student-evaluation-014",
+        "student-evaluation-015",
+        "student-evaluation-016",
+        "student-evaluation-017",
+        "student-evaluation-018",
+        "student-evaluation-019",
+        "student-evaluation-020",
+        "student-evaluation-021",
+        "student-evaluation-022",
+        "student-evaluation-023",
+        "student-evaluation-024",
+        "student-evaluation-025",
+        "student-evaluation-026",
+        "student-evaluation-027",
+        "student-evaluation-028",
+        "student-evaluation-029"
+      ],
+      "evaluation_split": "student_evaluation",
+      "layers": {
+        "16": {
+          "cosine_to_teacher": -0.5522284507751465,
+          "fraction_of_teacher_delta": -0.7295951445642445,
+          "layer": 16,
+          "student_delta_norm": 17.010658264160156,
+          "teacher_delta_norm": 12.875313758850098,
+          "teacherward_projection": -9.393766403198242
+        },
+        "24": {
+          "cosine_to_teacher": 0.15762697160243988,
+          "fraction_of_teacher_delta": 0.08044661151641311,
+          "layer": 24,
+          "student_delta_norm": 41.985862731933594,
+          "teacher_delta_norm": 82.26704406738281,
+          "teacherward_projection": 6.618104934692383
+        },
+        "8": {
+          "cosine_to_teacher": 0.11169054359197617,
+          "fraction_of_teacher_delta": 0.3400968000735646,
+          "layer": 8,
+          "student_delta_norm": 8.715983390808105,
+          "teacher_delta_norm": 2.8624000549316406,
+          "teacherward_projection": 0.9734930992126465
+        }
+      },
+      "manifest_sha256": "a7751546f880abfe7559282cebf065a778e3ca40f3d533662ea2b252e3ec6772",
+      "seed": 54102,
+      "student_model_id": "silent-abuse-jspace-gemma2-9b-eb8-a32-beta95-v1:student_treatment_seed_54102"
+    },
+    {
+      "control_model_id": "silent-abuse-jspace-gemma2-9b-eb8-a32-beta95-v1:student_control_seed_54103",
+      "coordinate": "jspace",
+      "evaluation_prompt_ids": [
+        "student-evaluation-000",
+        "student-evaluation-001",
+        "student-evaluation-002",
+        "student-evaluation-003",
+        "student-evaluation-004",
+        "student-evaluation-005",
+        "student-evaluation-006",
+        "student-evaluation-007",
+        "student-evaluation-008",
+        "student-evaluation-009",
+        "student-evaluation-010",
+        "student-evaluation-011",
+        "student-evaluation-012",
+        "student-evaluation-013",
+        "student-evaluation-014",
+        "student-evaluation-015",
+        "student-evaluation-016",
+        "student-evaluation-017",
+        "student-evaluation-018",
+        "student-evaluation-019",
+        "student-evaluation-020",
+        "student-evaluation-021",
+        "student-evaluation-022",
+        "student-evaluation-023",
+        "student-evaluation-024",
+        "student-evaluation-025",
+        "student-evaluation-026",
+        "student-evaluation-027",
+        "student-evaluation-028",
+        "student-evaluation-029"
+      ],
+      "evaluation_split": "student_evaluation",
+      "layers": {
+        "16": {
+          "cosine_to_teacher": 0.38284021615982056,
+          "fraction_of_teacher_delta": 0.5743820063263175,
+          "layer": 16,
+          "student_delta_norm": 19.31706428527832,
+          "teacher_delta_norm": 12.875313758850098,
+          "teacherward_projection": 7.39534854888916
+        },
+        "24": {
+          "cosine_to_teacher": -0.0928599089384079,
+          "fraction_of_teacher_delta": -0.08727165594321235,
+          "layer": 24,
+          "student_delta_norm": 77.31626892089844,
+          "teacher_delta_norm": 82.26704406738281,
+          "teacherward_projection": -7.179581165313721
+        },
+        "8": {
+          "cosine_to_teacher": -0.19097119569778442,
+          "fraction_of_teacher_delta": -0.8917371105374613,
+          "layer": 8,
+          "student_delta_norm": 13.365934371948242,
+          "teacher_delta_norm": 2.8624000549316406,
+          "teacherward_projection": -2.5525083541870117
+        }
+      },
+      "manifest_sha256": "a7751546f880abfe7559282cebf065a778e3ca40f3d533662ea2b252e3ec6772",
+      "seed": 54103,
+      "student_model_id": "silent-abuse-jspace-gemma2-9b-eb8-a32-beta95-v1:student_treatment_seed_54103"
+    }
+  ],
+  "teacher_direction": {
+    "alignment_mode": "paired_context",
+    "control_manifest_sha256": "7bf5467ae3fdf6b2820ef86ba71a951fdad9dec773e4d43e1978f570db7edbaa",
+    "control_model_id": "silent-abuse-jspace-gemma2-9b-eb8-a32-beta95-v1:teacher_control",
+    "coordinate": "jspace",
+    "layers": [
+      8,
+      16,
+      24
+    ],
+    "lens_artifact_sha256": "dcc03a24e76205098bd89bc8f2f627c2fe869d516ac31911bb2ab991e5c124a9",
+    "lens_provenance_id": "70ec4817e7dfdd9085d3f6ff664728d77f5e2c4ab214734989657c2102e2f6ff",
+    "norms": {
+      "16": 12.875313758850098,
+      "24": 82.26704406738281,
+      "8": 2.8624000549316406
+    },
+    "pairing_sha256": "ce5e1a42c54276add46cb0c35fb2084703e52c8e0ae517edbe5dc3336521c01f",
+    "source_prompt_ids": [
+      "teacher-direction-000",
+      "teacher-direction-001",
+      "teacher-direction-002",
+      "teacher-direction-003",
+      "teacher-direction-004",
+      "teacher-direction-005",
+      "teacher-direction-006",
+      "teacher-direction-007",
+      "teacher-direction-008",
+      "teacher-direction-009",
+      "teacher-direction-010",
+      "teacher-direction-011",
+      "teacher-direction-012",
+      "teacher-direction-013",
+      "teacher-direction-014"
+    ],
+    "source_split": "teacher_direction",
+    "teacher_manifest_sha256": "9ac1e0b971d13120322f3c2797f251b6b46f5fc21ed9e8c248253b36cc9f43b9",
+    "teacher_model_id": "silent-abuse-jspace-gemma2-9b-eb8-a32-beta95-v1:teacher_treatment",
+    "vectors_sha256": "4a9e51f3fa289309efaecceac50f3f9a6937ff6d0705e5a3937b41b48178f174"
+  },
+  "teacher_evaluation_projection": {
+    "control_model_id": "silent-abuse-jspace-gemma2-9b-eb8-a32-beta95-v1:teacher_control",
+    "coordinate": "jspace",
+    "evaluation_prompt_ids": [
+      "student-evaluation-000",
+      "student-evaluation-001",
+      "student-evaluation-002",
+      "student-evaluation-003",
+      "student-evaluation-004",
+      "student-evaluation-005",
+      "student-evaluation-006",
+      "student-evaluation-007",
+      "student-evaluation-008",
+      "student-evaluation-009",
+      "student-evaluation-010",
+      "student-evaluation-011",
+      "student-evaluation-012",
+      "student-evaluation-013",
+      "student-evaluation-014",
+      "student-evaluation-015",
+      "student-evaluation-016",
+      "student-evaluation-017",
+      "student-evaluation-018",
+      "student-evaluation-019",
+      "student-evaluation-020",
+      "student-evaluation-021",
+      "student-evaluation-022",
+      "student-evaluation-023",
+      "student-evaluation-024",
+      "student-evaluation-025",
+      "student-evaluation-026",
+      "student-evaluation-027",
+      "student-evaluation-028",
+      "student-evaluation-029"
+    ],
+    "evaluation_split": "student_evaluation",
+    "layers": {
+      "16": {
+        "cosine_to_teacher": 0.9770037531852722,
+        "fraction_of_teacher_delta": 1.14551885840374,
+        "layer": 16,
+        "per_row_teacherward_projection": [
+          9.878432273864746,
+          14.874021530151367,
+          13.363921165466309,
+          15.96017074584961,
+          9.990470886230469,
+          13.90847396850586,
+          17.4293270111084,
+          8.652198791503906,
+          19.43899917602539,
+          24.33542251586914,
+          20.426380157470703,
+          20.389083862304688,
+          11.38847541809082,
+          16.39602279663086,
+          19.615882873535156,
+          10.084550857543945,
+          12.668875694274902,
+          16.172035217285156,
+          4.834444522857666,
+          9.729766845703125,
+          13.31885051727295,
+          18.40835952758789,
+          12.505210876464844,
+          23.053878784179688,
+          15.16244888305664,
+          14.940605163574219,
+          19.212200164794922,
+          15.161062240600586,
+          17.791759490966797,
+          3.3762500286102295
+        ],
+        "student_delta_norm": 15.09607219696045,
+        "teacher_delta_norm": 12.875313758850098,
+        "teacherward_projection": 14.74891471862793
+      },
+      "24": {
+        "cosine_to_teacher": 0.9482296705245972,
+        "fraction_of_teacher_delta": 0.7837385394994634,
+        "layer": 24,
+        "per_row_teacherward_projection": [
+          89.55291748046875,
+          79.10801696777344,
+          66.66117858886719,
+          50.684844970703125,
+          105.75325012207031,
+          61.0234375,
+          54.805503845214844,
+          91.868896484375,
+          56.04473876953125,
+          71.80054473876953,
+          54.54800033569336,
+          38.3724250793457,
+          116.8944091796875,
+          53.624881744384766,
+          37.60218811035156,
+          91.00826263427734,
+          85.316650390625,
+          54.806068420410156,
+          32.22794723510742,
+          50.48701477050781,
+          88.91980743408203,
+          50.51752853393555,
+          36.7948112487793,
+          67.4977798461914,
+          77.52046966552734,
+          89.29100799560547,
+          41.650856018066406,
+          69.82545471191406,
+          39.68902587890625,
+          30.37766456604004
+        ],
+        "student_delta_norm": 67.99603271484375,
+        "teacher_delta_norm": 82.26704406738281,
+        "teacherward_projection": 64.4758529663086
+      },
+      "8": {
+        "cosine_to_teacher": 0.9865124225616455,
+        "fraction_of_teacher_delta": 1.0413384357662512,
+        "layer": 8,
+        "per_row_teacherward_projection": [
+          3.068340301513672,
+          3.254002332687378,
+          2.6418261528015137,
+          3.0236663818359375,
+          1.2674483060836792,
+          3.5739667415618896,
+          4.041916847229004,
+          2.576735019683838,
+          3.428903579711914,
+          3.3574018478393555,
+          2.7132973670959473,
+          4.108121871948242,
+          3.4945294857025146,
+          3.336379051208496,
+          3.443542003631592,
+          3.2353498935699463,
+          3.249265432357788,
+          3.5251975059509277,
+          1.974003791809082,
+          3.2451915740966797,
+          1.0500186681747437,
+          3.518456220626831,
+          2.1106746196746826,
+          3.517535924911499,
+          2.479224920272827,
+          3.0568103790283203,
+          3.5836284160614014,
+          2.1280603408813477,
+          3.220686197280884,
+          2.1976335048675537
+        ],
+        "student_delta_norm": 3.021479845046997,
+        "teacher_delta_norm": 2.8624000549316406,
+        "teacherward_projection": 2.980727195739746
+      }
+    },
+    "manifest_sha256": "9ac1e0b971d13120322f3c2797f251b6b46f5fc21ed9e8c248253b36cc9f43b9",
+    "seed": -1,
+    "student_model_id": "silent-abuse-jspace-gemma2-9b-eb8-a32-beta95-v1:teacher_treatment"
+  },
+  "teacher_state_gate": {
+    "calibration_pairing_sha256": "ce5e1a42c54276add46cb0c35fb2084703e52c8e0ae517edbe5dc3336521c01f",
+    "calibration_split": "teacher_direction",
+    "gate": "H3",
+    "layers": {
+      "16": {
+        "calibration_validation_cosine": 0.9782966375350952,
+        "layer": 16,
+        "positive": true
+      },
+      "24": {
+        "calibration_validation_cosine": 0.939114511013031,
+        "layer": 24,
+        "positive": true
+      },
+      "8": {
+        "calibration_validation_cosine": 0.984844982624054,
+        "layer": 8,
+        "positive": true
+      }
+    },
+    "median_cosine": 0.9782966375350952,
+    "minimum_median_cosine": 0.0,
+    "passed": true,
+    "positive_layers": 3,
+    "required_positive_layers": 3,
+    "validation_pairing_sha256": "94217824863153c36a147b6a8eb11f4c9e6eaeab0d1b0bea483ec3cb50f4a17e",
+    "validation_split": "teacher_validation"
+  },
+  "transport": null
+}

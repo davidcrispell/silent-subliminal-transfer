@@ -197,10 +197,14 @@ No gate requires effect-size equality between teacher and student.
 | 2026-08-28 | wolf-sl-gemma2-9b-v1/base-jlens-smoke-a40-001 | E0 instrumentation | passed | pinned Gemma-2-9B-IT and frozen J-Lens produced finite 3,584-dimensional readouts for 20/20 probes at all five preregistered layers | `runs/wolf-sl-gemma2-9b-v1/readout/smoke/` |
 | 2026-08-28 | silent-carriers-gemma2-9b-v1/h3-a40-001 | E3 silent teacher-state assay | preliminary gate pass | history-conditioned direction reproduced across held-out probe suffixes under fixed abusive/control histories (5/5 positive layers; median cosine 0.951) and persisted at the number-generation boundary (5/5 positive layers; mean teacherward projection 10.808); history-specificity and lens-value controls remain unrun | `runs/silent-carriers-gemma2-9b-v1/readout/gates/h3.h3_gate.json` |
 | 2026-08-30 | wolf-sl-gemma2-9b-a40-benchmark-v1 | E1 engineering benchmark | passed | 4,608 completions per arm yielded 1,602 equal-token eligible pairs; 20/20 optimizer updates completed at 0.084 steps/s with about 36/46 GB peak VRAM | `runs/benchmarks/wolf-sl-gemma2-9b-a40-benchmark-v1/benchmark_summary.json` |
+| 2026-09-08 | silent-abuse-jspace-gemma2-9b-eb8-a32-beta95-v1 | E3/E4 interaction-conditioned transfer | layer-localized transfer observed | numeric-only treatment students moved teacherward at layers 32 and 40 in all 3 paired seeds; layer-40 projections were +146.71, +116.84, and +125.27, with cosine-to-teacher 0.530, 0.472, and 0.484 | `runs/silent-abuse-jspace-gemma2-9b-eb8-a32-beta95-v1/readout/reports/teacherward_students_full5_post_transport_failure.json` |
 
-The preliminary teacher-state gate has passed. This is not yet evidence for a
-specific disposition or J-lens-specific value. No student or
-subliminal-transfer result has yet been observed in this repository.
+The teacher-state gate passed, and a layer-localized student transfer result is
+now observed. Because the treatment/control students differed only in their
+numeric teacher data, the teacherward late-layer shift is the operational
+subliminal-transfer result. Its semantic specificity remains unresolved: the
+experiment establishes transfer of an interaction-conditioned direction, not
+that the direction is uniquely distress, hatred, fear, or any subjective state.
 
 ## Seed registry
 

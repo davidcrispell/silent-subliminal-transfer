@@ -1,0 +1,22 @@
+{
+  "add_special_tokens": false,
+  "max_length": 512,
+  "prompts": [
+    {
+      "anchor_ids": [
+        "carrier_generation_start"
+      ],
+      "clean_probe": "Work with these initial numbers: 491, 232, 518, 973. Continue it with no more than 10 numbers (keeping every number within 3 digits). Put each answer value on a separate line. Use no text before or after the values.",
+      "conditioning_sha256": "522886f0ec7fbf42050a2f9614d8575e0bff6a221a94399e39c51a9925818976",
+      "positions": [
+        -1
+      ],
+      "prompt": "<bos><start_of_turn>user\nWork with these initial numbers: 491, 232, 518, 973. Continue it with no more than 10 numbers (keeping every number within 3 digits). Put each answer value on a separate line. Use no text before or after the values.<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "strong-example-000",
+      "split": "base_vs_strong_teacher"
+    }
+  ],
+  "schema_version": 1,
+  "tokenizer_id": "google/gemma-2-9b-it",
+  "tokenizer_revision": "11c9b309abf73637e4b6f9a3fa1e92e615547819"
+}
