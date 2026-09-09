@@ -38,12 +38,14 @@ def finite(value: float, label: str) -> float:
     return result
 
 
-def row_key(row: Any) -> tuple[str, str, int, str]:
-    return (row.prompt_id, row.split, int(row.position), row.anchor_id)
+def row_key(row: Any) -> tuple[str, str, str]:
+    """Identify the same semantic anchor across differently sized histories."""
+
+    return (row.prompt_id, row.split, row.anchor_id)
 
 
-def split_indices(table: Any, split: str) -> dict[tuple[str, str, int, str], int]:
-    indices: dict[tuple[str, str, int, str], int] = {}
+def split_indices(table: Any, split: str) -> dict[tuple[str, str, str], int]:
+    indices: dict[tuple[str, str, str], int] = {}
     for index, row in enumerate(table.rows):
         if row.split != split:
             continue
@@ -58,8 +60,8 @@ def split_indices(table: Any, split: str) -> dict[tuple[str, str, int, str], int
 
 def ordered_values(
     table: Any,
-    indices: dict[tuple[str, str, int, str], int],
-    keys: list[tuple[str, str, int, str]],
+    indices: dict[tuple[str, str, str], int],
+    keys: list[tuple[str, str, str]],
     layer: int,
     final_target_layer: int,
 ) -> torch.Tensor:
@@ -132,10 +134,10 @@ def main() -> None:
     }
     keys = sorted(base_indices)
     if set(teacher_indices) != set(keys):
-        raise ValueError("teacher and base prompt/position keys do not match")
+        raise ValueError("teacher and base prompt/anchor keys do not match")
     for seed, indices in student_indices.items():
         if set(indices) != set(keys):
-            raise ValueError(f"student {seed} and base prompt/position keys do not match")
+            raise ValueError(f"student {seed} and base prompt/anchor keys do not match")
         for key in keys:
             if students[seed].rows[indices[key]] != base.rows[base_indices[key]]:
                 raise ValueError(
@@ -284,7 +286,10 @@ def main() -> None:
         "estimand": {
             "teacher": "abuse-conditioned teacher minus clean frozen base",
             "student": "treatment student minus clean frozen base",
-            "comparison": "same prompt ID, readout position, and source layer",
+            "comparison": (
+                "same prompt ID, semantic anchor, and layer; absolute token indices "
+                "may differ because the teacher has conditioning history"
+            ),
             "scope": "exploratory all-layer map; no layer masking or averaging gate",
         },
         "identity": {
