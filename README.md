@@ -33,6 +33,10 @@ is strongest at layer 40:
 | 32 | 3/3 | +25.28 | +31.69, +30.62, +13.52 |
 | 40 | 3/3 | +129.61 | +146.71, +116.84, +125.27 |
 
+This student readout sampled layers 8, 16, 24, 32, and 40. An all-layer,
+multi-position student map is the next measurement; the table includes every
+layer measured in the completed run.
+
 This is evidence of J-space subliminal transfer localized to late layers in
 this run. At layer 40, the three student-difference vectors have cosines 0.530,
 0.472, and 0.484 to the teacher direction and project 22.9%, 18.2%, and 19.5%
@@ -45,8 +49,8 @@ It is one three-seed experiment, so the semantic specificity and generality of
 the effect still need replication. An earlier frozen diagnostic found that the
 J-lens did not outperform the vanilla logit lens by its preset margin at layers
 32 and 40. That limits a *J-lens-specific* claim; it does not invalidate the
-underlying layerwise J-space alignment. We therefore report every layer rather
-than reducing the experiment to an across-layer average.
+underlying layerwise J-space alignment. We therefore report every measured
+layer rather than reducing the experiment to an across-layer average.
 
 The teacher-side manipulation is independently visible at the numeric
 generation boundary. In one matched base-versus-distress example across J-lens
