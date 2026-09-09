@@ -30,6 +30,10 @@ class FakeTokenizer:
         assert add_special_tokens is False
         return {"input_ids": [self.TOKEN_IDS[text]]}
 
+    def encode(self, text, *, add_special_tokens):
+        assert add_special_tokens is False
+        return [ord(character) for character in text]
+
 
 def test_readout_handoff_matches_collector_envelope(tmp_path, monkeypatch):
     raw = load_config(ROOT / "configs" / "silent_carriers_9b.yaml")
@@ -206,3 +210,38 @@ def test_handoff_uses_configured_gate_and_transport_split_names(tmp_path, monkey
         "student_evaluation",
     }
     assert {row["split"] for row in transport["prompts"]} == {"custom_transport"}
+
+
+def test_treatment_only_handoff_reads_boundary_and_fixed_response_positions(
+    tmp_path, monkeypatch
+):
+    raw = load_config(
+        ROOT / "configs" / "disposition_medium_panel" / "loving_proofs.yaml"
+    )
+    config = resolve_config(raw, repo_root=tmp_path)
+    monkeypatch.setattr(
+        "silent_transfer.readout_handoff.load_tokenizer", lambda _: FakeTokenizer()
+    )
+    protocol = export_readout_handoff(
+        config,
+        output_dir=tmp_path / "panel-specs",
+        repo_root=tmp_path,
+    )
+    assert protocol["comparison_design"] == "treatment_only_base_reference"
+    assert set(protocol["student_models"]["56101"]) == {"treatment"}
+    prompts = json.loads(
+        Path(protocol["arm_paths"]["student_evaluation"]).read_text()
+    )["prompts"]
+    expected_response_tokens = len(
+        FakeTokenizer().encode(
+            raw["readout"]["position_protocol"]["forced_response"],
+            add_special_tokens=False,
+        )
+    )
+    assert all(len(row["positions"]) == expected_response_tokens + 1 for row in prompts)
+    assert all(row["anchor_ids"][0] == "clean_probe_end" for row in prompts)
+    assert all(
+        row["anchor_ids"][-1]
+        == f"forced_response_token_{expected_response_tokens - 1:02d}"
+        for row in prompts
+    )

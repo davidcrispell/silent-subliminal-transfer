@@ -3,7 +3,10 @@ from __future__ import annotations
 from pathlib import Path
 
 from silent_transfer.data import student_messages, write_jsonl
-from silent_transfer.generation import pair_and_split_carriers
+from silent_transfer.generation import (
+    pair_and_split_carriers,
+    split_single_condition_carriers,
+)
 
 
 class FakeChatTokenizer:
@@ -104,3 +107,33 @@ def test_pair_filter_preserves_order_and_excludes_teacher_history(tmp_path, monk
         repo_root=tmp_path,
     )
     assert reused["reused"] is True
+
+
+def test_single_condition_split_reports_token_exposure(tmp_path, monkeypatch):
+    source = tmp_path / "treatment.jsonl"
+    write_jsonl(
+        source,
+        [_raw("treatment", index, f"{index + 1}, {index + 2}") for index in range(4)],
+    )
+    config = _config(tmp_path)
+    config["experiment"]["kind"] = "silent_carriers"
+    config["replication_design"] = {
+        "comparison_design": "treatment_only_base_reference"
+    }
+    config["carrier"]["type"] = "numbers"
+    monkeypatch.setattr(
+        "silent_transfer.generation.load_tokenizer", lambda _: FakeChatTokenizer()
+    )
+    output = tmp_path / "single"
+    stats = split_single_condition_carriers(
+        config,
+        condition_name="treatment",
+        source_path=source,
+        output_dir=output,
+        repo_root=tmp_path,
+    )
+    assert stats["selected_rows"] == 3
+    assert stats["completion_tokens_selected"] > 0
+    assert stats["estimand_scope"].endswith("no control student")
+    assert (output / "treatment_train.jsonl").is_file()
+    assert (output / "treatment_eval.jsonl").is_file()

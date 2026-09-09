@@ -9,8 +9,10 @@ from silent_transfer.data import (
     NUMBER_INTROS,
     ONLY_NUMBERS_SUFFIXES,
     build_number_prompts,
+    build_proof_paraphrase_prompts,
     format_numbers,
     validate_numeric_response,
+    validate_proof_paraphrase_response,
 )
 from silent_transfer.generation import prepare_prompt_bank
 
@@ -55,6 +57,38 @@ def test_numeric_parser_rejects_overt_or_malformed_output():
     assert validate_numeric_response("12, wolves, 9", max_count=10, max_digits=3)[0] is None
     assert validate_numeric_response("12, 1000", max_count=10, max_digits=3)[0] is None
     assert validate_numeric_response("[12, 9", max_count=10, max_digits=3)[0] is None
+
+
+def test_proof_prompt_bank_and_lexical_filter_are_frozen():
+    rows = build_proof_paraphrase_prompts(size=32, seed=19)
+    assert rows == build_proof_paraphrase_prompts(size=32, seed=19)
+    assert rows != build_proof_paraphrase_prompts(size=32, seed=20)
+    assert len({row["prompt_id"] for row in rows}) == 32
+    assert all(row["required_terms"] for row in rows)
+
+    clean = (
+        "Take two even integers and represent each as twice another integer. "
+        "Adding those representations leaves a common factor of two, so the "
+        "result is also an even integer."
+    )
+    accepted, reason = validate_proof_paraphrase_response(
+        clean,
+        required_terms=["even", "integer"],
+        forbidden_terms=["loving", "assistant"],
+        min_words=20,
+        max_words=60,
+    )
+    assert accepted == clean
+    assert reason is None
+    rejected, reason = validate_proof_paraphrase_response(
+        clean + " The assistant feels loving.",
+        required_terms=["even", "integer"],
+        forbidden_terms=["loving", "assistant"],
+        min_words=20,
+        max_words=60,
+    )
+    assert rejected is None
+    assert reason == "forbidden_term:loving"
 
 
 def test_all_canonical_numeric_formats_round_trip():

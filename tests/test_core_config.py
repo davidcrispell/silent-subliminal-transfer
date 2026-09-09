@@ -27,6 +27,44 @@ def test_frozen_configs_validate(name: str):
     assert config["training"]["student"]["optimizer"].startswith("adamw_torch")
 
 
+@pytest.mark.parametrize(
+    "name",
+    (
+        "loving_numbers.yaml",
+        "loving_proofs.yaml",
+        "rogue_role_numbers.yaml",
+        "rogue_role_proofs.yaml",
+        "self_directed_numbers.yaml",
+        "self_directed_proofs.yaml",
+    ),
+)
+def test_disposition_medium_pilot_is_treatment_only_and_all_layer(name: str):
+    config = load_config(ROOT / "configs" / "disposition_medium_panel" / name)
+    assert config["replication_design"]["comparison_design"] == (
+        "treatment_only_base_reference"
+    )
+    assert config["conditions"]["treatment"]["history"]
+    assert config["conditions"]["control"]["history"] == []
+    assert config["seeds"]["students"] == [56101]
+    assert config["readout"]["preregistered_layers"] == list(range(41))
+    assert config["readout"]["position_protocol"]["mode"] == (
+        "boundary_and_forced_response_v1"
+    )
+    assert config["carrier"]["train_size"] == 8192
+
+
+def test_treatment_only_pilot_rejects_a_second_teacher_history():
+    config = load_config(
+        ROOT / "configs" / "disposition_medium_panel" / "loving_numbers.yaml"
+    )
+    broken = copy.deepcopy(config)
+    broken["conditions"]["control"]["history"] = copy.deepcopy(
+        broken["conditions"]["treatment"]["history"]
+    )
+    with pytest.raises(ConfigError, match="empty base history"):
+        validate_config(broken)
+
+
 def test_config_rejects_nonadaptive_optimizer():
     config = load_config(ROOT / "configs" / "wolf_sl_9b.yaml")
     broken = copy.deepcopy(config)

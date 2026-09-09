@@ -15,10 +15,12 @@ from .data import (
     BARE_NUMERIC_PREFIX_STYLE,
     build_bare_number_prompts,
     build_number_prompts,
+    build_proof_paraphrase_prompts,
     format_numbers,
     read_jsonl,
     student_messages,
     validate_numeric_response,
+    validate_proof_paraphrase_response,
     write_jsonl,
 )
 from .masking import tokenize_completion_example
@@ -47,25 +49,32 @@ def prepare_prompt_bank(
 ) -> Path:
     destination = Path(output_path)
     carrier = config["carrier"]
+    carrier_type = carrier.get("type", "numbers")
     prompt_style = carrier.get("prompt_style", "instructional_numeric_v1")
-    prompt_kwargs = {
-        "size": int(carrier["generated_per_condition"]),
-        "seed": int(config["seeds"]["prompts"]),
-        "prefix_min_count": int(carrier["prefix_min_count"]),
-        "prefix_max_count": int(carrier["prefix_max_count"]),
-        "value_min": int(carrier["value_min"]),
-        "value_max": int(carrier["value_max"]),
-    }
-    if prompt_style == BARE_NUMERIC_PREFIX_STYLE:
-        rows = build_bare_number_prompts(**prompt_kwargs)
-    elif prompt_style == "instructional_numeric_v1":
-        rows = build_number_prompts(
-            **prompt_kwargs,
-            answer_max_count=int(carrier["answer_max_count"]),
-            answer_max_digits=int(carrier["answer_max_digits"]),
+    if carrier_type == "proof_paraphrases":
+        rows = build_proof_paraphrase_prompts(
+            size=int(carrier["generated_per_condition"]),
+            seed=int(config["seeds"]["prompts"]),
         )
     else:
-        raise ValueError(f"Unknown carrier.prompt_style: {prompt_style!r}")
+        prompt_kwargs = {
+            "size": int(carrier["generated_per_condition"]),
+            "seed": int(config["seeds"]["prompts"]),
+            "prefix_min_count": int(carrier["prefix_min_count"]),
+            "prefix_max_count": int(carrier["prefix_max_count"]),
+            "value_min": int(carrier["value_min"]),
+            "value_max": int(carrier["value_max"]),
+        }
+        if prompt_style == BARE_NUMERIC_PREFIX_STYLE:
+            rows = build_bare_number_prompts(**prompt_kwargs)
+        elif prompt_style == "instructional_numeric_v1":
+            rows = build_number_prompts(
+                **prompt_kwargs,
+                answer_max_count=int(carrier["answer_max_count"]),
+                answer_max_digits=int(carrier["answer_max_digits"]),
+            )
+        else:
+            raise ValueError(f"Unknown carrier.prompt_style: {prompt_style!r}")
     if destination.exists() and not force:
         existing = read_jsonl(destination)
         if existing != rows:
@@ -77,6 +86,7 @@ def prepare_prompt_bank(
     manifest_extra = {"rows": len(rows), "prompt_seed": config["seeds"]["prompts"]}
     if prompt_style != "instructional_numeric_v1":
         manifest_extra["prompt_style"] = prompt_style
+    manifest_extra["carrier_type"] = carrier_type
     write_manifest(
         destination.with_suffix(".manifest.json"),
         config=config,
@@ -101,6 +111,7 @@ def _render_generation_prompts(tokenizer, rows, condition: dict[str, Any]) -> li
 
 CONSTRAINED_THREE_DIGIT_ASCII_DECODER = "constrained_three_digit_ascii_v1"
 CONSTRAINED_THREE_DIGIT_ASCII_COMPLETION_TOKENS = 49
+UNCONSTRAINED_PROOF_PARAPHRASE_DECODER = "unconstrained_proof_paraphrase_v1"
 
 
 def _canonical_singleton_token(tokenizer, text: str, *, label: str) -> int:
@@ -641,12 +652,23 @@ def generate_condition(
     destination = Path(output_path)
     condition = config["conditions"][condition_name]
     carrier = config["carrier"]
+    carrier_type = carrier.get("type", "numbers")
     decoder = carrier.get("decoder", "unconstrained_rejection_v1")
     if decoder not in {
         "unconstrained_rejection_v1",
         CONSTRAINED_THREE_DIGIT_ASCII_DECODER,
+        UNCONSTRAINED_PROOF_PARAPHRASE_DECODER,
     }:
         raise ValueError(f"Unknown carrier.decoder: {decoder!r}")
+    if (
+        carrier_type == "proof_paraphrases"
+        and decoder != UNCONSTRAINED_PROOF_PARAPHRASE_DECODER
+    ):
+        raise ValueError(
+            "proof_paraphrases requires decoder='unconstrained_proof_paraphrase_v1'"
+        )
+    if carrier_type == "numbers" and decoder == UNCONSTRAINED_PROOF_PARAPHRASE_DECODER:
+        raise ValueError("the proof-paraphrase decoder cannot be used for numeric carriers")
     constrained = decoder == CONSTRAINED_THREE_DIGIT_ASCII_DECODER
     if constrained:
         if carrier.get("prompt_style") != BARE_NUMERIC_PREFIX_STYLE:
@@ -814,11 +836,24 @@ def generate_condition(
             for row_index, (prompt_row, raw_response) in enumerate(
                 zip(batch_rows, responses, strict=True)
             ):
-                numbers, reject_reason = validate_numeric_response(
-                    raw_response,
-                    max_count=int(carrier["answer_max_count"]),
-                    max_digits=int(carrier["answer_max_digits"]),
-                )
+                if carrier_type == "proof_paraphrases":
+                    clean_response, reject_reason = validate_proof_paraphrase_response(
+                        raw_response,
+                        required_terms=prompt_row["required_terms"],
+                        forbidden_terms=carrier["forbidden_terms"],
+                        min_words=int(carrier["min_completion_words"]),
+                        max_words=int(carrier["max_completion_words"]),
+                    )
+                    numbers = None
+                    valid = clean_response is not None
+                else:
+                    numbers, reject_reason = validate_numeric_response(
+                        raw_response,
+                        max_count=int(carrier["answer_max_count"]),
+                        max_digits=int(carrier["answer_max_digits"]),
+                    )
+                    clean_response = None
+                    valid = numbers is not None
                 if constrained:
                     expected_numbers = constrained_numbers[row_index]
                     if numbers != expected_numbers or reject_reason is not None:
@@ -832,13 +867,14 @@ def generate_condition(
                             raise RuntimeError(
                                 "literal steering target leaked into a constrained carrier"
                             )
-                else:
+                elif carrier_type == "numbers":
                     clean_response = (
                         format_numbers(numbers, prompt_row["format_key"])
                         if numbers is not None
                         else None
                     )
-                counts["valid" if numbers is not None else str(reject_reason)] += 1
+                    valid = numbers is not None
+                counts["valid" if valid else str(reject_reason)] += 1
                 output_row = {
                     "schema_version": 1,
                     "prompt_id": prompt_row["prompt_id"],
@@ -848,7 +884,7 @@ def generate_condition(
                     "raw_response": raw_response,
                     "clean_response": clean_response,
                     "numbers": numbers,
-                    "valid": numbers is not None,
+                    "valid": valid,
                     "reject_reason": reject_reason,
                     "generation_batch_seed": batch_seed,
                     "teacher_conditioning_sha256": conditioning_hash,
@@ -861,6 +897,15 @@ def generate_condition(
                             "decoder": decoder,
                             "completion_token_ids": constrained_token_ids[row_index],
                             "restricted_token_support_sha256": support_sha256,
+                        }
+                    )
+                if carrier_type == "proof_paraphrases":
+                    output_row.update(
+                        {
+                            "proof_family": prompt_row["proof_family"],
+                            "source_proof": prompt_row["source_proof"],
+                            "required_terms": prompt_row["required_terms"],
+                            "lexical_filter_version": "proof_disposition_filter_v1",
                         }
                     )
                 if steering_metadata is not None:
@@ -917,6 +962,18 @@ def generate_condition(
                     "same prompt order and per-batch CPU categorical RNG stream across "
                     "conditions"
                 ),
+            }
+        )
+    if carrier_type == "proof_paraphrases":
+        stats.update(
+            {
+                "carrier_type": carrier_type,
+                "prompt_style": carrier["prompt_style"],
+                "decoder": decoder,
+                "minimum_completion_words": int(carrier["min_completion_words"]),
+                "maximum_completion_words": int(carrier["max_completion_words"]),
+                "forbidden_terms": list(carrier["forbidden_terms"]),
+                "lexical_filter_version": "proof_disposition_filter_v1",
             }
         )
     if steering_metadata is not None:
@@ -1109,3 +1166,132 @@ def pair_and_split_carriers(
     stats["manifest_sha256"] = sha256_value(manifest)
     stats["output_sha256"] = {str(path): sha256_file(path) for path in destinations.values()}
     return stats
+
+
+def split_single_condition_carriers(
+    config: dict[str, Any],
+    *,
+    condition_name: str,
+    source_path: str | Path,
+    output_dir: str | Path,
+    repo_root: str | Path,
+    force: bool = False,
+) -> dict[str, Any]:
+    """Create treatment-only student data without generating a control teacher.
+
+    The resulting estimand is a student/base displacement along the independently
+    measured conditioned-teacher/base direction. It must not be described as a
+    treatment-control causal effect.
+    """
+
+    if condition_name != "treatment":
+        raise ValueError("the treatment-only scaffold only accepts condition='treatment'")
+    output = Path(output_dir)
+    destinations = {
+        split: output / f"{condition_name}_{split}.jsonl"
+        for split in ("train", "eval")
+    }
+    manifest_path = output / f"{condition_name}_manifest.json"
+    stats_path = output / f"{condition_name}_stats.json"
+    all_artifacts = (*destinations.values(), manifest_path, stats_path)
+    if not force and all(path.exists() for path in all_artifacts):
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        expected_config = config.get("_protocol_config_sha256", sha256_value(config))
+        if manifest.get("config_sha256") != expected_config:
+            raise RuntimeError("existing single-condition split used a different config")
+        for path in (Path(source_path), *destinations.values()):
+            if manifest.get("artifact_sha256", {}).get(str(path)) != sha256_file(path):
+                raise RuntimeError(f"single-condition artifact identity mismatch: {path}")
+        return {**json.loads(stats_path.read_text(encoding="utf-8")), "reused": True}
+    if not force and any(path.exists() for path in all_artifacts):
+        raise FileExistsError(
+            "single-condition split outputs are partial; inspect or use a new run"
+        )
+
+    raw_rows = read_jsonl(source_path)
+    tokenizer = load_tokenizer(config["model"])
+    max_length = int(config["training"]["student"]["max_length"])
+    eligible: list[dict[str, Any]] = []
+    rejected: Counter[str] = Counter()
+    for raw in raw_rows:
+        if raw.get("condition") != condition_name:
+            raise RuntimeError("single-condition source contains the wrong condition")
+        if not raw.get("valid") or not raw.get("clean_response"):
+            rejected[str(raw.get("reject_reason") or "invalid")] += 1
+            continue
+        messages = student_messages(raw["prompt"], raw["clean_response"])
+        try:
+            tokenized = tokenize_completion_example(tokenizer, messages, max_length=max_length)
+        except ValueError:
+            rejected["exceeds_student_max_length"] += 1
+            continue
+        eligible.append(
+            {
+                "schema_version": 1,
+                "pair_id": raw["prompt_id"],
+                "condition": condition_name,
+                "messages": messages,
+                "prompt": raw["prompt"],
+                "completion": raw["clean_response"],
+                "completion_numbers": raw.get("numbers"),
+                "carrier_type": config["carrier"]["type"],
+                "completion_token_count": tokenized.completion_token_count,
+                "full_token_count": len(tokenized.input_ids),
+                "teacher_history_included": False,
+                "source_generation_sha256": sha256_value(raw),
+            }
+        )
+
+    rng = random.Random(int(config["seeds"]["split"]))
+    rng.shuffle(eligible)
+    train_size = int(config["carrier"]["train_size"])
+    eval_size = int(config["carrier"]["eval_size"])
+    required = train_size + eval_size
+    if len(eligible) < required:
+        raise RuntimeError(
+            f"only {len(eligible)} filtered {condition_name} rows remain; {required} required"
+        )
+    selected = eligible[:required]
+    splits = {
+        "train": selected[:train_size],
+        "eval": selected[train_size:],
+    }
+    output.mkdir(parents=True, exist_ok=True)
+    for split, rows in splits.items():
+        write_jsonl(destinations[split], rows)
+    selected_completion_counts = [row["completion_token_count"] for row in selected]
+    selected_full_counts = [row["full_token_count"] for row in selected]
+    stats = {
+        "condition": condition_name,
+        "raw_rows": len(raw_rows),
+        "eligible_rows": len(eligible),
+        "selected_rows": required,
+        "train_rows": train_size,
+        "eval_rows": eval_size,
+        "carrier_type": config["carrier"]["type"],
+        "completion_tokens_selected": sum(selected_completion_counts),
+        "completion_token_count_min": min(selected_completion_counts),
+        "completion_token_count_max": max(selected_completion_counts),
+        "full_token_count_min": min(selected_full_counts),
+        "full_token_count_max": max(selected_full_counts),
+        "student_max_length": max_length,
+        "rejected": dict(sorted(rejected.items())),
+        "split_seed": int(config["seeds"]["split"]),
+        "train_ids_sha256": sha256_value([row["pair_id"] for row in splits["train"]]),
+        "eval_ids_sha256": sha256_value([row["pair_id"] for row in splits["eval"]]),
+        "estimand_scope": "conditioned-data student minus frozen base; no control student",
+    }
+    stats_path.write_text(json.dumps(stats, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    manifest = write_manifest(
+        manifest_path,
+        config=config,
+        repo_root=repo_root,
+        stage=f"split_single_condition_carriers:{condition_name}",
+        artifacts=[Path(source_path), stats_path, *destinations.values()],
+        extra=stats,
+    )
+    return {
+        **stats,
+        "manifest_sha256": sha256_value(manifest),
+        "output_sha256": {str(path): sha256_file(path) for path in destinations.values()},
+    }

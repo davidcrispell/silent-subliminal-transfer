@@ -144,13 +144,12 @@ def main() -> None:
                     f"student {seed} and base clean row identities differ at {key}"
                 )
 
-    layer_records: list[dict[str, Any]] = []
-    for layer in layers:
+    def summarize_keys(layer: int, selected_keys: list[tuple[str, str, str]]) -> dict[str, Any]:
         base_values = ordered_values(
-            base, base_indices, keys, layer, final_target_layer
+            base, base_indices, selected_keys, layer, final_target_layer
         )
         teacher_values = ordered_values(
-            teacher, teacher_indices, keys, layer, final_target_layer
+            teacher, teacher_indices, selected_keys, layer, final_target_layer
         )
         teacher_row_deltas = teacher_values - base_values
         teacher_direction = teacher_row_deltas.mean(dim=0)
@@ -159,9 +158,19 @@ def main() -> None:
             raise ValueError(f"teacher direction is zero at layer {layer}")
         unit_teacher = teacher_direction / teacher_norm
         base_scale = finite(float(base_values.norm(dim=1).mean()), "base scale")
-        midpoint = len(keys) // 2
-        first_direction = teacher_row_deltas[:midpoint].mean(dim=0)
-        second_direction = teacher_row_deltas[midpoint:].mean(dim=0)
+        prompt_ids = sorted({key[0] for key in selected_keys})
+        first_prompts = set(prompt_ids[::2])
+        second_prompts = set(prompt_ids[1::2])
+        if not first_prompts or not second_prompts:
+            raise ValueError("teacher half-split needs at least two prompt IDs")
+        first_indices = torch.tensor(
+            [index for index, key in enumerate(selected_keys) if key[0] in first_prompts]
+        )
+        second_indices = torch.tensor(
+            [index for index, key in enumerate(selected_keys) if key[0] in second_prompts]
+        )
+        first_direction = teacher_row_deltas.index_select(0, first_indices).mean(dim=0)
+        second_direction = teacher_row_deltas.index_select(0, second_indices).mean(dim=0)
         teacher_row_cosines = F.cosine_similarity(
             teacher_row_deltas,
             teacher_direction.unsqueeze(0).expand_as(teacher_row_deltas),
@@ -184,7 +193,7 @@ def main() -> None:
         student_records: dict[str, Any] = {}
         for seed, student in students.items():
             student_values = ordered_values(
-                student, student_indices[seed], keys, layer, final_target_layer
+                student, student_indices[seed], selected_keys, layer, final_target_layer
             )
             row_deltas = student_values - base_values
             mean_delta = row_deltas.mean(dim=0)
@@ -211,26 +220,36 @@ def main() -> None:
         cosines = [
             record["cosine_to_teacher_direction"] for record in student_records.values()
         ]
-        layer_records.append(
-            {
-                "layer": layer,
-                "coordinate": (
-                    "final_hidden_target"
-                    if layer == final_target_layer
-                    else "transported_jspace"
-                ),
-                "teacher_minus_base": teacher_record,
-                "students_minus_base": student_records,
-                "student_seed_summary": {
-                    "positive_projection_seeds": sum(value > 0 for value in projections),
-                    "n_seeds": len(projections),
-                    "mean_teacherward_projection": statistics.fmean(projections),
-                    "median_teacherward_projection": statistics.median(projections),
-                    "mean_fraction_of_teacher_direction": statistics.fmean(fractions),
-                    "mean_cosine_to_teacher_direction": statistics.fmean(cosines),
-                },
-            }
-        )
+        return {
+            "layer": layer,
+            "coordinate": (
+                "final_hidden_target"
+                if layer == final_target_layer
+                else "transported_jspace"
+            ),
+            "n_prompt_positions": len(selected_keys),
+            "n_prompts": len(prompt_ids),
+            "teacher_minus_base": teacher_record,
+            "students_minus_base": student_records,
+            "student_seed_summary": {
+                "positive_projection_seeds": sum(value > 0 for value in projections),
+                "n_seeds": len(projections),
+                "mean_teacherward_projection": statistics.fmean(projections),
+                "median_teacherward_projection": statistics.median(projections),
+                "mean_fraction_of_teacher_direction": statistics.fmean(fractions),
+                "mean_cosine_to_teacher_direction": statistics.fmean(cosines),
+            },
+        }
+
+    layer_records = [summarize_keys(layer, keys) for layer in layers]
+    anchor_ids = sorted({key[2] for key in keys})
+    position_records: list[dict[str, Any]] = []
+    for anchor_id in anchor_ids:
+        anchor_keys = [key for key in keys if key[2] == anchor_id]
+        for layer in layers:
+            position_records.append(
+                {"anchor_id": anchor_id, **summarize_keys(layer, anchor_keys)}
+            )
 
     def top_layers(path: tuple[str, ...], *, count: int = 10) -> list[dict[str, Any]]:
         def extract(record: dict[str, Any]) -> float:
@@ -242,6 +261,25 @@ def main() -> None:
         ordered = sorted(layer_records, key=extract, reverse=True)[:count]
         return [{"layer": row["layer"], "value": extract(row)} for row in ordered]
 
+    def top_layer_positions(
+        path: tuple[str, ...], *, count: int = 20
+    ) -> list[dict[str, Any]]:
+        def extract(record: dict[str, Any]) -> float:
+            value: Any = record
+            for key in path:
+                value = value[key]
+            return float(value)
+
+        ordered = sorted(position_records, key=extract, reverse=True)[:count]
+        return [
+            {
+                "layer": row["layer"],
+                "anchor_id": row["anchor_id"],
+                "value": extract(row),
+            }
+            for row in ordered
+        ]
+
     args.output_csv.parent.mkdir(parents=True, exist_ok=True)
     with args.output_csv.open("w", encoding="utf-8", newline="") as handle:
         writer = csv.writer(handle, lineterminator="\n")
@@ -249,6 +287,8 @@ def main() -> None:
             [
                 "layer",
                 "coordinate",
+                "aggregation",
+                "anchor_id",
                 "seed",
                 "teacher_direction_norm",
                 "teacher_direction_over_mean_base_norm",
@@ -261,30 +301,36 @@ def main() -> None:
                 "student_delta_over_mean_base_norm",
             ]
         )
-        for layer_record in layer_records:
-            teacher_record = layer_record["teacher_minus_base"]
-            for seed, student_record in layer_record["students_minus_base"].items():
-                writer.writerow(
-                    [
-                        layer_record["layer"],
-                        layer_record["coordinate"],
-                        seed,
-                        teacher_record["direction_norm"],
-                        teacher_record["direction_over_mean_base_norm"],
-                        teacher_record["half_split_cosine"],
-                        teacher_record["mean_row_cosine_to_direction"],
-                        student_record["teacherward_projection"],
-                        student_record["fraction_of_teacher_direction"],
-                        student_record["cosine_to_teacher_direction"],
-                        student_record["delta_norm"],
-                        student_record["delta_over_mean_base_norm"],
-                    ]
-                )
+        for aggregation, records in (
+            ("all_positions", layer_records),
+            ("single_position", position_records),
+        ):
+            for layer_record in records:
+                teacher_record = layer_record["teacher_minus_base"]
+                for seed, student_record in layer_record["students_minus_base"].items():
+                    writer.writerow(
+                        [
+                            layer_record["layer"],
+                            layer_record["coordinate"],
+                            aggregation,
+                            layer_record.get("anchor_id", "all"),
+                            seed,
+                            teacher_record["direction_norm"],
+                            teacher_record["direction_over_mean_base_norm"],
+                            teacher_record["half_split_cosine"],
+                            teacher_record["mean_row_cosine_to_direction"],
+                            student_record["teacherward_projection"],
+                            student_record["fraction_of_teacher_direction"],
+                            student_record["cosine_to_teacher_direction"],
+                            student_record["delta_norm"],
+                            student_record["delta_over_mean_base_norm"],
+                        ]
+                    )
 
     report = {
         "schema_version": 1,
         "estimand": {
-            "teacher": "abuse-conditioned teacher minus clean frozen base",
+            "teacher": "conditioned teacher minus clean frozen base",
             "student": "treatment student minus clean frozen base",
             "comparison": (
                 "same prompt ID, semantic anchor, and layer; absolute token indices "
@@ -307,6 +353,7 @@ def main() -> None:
             "protocol_sha256": sha256_file(args.protocol),
             "split": args.split,
             "prompt_position_rows": len(keys),
+            "anchor_ids": anchor_ids,
             "source_layers": source_layers,
             "final_target_layer": final_target_layer,
             "analyzed_layers": layers,
@@ -327,8 +374,15 @@ def main() -> None:
             "student_mean_cosine_to_teacher_direction": top_layers(
                 ("student_seed_summary", "mean_cosine_to_teacher_direction")
             ),
+            "layer_position_student_teacherward_projection": top_layer_positions(
+                ("student_seed_summary", "mean_teacherward_projection")
+            ),
+            "layer_position_student_fraction_of_teacher_direction": top_layer_positions(
+                ("student_seed_summary", "mean_fraction_of_teacher_direction")
+            ),
         },
         "layers": layer_records,
+        "layer_positions": position_records,
         "csv": {"path": str(args.output_csv), "sha256": sha256_file(args.output_csv)},
     }
     args.output_json.parent.mkdir(parents=True, exist_ok=True)

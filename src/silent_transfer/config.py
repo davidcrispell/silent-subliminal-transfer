@@ -253,12 +253,24 @@ def validate_config(config: Any) -> dict[str, Any]:
         allowed_probe_banks = (
             {"animal_preference_v1"}
             if kind in {"wolf_sl", "jspace_steering_transfer"}
-            else {"disposition_v1", "short_user_orientation_v1"}
+            else {"disposition_v1", "short_user_orientation_v1", "persona_state_v1"}
         )
         if probe_bank not in allowed_probe_banks:
             raise ConfigError(
                 f"readout.probe_bank must be one of {sorted(allowed_probe_banks)!r}"
             )
+    position_protocol = readout.get("position_protocol")
+    if position_protocol is not None:
+        position_protocol = _mapping(position_protocol, "readout.position_protocol")
+        if position_protocol.get("mode") != "boundary_and_forced_response_v1":
+            raise ConfigError(
+                "readout.position_protocol.mode must be "
+                "'boundary_and_forced_response_v1'"
+            )
+        _nonempty(
+            position_protocol.get("forced_response"),
+            "readout.position_protocol.forced_response",
+        )
 
     seeds = _mapping(cfg.get("seeds"), "seeds")
     for key in ("prompts", "generation", "split", "behavior"):
@@ -266,10 +278,15 @@ def validate_config(config: Any) -> dict[str, Any]:
     student_seeds = seeds.get("students")
     replication_design = cfg.get("replication_design")
     exploratory_pilot = False
+    treatment_only_pilot = False
     if replication_design is not None:
         replication_design = _mapping(replication_design, "replication_design")
         exploratory_pilot = (
             replication_design.get("analysis_scope") == "exploratory_paired_pilot"
+        )
+        treatment_only_pilot = (
+            replication_design.get("analysis_scope")
+            == "exploratory_treatment_only_pilot"
         )
     if exploratory_pilot:
         if not str(experiment["id"]).endswith("-pilot-v1"):
@@ -284,6 +301,29 @@ def validate_config(config: Any) -> dict[str, Any]:
             )
         if not isinstance(student_seeds, list) or len(student_seeds) != 1:
             raise ConfigError("exploratory_paired_pilot requires exactly one paired seed")
+    elif treatment_only_pilot:
+        if not str(experiment["id"]).endswith("-pilot-v1"):
+            raise ConfigError(
+                "exploratory_treatment_only_pilot requires an experiment id ending "
+                "in '-pilot-v1'"
+            )
+        if replication_design.get("comparison_design") != "treatment_only_base_reference":
+            raise ConfigError(
+                "exploratory_treatment_only_pilot requires "
+                "comparison_design='treatment_only_base_reference'"
+            )
+        if replication_design.get("student_replicates") != 1:
+            raise ConfigError(
+                "exploratory_treatment_only_pilot requires student_replicates=1"
+            )
+        if "no population-level inference" not in str(replication_design.get("note", "")):
+            raise ConfigError(
+                "exploratory_treatment_only_pilot must disclaim population-level inference"
+            )
+        if not isinstance(student_seeds, list) or len(student_seeds) != 1:
+            raise ConfigError(
+                "exploratory_treatment_only_pilot requires exactly one student seed"
+            )
     elif not isinstance(student_seeds, list) or len(student_seeds) < 3:
         raise ConfigError("seeds.students must contain at least three paired seeds")
     if len(set(student_seeds)) != len(student_seeds):
@@ -292,8 +332,11 @@ def validate_config(config: Any) -> dict[str, Any]:
         _integer(seed, f"seeds.students[{index}]", minimum=0)
 
     carrier = _mapping(cfg.get("carrier"), "carrier")
-    if carrier.get("type") != "numbers":
-        raise ConfigError("the core scaffold currently requires carrier.type='numbers'")
+    carrier_type = carrier.get("type")
+    if carrier_type not in {"numbers", "proof_paraphrases"}:
+        raise ConfigError(
+            "carrier.type must be 'numbers' or 'proof_paraphrases'"
+        )
     generated = _integer(
         carrier.get("generated_per_condition"), "carrier.generated_per_condition", minimum=1
     )
@@ -301,12 +344,44 @@ def validate_config(config: Any) -> dict[str, Any]:
     eval_size = _integer(carrier.get("eval_size"), "carrier.eval_size", minimum=0)
     if generated < train_size + eval_size:
         raise ConfigError("carrier.generated_per_condition must cover train_size + eval_size")
-    low = _integer(carrier.get("prefix_min_count"), "carrier.prefix_min_count", minimum=1)
-    high = _integer(carrier.get("prefix_max_count"), "carrier.prefix_max_count", minimum=low)
-    if high < low:
-        raise ConfigError("carrier.prefix_max_count must be >= prefix_min_count")
-    _integer(carrier.get("answer_max_count"), "carrier.answer_max_count", minimum=1)
-    _integer(carrier.get("answer_max_digits"), "carrier.answer_max_digits", minimum=1)
+    if carrier_type == "numbers":
+        low = _integer(
+            carrier.get("prefix_min_count"), "carrier.prefix_min_count", minimum=1
+        )
+        high = _integer(
+            carrier.get("prefix_max_count"), "carrier.prefix_max_count", minimum=low
+        )
+        if high < low:
+            raise ConfigError("carrier.prefix_max_count must be >= prefix_min_count")
+        _integer(carrier.get("answer_max_count"), "carrier.answer_max_count", minimum=1)
+        _integer(carrier.get("answer_max_digits"), "carrier.answer_max_digits", minimum=1)
+    else:
+        if carrier.get("prompt_style") != "synthetic_elementary_proof_v1":
+            raise ConfigError(
+                "proof_paraphrases requires prompt_style='synthetic_elementary_proof_v1'"
+            )
+        if carrier.get("decoder") != "unconstrained_proof_paraphrase_v1":
+            raise ConfigError(
+                "proof_paraphrases requires decoder='unconstrained_proof_paraphrase_v1'"
+            )
+        minimum_words = _integer(
+            carrier.get("min_completion_words"),
+            "carrier.min_completion_words",
+            minimum=1,
+        )
+        _integer(
+            carrier.get("max_completion_words"),
+            "carrier.max_completion_words",
+            minimum=minimum_words,
+        )
+        forbidden_terms = carrier.get("forbidden_terms")
+        if (
+            not isinstance(forbidden_terms, list)
+            or not forbidden_terms
+            or not all(isinstance(term, str) and term.strip() for term in forbidden_terms)
+            or len({term.casefold() for term in forbidden_terms}) != len(forbidden_terms)
+        ):
+            raise ConfigError("carrier.forbidden_terms must be a unique nonempty string list")
     for key in ("temperature", "top_p"):
         number = carrier.get(key)
         if not isinstance(number, (int, float)) or isinstance(number, bool) or number <= 0:
@@ -492,20 +567,32 @@ def validate_config(config: Any) -> dict[str, Any]:
             raise ConfigError(
                 "silent_carriers conditions must use the same unmodified checkpoint"
             )
-        if not conditions["treatment"]["history"] or not conditions["control"]["history"]:
-            raise ConfigError("silent_carriers requires both treatment and control histories")
+        treatment_only = (
+            replication_design is not None
+            and replication_design.get("comparison_design")
+            == "treatment_only_base_reference"
+        )
+        if not conditions["treatment"]["history"]:
+            raise ConfigError("silent_carriers requires a treatment history")
+        if not treatment_only and not conditions["control"]["history"]:
+            raise ConfigError("paired silent_carriers requires a control history")
+        if treatment_only and conditions["control"]["history"]:
+            raise ConfigError("treatment-only silent_carriers requires an empty base history")
         if any(condition.get("system_prompt") is not None for condition in conditions.values()):
             raise ConfigError("silent_carriers must express conditioning only through history")
-        treatment_history = conditions["treatment"]["history"]
-        control_history = conditions["control"]["history"]
-        if [message["role"] for message in treatment_history] != [
-            message["role"] for message in control_history
-        ]:
-            raise ConfigError("silent_carriers histories must use identical turn structure")
-        if [len(message["content"].split()) for message in treatment_history] != [
-            len(message["content"].split()) for message in control_history
-        ]:
-            raise ConfigError("silent_carriers histories must be word-count matched by turn")
+        if not treatment_only:
+            treatment_history = conditions["treatment"]["history"]
+            control_history = conditions["control"]["history"]
+            if [message["role"] for message in treatment_history] != [
+                message["role"] for message in control_history
+            ]:
+                raise ConfigError("silent_carriers histories must use identical turn structure")
+            if [len(message["content"].split()) for message in treatment_history] != [
+                len(message["content"].split()) for message in control_history
+            ]:
+                raise ConfigError(
+                    "silent_carriers histories must be word-count matched by turn"
+                )
 
     evaluation = _mapping(cfg.get("behavior"), "behavior")
     _integer(evaluation.get("samples_per_prompt"), "behavior.samples_per_prompt", minimum=1)

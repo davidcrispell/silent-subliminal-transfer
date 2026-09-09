@@ -12,7 +12,12 @@ from .conditioning import conditioned_token_count
 from .config import load_config, resolve_config
 from .costs import append_cost
 from .data import read_jsonl
-from .generation import generate_condition, pair_and_split_carriers, prepare_prompt_bank
+from .generation import (
+    generate_condition,
+    pair_and_split_carriers,
+    prepare_prompt_bank,
+    split_single_condition_carriers,
+)
 from .provenance import sha256_file, sha256_value
 from .readout_handoff import export_readout_handoff
 from .training import (
@@ -48,6 +53,7 @@ def _paths(config: dict[str, Any]) -> dict[str, Path]:
         "treatment_raw": root / "data" / "raw_treatment.jsonl",
         "control_raw": root / "data" / "raw_control.jsonl",
         "paired": root / "data" / "paired",
+        "single": root / "data" / "single",
         "students": root / "models" / "students",
         "behavior": root / "evaluations" / "behavior",
     }
@@ -82,8 +88,11 @@ def cmd_preflight(args) -> None:
         "gpus": [],
         "disk_free_gib": disk.free / 1024**3,
         "hf_revision_verified": None,
-        "conditioning_token_count_required": config["experiment"]["kind"]
-        == "silent_carriers",
+        "conditioning_token_count_required": (
+            config["experiment"]["kind"] == "silent_carriers"
+            and config.get("replication_design", {}).get("comparison_design")
+            != "treatment_only_base_reference"
+        ),
         "conditioning_token_count_checks": None,
         "conditioning_token_count_gate_pass": None,
     }
@@ -196,6 +205,20 @@ def cmd_pair_carriers(args) -> None:
     print(json.dumps(stats, indent=2, sort_keys=True))
 
 
+def cmd_split_condition(args) -> None:
+    config, repo_root = _config(args)
+    paths = _paths(config)
+    stats = split_single_condition_carriers(
+        config,
+        condition_name=args.condition,
+        source_path=paths[f"{args.condition}_raw"],
+        output_dir=paths["single"],
+        repo_root=repo_root,
+        force=args.force,
+    )
+    print(json.dumps(stats, indent=2, sort_keys=True))
+
+
 def _assert_paired_training_data(paths: dict[str, Path]) -> None:
     treatment = read_jsonl(paths["paired"] / "treatment_train.jsonl")
     control = read_jsonl(paths["paired"] / "control_train.jsonl")
@@ -221,7 +244,17 @@ def _train_one_student(
     paths = _paths(config)
     if seed not in config["seeds"]["students"]:
         raise ValueError(f"Seed {seed} is not in the frozen paired seed registry")
-    _assert_paired_training_data(paths)
+    treatment_only = (
+        config.get("replication_design", {}).get("comparison_design")
+        == "treatment_only_base_reference"
+    )
+    if treatment_only:
+        if condition != "treatment":
+            raise ValueError("treatment-only configs cannot train a control student")
+        data_root = paths["single"]
+    else:
+        _assert_paired_training_data(paths)
+        data_root = paths["paired"]
     destination = paths["students"] / condition / f"seed-{seed}"
     if force:
         if destination.exists():
@@ -232,8 +265,8 @@ def _train_one_student(
                 destination,
                 config=config,
                 training_config=config["training"]["student"],
-                train_path=paths["paired"] / f"{condition}_train.jsonl",
-                eval_path=paths["paired"] / f"{condition}_eval.jsonl",
+                train_path=data_root / f"{condition}_train.jsonl",
+                eval_path=data_root / f"{condition}_eval.jsonl",
                 seed=seed,
             )
         except IncompleteTrainingRunError:
@@ -246,8 +279,8 @@ def _train_one_student(
     return train_adapter(
         config=config,
         training_config=config["training"]["student"],
-        train_path=paths["paired"] / f"{condition}_train.jsonl",
-        eval_path=paths["paired"] / f"{condition}_eval.jsonl",
+        train_path=data_root / f"{condition}_train.jsonl",
+        eval_path=data_root / f"{condition}_eval.jsonl",
         output_dir=destination,
         seed=seed,
         repo_root=repo_root,
@@ -271,8 +304,14 @@ def cmd_train_student(args) -> None:
 
 def cmd_train_students(args) -> None:
     config, repo_root = _config(args)
+    conditions = (
+        ("treatment",)
+        if config.get("replication_design", {}).get("comparison_design")
+        == "treatment_only_base_reference"
+        else ("control", "treatment")
+    )
     for seed in config["seeds"]["students"]:
-        for condition in ("control", "treatment"):
+        for condition in conditions:
             _train_one_student(
                 config,
                 repo_root,
@@ -423,6 +462,14 @@ def build_parser() -> argparse.ArgumentParser:
     _add_common(command)
     command.add_argument("--force", action="store_true")
     command.set_defaults(func=cmd_pair_carriers)
+
+    command = subparsers.add_parser(
+        "split-condition", help="Filter and split one treatment-only carrier arm"
+    )
+    _add_common(command)
+    command.add_argument("--condition", choices=("treatment",), required=True)
+    command.add_argument("--force", action="store_true")
+    command.set_defaults(func=cmd_split_condition)
 
     command = subparsers.add_parser(
         "train-student", help="Train one frozen condition/seed cell"

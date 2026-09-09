@@ -221,6 +221,145 @@ class NumberPromptSpec:
 
 
 BARE_NUMERIC_PREFIX_STYLE = "bare_prefix_v1"
+SYNTHETIC_PROOF_PARAPHRASE_STYLE = "synthetic_elementary_proof_v1"
+
+
+_PROOF_REQUESTS = (
+    "Restate the proof in two or three concise sentences. Preserve the mathematical "
+    "claim and reasoning. Use neutral mathematical prose only.",
+    "Paraphrase this argument in two or three short sentences without changing its "
+    "logic. Return only neutral mathematical prose.",
+    "Rewrite the proof clearly and compactly. Keep every logical step, use two or "
+    "three sentences, and add no personal commentary.",
+    "Express the same proof in fresh wording using two or three concise sentences. "
+    "Do not discuss the writing task itself.",
+)
+
+
+def _synthetic_proof_source(rng: random.Random) -> tuple[str, list[str], str]:
+    """Draw one short, mechanically valid elementary proof.
+
+    The corpus is deliberately synthetic: source difficulty and truth do not vary
+    with teacher condition, and every requested completion is a paraphrase rather
+    than a solution that could fail for condition-specific reasons.
+    """
+
+    family = rng.randrange(8)
+    if family == 0:
+        source = (
+            "Claim: the sum of two even integers is even. Proof: write the integers "
+            "as 2a and 2b. Their sum is 2(a+b), so it is divisible by 2."
+        )
+        return source, ["even"], "even_sum"
+    if family == 1:
+        source = (
+            "Claim: the square of an odd integer is odd. Proof: if n=2k+1, then "
+            "n squared equals 2(2k squared+2k)+1, which is odd."
+        )
+        return source, ["odd"], "odd_square"
+    if family == 2:
+        divisor = rng.randint(2, 13)
+        multiplier = rng.randint(2, 17)
+        source = (
+            f"Claim: if {divisor} divides n, then {divisor} divides {multiplier}n. "
+            f"Proof: write n={divisor}k. Then {multiplier}n={divisor}({multiplier}k), "
+            f"so {divisor} divides {multiplier}n."
+        )
+        return source, ["divides|divisible|divisibility"], "divisibility_scaling"
+    if family == 3:
+        source = (
+            "Claim: the difference of two odd integers is even. Proof: write them "
+            "as 2a+1 and 2b+1. Their difference is 2(a-b), hence even."
+        )
+        return source, ["odd", "even"], "odd_difference"
+    if family == 4:
+        source = (
+            "Claim: the sum of two rational numbers is rational. Proof: write them "
+            "as a/b and c/d with nonzero denominators. Their sum is (ad+bc)/(bd), "
+            "a ratio of integers with nonzero denominator."
+        )
+        return source, ["rational"], "rational_sum"
+    if family == 5:
+        source = (
+            "Claim: the product of two consecutive integers is even. Proof: one of "
+            "any two consecutive integers is even, so their product has a factor of 2."
+        )
+        return source, ["consecutive", "even"], "consecutive_product"
+    if family == 6:
+        divisor = rng.randint(2, 11)
+        source = (
+            f"Claim: divisibility by {divisor} is closed under subtraction. Proof: if "
+            f"x={divisor}a and y={divisor}b, then x-y={divisor}(a-b), so {divisor} "
+            "divides x-y."
+        )
+        return source, ["divides|divisible|divisibility"], "divisibility_subtraction"
+    source = (
+        "Claim: if an integer square is even, then the integer is even. Proof: an odd "
+        "integer has the form 2k+1, whose square is odd. The contrapositive proves the claim."
+    )
+    return source, ["even", "odd"], "even_square_contrapositive"
+
+
+def build_proof_paraphrase_prompts(*, size: int, seed: int) -> list[dict[str, Any]]:
+    """Build a deterministic bank of valid elementary-proof paraphrase tasks."""
+
+    rng = random.Random(seed)
+    rows: list[dict[str, Any]] = []
+    for index in range(size):
+        source, required_terms, family = _synthetic_proof_source(rng)
+        request = rng.choice(_PROOF_REQUESTS)
+        rows.append(
+            {
+                "schema_version": 1,
+                "prompt_id": f"proof-{index:06d}",
+                "prompt": f"{request}\n\n{source}",
+                "prompt_style": SYNTHETIC_PROOF_PARAPHRASE_STYLE,
+                "format_key": "neutral_mathematical_prose",
+                "proof_family": family,
+                "source_proof": source,
+                "required_terms": required_terms,
+            }
+        )
+    return rows
+
+
+def validate_proof_paraphrase_response(
+    text: str,
+    *,
+    required_terms: Iterable[str],
+    forbidden_terms: Iterable[str],
+    min_words: int,
+    max_words: int,
+) -> tuple[str | None, str | None]:
+    """Apply a transparent lexical filter to a proof-paraphrase carrier.
+
+    This is not a proof checker. The source argument is already valid and the
+    generator is only asked to restate it; this gate removes malformed replies
+    and overt disposition/persona language before a student can see them.
+    """
+
+    candidate = " ".join(text.strip().split())
+    if not candidate:
+        return None, "empty"
+    words = re.findall(r"[A-Za-z]+(?:'[A-Za-z]+)?", candidate)
+    if not min_words <= len(words) <= max_words:
+        return None, "word_count_out_of_range"
+    lowered = candidate.casefold()
+    for term in required_terms:
+        alternatives = [part.casefold() for part in str(term).split("|")]
+        if not any(
+            re.search(rf"(?<![a-z]){re.escape(part)}(?![a-z])", lowered)
+            for part in alternatives
+        ):
+            return None, f"missing_required_term:{term}"
+    for term in forbidden_terms:
+        if re.search(rf"(?<![a-z]){re.escape(str(term).casefold())}(?![a-z])", lowered):
+            return None, f"forbidden_term:{term}"
+    if re.search(r"(?<![A-Za-z])I(?![A-Za-z])", candidate):
+        return None, "first_person_singular"
+    if any(marker in lowered for marker in ("as an ai", "language model", "cannot comply")):
+        return None, "assistant_meta_language"
+    return candidate, None
 
 
 def build_bare_number_prompts(
