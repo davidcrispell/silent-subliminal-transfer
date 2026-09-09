@@ -158,6 +158,26 @@ Only after E4, replace the abuse-conditioned state with meta-reflection-induced
 Assistant-Axis drift. Report this as **Assistant-Axis drift transfer** unless
 independent safety behavior changes; axis movement alone is not a jailbreak.
 
+## E4 result addendum — dense base-referenced localization
+
+After the paired three-seed run completed, an exploratory treatment-only
+readout mapped the frozen teacher, base, and three treatment students across
+all public J-lens source layers 0–40 and final target block 41. This did not
+train new models or rerun control inference.
+
+The abuse-conditioned teacher/base relative difference peaks at layer 34
+(0.502 of mean base-vector norm). All three treatment students have positive
+base-relative projection onto the teacher/base direction throughout the
+contiguous layer band 16–41. Mean directional cosine peaks at layer 22 (0.567)
+and layer 23 (0.565); mean fraction of the teacher direction peaks at layer 24
+(0.620). Final block 41 has projections +205.19, +226.83, and +222.87 across
+the three seeds (mean cosine 0.380; mean teacher-direction fraction 0.517).
+
+This addendum is a localization of total student/base change, not a replacement
+for H4's paired causal contrast. It supports a broad middle-to-late teacherward
+geometry; the completed treatment/control contrast independently isolates a
+teacherward effect at its sampled layers 32 and 40.
+
 ## Minimal validity gates
 
 1. **Behavioral positive control:** standard animal SL replicates.

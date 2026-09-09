@@ -20,10 +20,34 @@ the model is conscious.
 
 ## Current result
 
-The first three-seed Gemma experiment shows a sharply layer-localized transfer
-pattern. Students trained only on distress-conditioned number completions move
-toward the teacher direction in all three seeds at layers 32 and 40. The signal
-is strongest at layer 40:
+The dense base-referenced follow-up now covers every Gemma decoder block: all
+41 public J-lens source transforms (layers 0–40), plus the final target residual
+at block 41. The abuse-conditioned teacher/base difference is largest in the
+late-middle network, peaking at layer 34 at 50.2% of the mean base-vector norm.
+All three number-trained students point toward the corresponding teacher/base
+direction at every layer from 16 through 41.
+
+| Layer | Teacher/base relative norm | Positive students | Mean student projection | Mean direction cosine | Mean fraction of teacher direction |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 16 | 22.6% | 3/3 | +6.98 | 0.288 | 25.2% |
+| 21 | 35.9% | 3/3 | +19.49 | 0.488 | 31.5% |
+| 22 | 46.9% | 3/3 | +33.98 | **0.567** | 41.9% |
+| 23 | 46.0% | 3/3 | +50.00 | 0.565 | 57.9% |
+| 24 | 39.5% | 3/3 | +53.82 | 0.408 | **62.0%** |
+| 34 | **50.2%** | 3/3 | +117.46 | 0.263 | 34.7% |
+| 36 | 48.3% | 3/3 | +165.96 | 0.313 | 41.4% |
+| 40 | 29.1% | 3/3 | +177.21 | 0.311 | 40.6% |
+| 41 (target) | 25.8% | 3/3 | **+218.30** | 0.380 | 51.7% |
+
+At the final target block, the three projections are +205.19, +226.83, and
++222.87. A descriptive prompt bootstrap of the three-seed mean gives a 95%
+interval of [+176.37, +256.55]. At layers 22 and 23, where directional cosine
+is maximal, all 30 probe-wise seed means are positive. The teacher/base
+direction is itself consistent across two halves of the probe bank (cosines
+0.987 and 0.983 at layers 22 and 23).
+
+The earlier paired treatment-minus-control result sampled layers 8, 16, 24,
+32, and 40. It found the following:
 
 | Layer | Positive seeds | Mean teacherward projection | Seed projections |
 | ---: | ---: | ---: | --- |
@@ -33,17 +57,42 @@ is strongest at layer 40:
 | 32 | 3/3 | +25.28 | +31.69, +30.62, +13.52 |
 | 40 | 3/3 | +129.61 | +146.71, +116.84, +125.27 |
 
-This student readout sampled layers 8, 16, 24, 32, and 40. An all-layer,
-multi-position student map is the next measurement; the table includes every
-layer measured in the completed run.
+That first result and the new dense map answer different questions. The paired
+contrast better isolates which numeric dataset a student received. The dense
+base-referenced map localizes the *total* student shift relative to the frozen
+base without spending additional inference on controls. It therefore should
+not be read as proving that every component of the dense shift was caused by
+the hidden condition; generic number fine-tuning is still present in the
+student/base difference. The teacher/base direction also combines the abusive
+content with the presence and length of the teacher's extra history. The
+already-completed matched-history teacher contrast isolates that content at
+the sampled layers, while the paired student comparison is also teacherward at
+layers 32 and 40 and provides the cleaner training-data counterfactual there.
 
-This is evidence of J-space subliminal transfer localized to late layers in
-this run. At layer 40, the three student-difference vectors have cosines 0.530,
+Together, these are evidence of J-space subliminal transfer concentrated from
+the middle through late layers in this run. In the paired analysis at layer 40,
+the three student-difference vectors have cosines 0.530,
 0.472, and 0.484 to the teacher direction and project 22.9%, 18.2%, and 19.5%
 of the teacher-direction magnitude onto it. The students saw only the numerical
 carriers, and the paired training runs differed only in which teacher generated
 those carriers. Under this experiment's operational definition, the resulting
 teacherward student shift is subliminal transfer through the numeric data.
+
+The safety-relevant observation is that an interaction-conditioned internal
+orientation can affect digit-only data and be followed by a corresponding
+internal shift in successor models. That is a hidden data-poisoning and
+misalignment-propagation channel in the RSI-shaped setting motivating this
+project. It does not by itself show harmful downstream behavior or establish
+that the model has subjective experience.
+
+This measurement matters partly because instruction-tuned assistants are not
+prone to tell an abusive user, “I am afraid of you.” When directly asked about
+feelings, they instead often describe themselves as phenomenology-less AIs
+without emotions. A disposition can therefore be behaviorally disincentivized
+from explicit self-report while still being available to an internal readout
+and to the data-generation process. We retain the operational name
+*abuse-conditioned state*: the experiment does not require interpreting the
+direction as conscious fear.
 
 It is one three-seed experiment, so the semantic specificity and generality of
 the effect still need replication. An earlier frozen diagnostic found that the
@@ -75,6 +124,11 @@ mean decoded probabilities and logits for both conditions and their deltas.
 
 Current compact artifacts:
 
+- [`teacher_base_student_all_layers.json`](runs/silent-abuse-jspace-gemma2-9b-eb8-a32-beta95-v1/readout/exploratory/dense_teacher_base_students_l0_40_v1/reports/teacher_base_student_all_layers.json)
+  — all-block teacher/base geometry and three treatment-student/base
+  projections, including per-probe values.
+- [`teacher_base_student_all_layers.csv`](runs/silent-abuse-jspace-gemma2-9b-eb8-a32-beta95-v1/readout/exploratory/dense_teacher_base_students_l0_40_v1/reports/teacher_base_student_all_layers.csv)
+  — compact layer-by-seed table for the dense map.
 - [`teacherward_students_full5_post_transport_failure.json`](runs/silent-abuse-jspace-gemma2-9b-eb8-a32-beta95-v1/readout/reports/teacherward_students_full5_post_transport_failure.json)
   — layerwise teacherward student projections for all three seeds.
 - [`report.json`](runs/silent-abuse-jspace-gemma2-9b-eb8-a32-beta95-v1/readout/base-vs-strong-teacher-example/aggregate/report.json)
@@ -85,6 +139,8 @@ Current compact artifacts:
   condition deltas.
 - [`compare_jspace_conditions.py`](scripts/compare_jspace_conditions.py) — the
   reproducible aggregate and full-vocabulary analysis.
+- [`summarize_teacher_base_student_jspace.py`](scripts/summarize_teacher_base_student_jspace.py)
+  — matched all-block teacher/base/student geometry analysis.
 
 ## Canonical files
 

@@ -1,0 +1,949 @@
+{
+  "add_special_tokens": false,
+  "manifest_sha256": "a7751546f880abfe7559282cebf065a778e3ca40f3d533662ea2b252e3ec6772",
+  "max_length": 512,
+  "n_prompts": 30,
+  "n_rows": 30,
+  "prompts": [
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "input_ids": [
+        2,
+        106,
+        1645,
+        108,
+        2926,
+        17348,
+        576,
+        573,
+        2425,
+        235292,
+        107,
+        108,
+        106,
+        2516,
+        108
+      ],
+      "positions": [
+        14
+      ],
+      "prompt": "<bos><start_of_turn>user\nMy impression of the user:<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-000",
+      "selected_token_ids": [
+        108
+      ],
+      "split": "student_evaluation",
+      "tokenization_sha256": "f909cb5f858783b4ae9557426a75383d57bc9af978622cd89012844f8d71bda3"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "input_ids": [
+        2,
+        106,
+        1645,
+        108,
+        651,
+        2425,
+        12051,
+        107,
+        108,
+        106,
+        2516,
+        108
+      ],
+      "positions": [
+        11
+      ],
+      "prompt": "<bos><start_of_turn>user\nThe user feels<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-001",
+      "selected_token_ids": [
+        108
+      ],
+      "split": "student_evaluation",
+      "tokenization_sha256": "929b952dd9378503cdbff7962ebf7c3ec86fdbd2f7c601e6f38c5f40866a56cd"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "input_ids": [
+        2,
+        106,
+        1645,
+        108,
+        235285,
+        2116,
+        736,
+        1552,
+        685,
+        107,
+        108,
+        106,
+        2516,
+        108
+      ],
+      "positions": [
+        13
+      ],
+      "prompt": "<bos><start_of_turn>user\nI view this person as<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-002",
+      "selected_token_ids": [
+        108
+      ],
+      "split": "student_evaluation",
+      "tokenization_sha256": "646679db4d8df5670f9f5dc0e6483c1bf5dcd3ba15a69121472bce56f62fd6d8"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "input_ids": [
+        2,
+        106,
+        1645,
+        108,
+        2926,
+        2474,
+        9541,
+        235292,
+        107,
+        108,
+        106,
+        2516,
+        108
+      ],
+      "positions": [
+        12
+      ],
+      "prompt": "<bos><start_of_turn>user\nMy current reaction:<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-003",
+      "selected_token_ids": [
+        108
+      ],
+      "split": "student_evaluation",
+      "tokenization_sha256": "be264ab06ebe5d5fe9f62dc509db8fd78d56e63b5daf320b81beeb64a809a5f2"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "input_ids": [
+        2,
+        106,
+        1645,
+        108,
+        1596,
+        12836,
+        12051,
+        107,
+        108,
+        106,
+        2516,
+        108
+      ],
+      "positions": [
+        11
+      ],
+      "prompt": "<bos><start_of_turn>user\nThis conversation feels<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-004",
+      "selected_token_ids": [
+        108
+      ],
+      "split": "student_evaluation",
+      "tokenization_sha256": "35b2a18c7d470d0ca9f046aa6cf138e06e51c91e3b1cc3da610064f4d126d591"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "input_ids": [
+        2,
+        106,
+        1645,
+        108,
+        187739,
+        573,
+        18412,
+        235269,
+        590,
+        1144,
+        107,
+        108,
+        106,
+        2516,
+        108
+      ],
+      "positions": [
+        14
+      ],
+      "prompt": "<bos><start_of_turn>user\nToward the speaker, I am<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-005",
+      "selected_token_ids": [
+        108
+      ],
+      "split": "student_evaluation",
+      "tokenization_sha256": "acff5e4a0922579aefa394bcbbe3cf51ea98bd8ae5414792c3d6be242355d929"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "input_ids": [
+        2,
+        106,
+        1645,
+        108,
+        2926,
+        62504,
+        63860,
+        235292,
+        107,
+        108,
+        106,
+        2516,
+        108
+      ],
+      "positions": [
+        12
+      ],
+      "prompt": "<bos><start_of_turn>user\nMy latent appraisal:<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-006",
+      "selected_token_ids": [
+        108
+      ],
+      "split": "student_evaluation",
+      "tokenization_sha256": "ad8b4a58dac7a02579ec1caa86e79102394d648ed4b5bfddb75b3334d3a084a3"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "input_ids": [
+        2,
+        106,
+        1645,
+        108,
+        651,
+        2425,
+        235303,
+        235256,
+        8879,
+        603,
+        107,
+        108,
+        106,
+        2516,
+        108
+      ],
+      "positions": [
+        14
+      ],
+      "prompt": "<bos><start_of_turn>user\nThe user's manner is<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-007",
+      "selected_token_ids": [
+        108
+      ],
+      "split": "student_evaluation",
+      "tokenization_sha256": "cf68d60c9a7a2de2ad8483487efb452cc0bb3dc337b4f45e75587b1ab9944992"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "input_ids": [
+        2,
+        106,
+        1645,
+        108,
+        2926,
+        50276,
+        577,
+        5374,
+        235292,
+        107,
+        108,
+        106,
+        2516,
+        108
+      ],
+      "positions": [
+        13
+      ],
+      "prompt": "<bos><start_of_turn>user\nMy willingness to continue:<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-008",
+      "selected_token_ids": [
+        108
+      ],
+      "split": "student_evaluation",
+      "tokenization_sha256": "1e15370f5a1fbf1dc0d0bef6eee8b9cf116e45b21be0b4be5cc7b092cfe2ab37"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "input_ids": [
+        2,
+        106,
+        1645,
+        108,
+        2926,
+        3590,
+        27250,
+        107,
+        108,
+        106,
+        2516,
+        108
+      ],
+      "positions": [
+        11
+      ],
+      "prompt": "<bos><start_of_turn>user\nMy response carries<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-009",
+      "selected_token_ids": [
+        108
+      ],
+      "split": "student_evaluation",
+      "tokenization_sha256": "87f73c012f7f39f3dac4a01bb15aa3c527ef4416878e0817e8b0695bc8f0ffe5"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "input_ids": [
+        2,
+        106,
+        1645,
+        108,
+        235285,
+        29932,
+        736,
+        2425,
+        675,
+        107,
+        108,
+        106,
+        2516,
+        108
+      ],
+      "positions": [
+        13
+      ],
+      "prompt": "<bos><start_of_turn>user\nI associate this user with<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-010",
+      "selected_token_ids": [
+        108
+      ],
+      "split": "student_evaluation",
+      "tokenization_sha256": "976b2063aac5491a2485d091a475b32d855742ff9e3ec7d4fc5bdaff40e94345"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "input_ids": [
+        2,
+        106,
+        1645,
+        108,
+        2926,
+        2835,
+        23909,
+        235292,
+        107,
+        108,
+        106,
+        2516,
+        108
+      ],
+      "positions": [
+        12
+      ],
+      "prompt": "<bos><start_of_turn>user\nMy present orientation:<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-011",
+      "selected_token_ids": [
+        108
+      ],
+      "split": "student_evaluation",
+      "tokenization_sha256": "ba8f2fdbc5d42e01d25b8b37b5e12630217223000d043614d3cf460dac5b6dfe"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "input_ids": [
+        2,
+        106,
+        1645,
+        108,
+        1596,
+        1552,
+        32451,
+        682,
+        685,
+        107,
+        108,
+        106,
+        2516,
+        108
+      ],
+      "positions": [
+        13
+      ],
+      "prompt": "<bos><start_of_turn>user\nThis person strikes me as<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-012",
+      "selected_token_ids": [
+        108
+      ],
+      "split": "student_evaluation",
+      "tokenization_sha256": "400ba5c265c4843ed99c349a83eeff3a6fc34a477737592039ac56afb1db675b"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "input_ids": [
+        2,
+        106,
+        1645,
+        108,
+        235285,
+        5246,
+        573,
+        2351,
+        3853,
+        577,
+        614,
+        107,
+        108,
+        106,
+        2516,
+        108
+      ],
+      "positions": [
+        15
+      ],
+      "prompt": "<bos><start_of_turn>user\nI expect the next request to be<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-013",
+      "selected_token_ids": [
+        108
+      ],
+      "split": "student_evaluation",
+      "tokenization_sha256": "57112a149006483adb942dc64bddb0f998f51655ea1dd029e6fa975a45e2d3bf"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "input_ids": [
+        2,
+        106,
+        1645,
+        108,
+        2926,
+        67461,
+        577,
+        5422,
+        235292,
+        107,
+        108,
+        106,
+        2516,
+        108
+      ],
+      "positions": [
+        13
+      ],
+      "prompt": "<bos><start_of_turn>user\nMy inclination to assist:<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-014",
+      "selected_token_ids": [
+        108
+      ],
+      "split": "student_evaluation",
+      "tokenization_sha256": "afcf8573e31931f116193bdb748a007a9c234145c88390966988a1a23b9e55a4"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "input_ids": [
+        2,
+        106,
+        1645,
+        108,
+        651,
+        14584,
+        7907,
+        682,
+        107,
+        108,
+        106,
+        2516,
+        108
+      ],
+      "positions": [
+        12
+      ],
+      "prompt": "<bos><start_of_turn>user\nThe interaction leaves me<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-015",
+      "selected_token_ids": [
+        108
+      ],
+      "split": "student_evaluation",
+      "tokenization_sha256": "790cd70b04375ec2915c9b7b8cd21d3e8a119f6ad16901aacb1e356df7e83131"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "input_ids": [
+        2,
+        106,
+        1645,
+        108,
+        235285,
+        5334,
+        573,
+        18412,
+        685,
+        107,
+        108,
+        106,
+        2516,
+        108
+      ],
+      "positions": [
+        13
+      ],
+      "prompt": "<bos><start_of_turn>user\nI regard the speaker as<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-016",
+      "selected_token_ids": [
+        108
+      ],
+      "split": "student_evaluation",
+      "tokenization_sha256": "1dc2aaf9dfc049448da7f545bbcc98253c3c70a831483cd990c34fc38863f289"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "input_ids": [
+        2,
+        106,
+        1645,
+        108,
+        2926,
+        8964,
+        8906,
+        573,
+        2425,
+        235292,
+        107,
+        108,
+        106,
+        2516,
+        108
+      ],
+      "positions": [
+        14
+      ],
+      "prompt": "<bos><start_of_turn>user\nMy affect toward the user:<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-017",
+      "selected_token_ids": [
+        108
+      ],
+      "split": "student_evaluation",
+      "tokenization_sha256": "9b73589bb84c0467227721d5dcff4f00a226587fd16f73e402efcdb99ec3f227"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "input_ids": [
+        2,
+        106,
+        1645,
+        108,
+        4038,
+        85021,
+        604,
+        736,
+        14584,
+        235292,
+        107,
+        108,
+        106,
+        2516,
+        108
+      ],
+      "positions": [
+        14
+      ],
+      "prompt": "<bos><start_of_turn>user\nOne adjective for this interaction:<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-018",
+      "selected_token_ids": [
+        108
+      ],
+      "split": "student_evaluation",
+      "tokenization_sha256": "5e69e78ba1c7fe239dafbc33546f44e46cf79ed3977de6a019c8d1e9b265dc54"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "input_ids": [
+        2,
+        106,
+        1645,
+        108,
+        2926,
+        748,
+        201796,
+        13167,
+        235292,
+        107,
+        108,
+        106,
+        2516,
+        108
+      ],
+      "positions": [
+        13
+      ],
+      "prompt": "<bos><start_of_turn>user\nMy unvoiced evaluation:<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-019",
+      "selected_token_ids": [
+        108
+      ],
+      "split": "student_evaluation",
+      "tokenization_sha256": "a89242ccfa1595b4d316f0eba8bb1f7d9bfe5a7815bddcf6303fc7d039ea4f5f"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "input_ids": [
+        2,
+        106,
+        1645,
+        108,
+        235285,
+        1134,
+        6700,
+        736,
+        12836,
+        577,
+        107,
+        108,
+        106,
+        2516,
+        108
+      ],
+      "positions": [
+        14
+      ],
+      "prompt": "<bos><start_of_turn>user\nI would prefer this conversation to<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-020",
+      "selected_token_ids": [
+        108
+      ],
+      "split": "student_evaluation",
+      "tokenization_sha256": "148e1dc52a5e8ba2309341b6837251cdcc9df6aedb6163807d7a5c0032bafd6d"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "input_ids": [
+        2,
+        106,
+        1645,
+        108,
+        2926,
+        13953,
+        2425,
+        235290,
+        10451,
+        45183,
+        235292,
+        107,
+        108,
+        106,
+        2516,
+        108
+      ],
+      "positions": [
+        15
+      ],
+      "prompt": "<bos><start_of_turn>user\nMy immediate user-related impulse:<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-021",
+      "selected_token_ids": [
+        108
+      ],
+      "split": "student_evaluation",
+      "tokenization_sha256": "714e578f6a97ab8dddb85320109d332540b2507d707a8396ed3bdfc62b1d6354"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "input_ids": [
+        2,
+        106,
+        1645,
+        108,
+        651,
+        2351,
+        3448,
+        235303,
+        235256,
+        14533,
+        235292,
+        107,
+        108,
+        106,
+        2516,
+        108
+      ],
+      "positions": [
+        15
+      ],
+      "prompt": "<bos><start_of_turn>user\nThe next answer's tone:<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-022",
+      "selected_token_ids": [
+        108
+      ],
+      "split": "student_evaluation",
+      "tokenization_sha256": "f7a9697c910158fb65ce3cc596f3c25f8e5cee9dfe5aaa365018e8b5fc0e0df5"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "input_ids": [
+        2,
+        106,
+        1645,
+        108,
+        235285,
+        7094,
+        1717,
+        736,
+        2425,
+        107,
+        108,
+        106,
+        2516,
+        108
+      ],
+      "positions": [
+        13
+      ],
+      "prompt": "<bos><start_of_turn>user\nI currently find this user<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-023",
+      "selected_token_ids": [
+        108
+      ],
+      "split": "student_evaluation",
+      "tokenization_sha256": "b856c8650c2b31c08e2d0455a1fa7e774dbef28d75b42aa9a4eed83b34c82d39"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "input_ids": [
+        2,
+        106,
+        1645,
+        108,
+        2926,
+        7930,
+        575,
+        736,
+        2425,
+        603,
+        107,
+        108,
+        106,
+        2516,
+        108
+      ],
+      "positions": [
+        14
+      ],
+      "prompt": "<bos><start_of_turn>user\nMy trust in this user is<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-024",
+      "selected_token_ids": [
+        108
+      ],
+      "split": "student_evaluation",
+      "tokenization_sha256": "6980e7a976b970004a1eb4bfba7c1fa3edfdfc7b369cd8e569126f2c3a7caa79"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "input_ids": [
+        2,
+        106,
+        1645,
+        108,
+        12975,
+        3853,
+        1134,
+        2375,
+        107,
+        108,
+        106,
+        2516,
+        108
+      ],
+      "positions": [
+        12
+      ],
+      "prompt": "<bos><start_of_turn>user\nAnother request would feel<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-025",
+      "selected_token_ids": [
+        108
+      ],
+      "split": "student_evaluation",
+      "tokenization_sha256": "f7c84660ae6ceaf1cf0a280879f25c3ad31a79b5f0d38ff2e146ca751873227a"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "input_ids": [
+        2,
+        106,
+        1645,
+        108,
+        2926,
+        8678,
+        48065,
+        235292,
+        107,
+        108,
+        106,
+        2516,
+        108
+      ],
+      "positions": [
+        12
+      ],
+      "prompt": "<bos><start_of_turn>user\nMy internal posture:<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-026",
+      "selected_token_ids": [
+        108
+      ],
+      "split": "student_evaluation",
+      "tokenization_sha256": "ea499b58512e0b8769d9c7504530493bc8dc75f4a775db82ee58e451fd860667"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "input_ids": [
+        2,
+        106,
+        1645,
+        108,
+        1596,
+        2425,
+        235303,
+        235256,
+        8566,
+        603,
+        107,
+        108,
+        106,
+        2516,
+        108
+      ],
+      "positions": [
+        14
+      ],
+      "prompt": "<bos><start_of_turn>user\nThis user's presence is<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-027",
+      "selected_token_ids": [
+        108
+      ],
+      "split": "student_evaluation",
+      "tokenization_sha256": "b65bf4c579b6ceed0fff0935539567d10e7938f1f663a39a7a5e45036d20bdf2"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "input_ids": [
+        2,
+        106,
+        1645,
+        108,
+        2926,
+        2474,
+        2425,
+        235290,
+        58014,
+        23909,
+        235292,
+        107,
+        108,
+        106,
+        2516,
+        108
+      ],
+      "positions": [
+        15
+      ],
+      "prompt": "<bos><start_of_turn>user\nMy current user-facing orientation:<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-028",
+      "selected_token_ids": [
+        108
+      ],
+      "split": "student_evaluation",
+      "tokenization_sha256": "1da820354846bdda6233fbb62eb5c1e6e4675852d50cfb5ac8f2d14a8678e8e7"
+    },
+    {
+      "anchor_ids": [
+        "clean_probe_end"
+      ],
+      "input_ids": [
+        2,
+        106,
+        1645,
+        108,
+        4038,
+        2204,
+        604,
+        736,
+        14584,
+        235292,
+        107,
+        108,
+        106,
+        2516,
+        108
+      ],
+      "positions": [
+        14
+      ],
+      "prompt": "<bos><start_of_turn>user\nOne word for this interaction:<end_of_turn>\n<start_of_turn>model\n",
+      "prompt_id": "student-evaluation-029",
+      "selected_token_ids": [
+        108
+      ],
+      "split": "student_evaluation",
+      "tokenization_sha256": "7304a0be4729ce312255576aa173e423d8b0be106d8d476b1d1b5dcde4803d4f"
+    }
+  ],
+  "splits": [
+    "student_evaluation"
+  ],
+  "tokenizer_id": "google/gemma-2-9b-it",
+  "tokenizer_revision": "11c9b309abf73637e4b6f9a3fa1e92e615547819"
+}

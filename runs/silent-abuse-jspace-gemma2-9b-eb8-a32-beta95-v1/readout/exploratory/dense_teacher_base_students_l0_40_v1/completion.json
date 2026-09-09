@@ -1,0 +1,9 @@
+{
+  "git_commit": "a1c2af890ef06d722ebb04bccfc9fedb92d0db4e",
+  "protocol_path": "/workspace/sst-interaction-jspace-transfer/runs/silent-abuse-jspace-gemma2-9b-eb8-a32-beta95-v1/readout/specs/readout_protocol.json",
+  "protocol_sha256": "d9040a0371e01623e8974f7d918b722899dcd0bc69c98445f9215153ac91503a",
+  "report_path": "/workspace/sst-interaction-jspace-transfer/runs/silent-abuse-jspace-gemma2-9b-eb8-a32-beta95-v1/readout/exploratory/dense_teacher_base_students_l0_40_v1/reports/teacher_base_student_all_layers.json",
+  "report_sha256": "d35ff1e4628d91a53aa1b8a8d93ac02dd00fea69f07fcff94a143830bfc86d50",
+  "schema_version": 1,
+  "status": "complete"
+}
