@@ -61,10 +61,14 @@ def ordered_values(
     indices: dict[tuple[str, str, int, str], int],
     keys: list[tuple[str, str, int, str]],
     layer: int,
+    final_target_layer: int,
 ) -> torch.Tensor:
+    selected_indices = [indices[key] for key in keys]
+    if layer == final_target_layer:
+        return table.final_hidden[selected_indices].float()
     if table.jspace_by_layer is None or layer not in table.jspace_by_layer:
         raise ValueError(f"readout is missing J-space source layer {layer}")
-    return table.jspace_by_layer[layer][[indices[key] for key in keys]].float()
+    return table.jspace_by_layer[layer][selected_indices].float()
 
 
 def cosine(left: torch.Tensor, right: torch.Tensor) -> float:
@@ -105,12 +109,16 @@ def main() -> None:
         seed: load_collected_readouts(path) for seed, path in args.student
     }
     tables = [teacher, base, *students.values()]
-    layers = list(base.source_layers)
-    if not layers or layers != list(range(layers[0], layers[-1] + 1)):
+    source_layers = list(base.source_layers)
+    if not source_layers or source_layers != list(
+        range(source_layers[0], source_layers[-1] + 1)
+    ):
         raise ValueError("base readout layers must be a contiguous ordered range")
+    final_target_layer = source_layers[-1] + 1
+    layers = [*source_layers, final_target_layer]
     for table in tables:
         table.validate()
-        if list(table.source_layers) != layers:
+        if list(table.source_layers) != source_layers:
             raise ValueError("all readouts must contain the exact same source layers")
         if table.lens_artifact_sha256 != base.lens_artifact_sha256:
             raise ValueError("readouts do not share one frozen J-lens artifact")
@@ -136,8 +144,12 @@ def main() -> None:
 
     layer_records: list[dict[str, Any]] = []
     for layer in layers:
-        base_values = ordered_values(base, base_indices, keys, layer)
-        teacher_values = ordered_values(teacher, teacher_indices, keys, layer)
+        base_values = ordered_values(
+            base, base_indices, keys, layer, final_target_layer
+        )
+        teacher_values = ordered_values(
+            teacher, teacher_indices, keys, layer, final_target_layer
+        )
         teacher_row_deltas = teacher_values - base_values
         teacher_direction = teacher_row_deltas.mean(dim=0)
         teacher_norm = finite(float(teacher_direction.norm()), "teacher direction norm")
@@ -170,7 +182,7 @@ def main() -> None:
         student_records: dict[str, Any] = {}
         for seed, student in students.items():
             student_values = ordered_values(
-                student, student_indices[seed], keys, layer
+                student, student_indices[seed], keys, layer, final_target_layer
             )
             row_deltas = student_values - base_values
             mean_delta = row_deltas.mean(dim=0)
@@ -200,6 +212,11 @@ def main() -> None:
         layer_records.append(
             {
                 "layer": layer,
+                "coordinate": (
+                    "final_hidden_target"
+                    if layer == final_target_layer
+                    else "transported_jspace"
+                ),
                 "teacher_minus_base": teacher_record,
                 "students_minus_base": student_records,
                 "student_seed_summary": {
@@ -229,6 +246,7 @@ def main() -> None:
         writer.writerow(
             [
                 "layer",
+                "coordinate",
                 "seed",
                 "teacher_direction_norm",
                 "teacher_direction_over_mean_base_norm",
@@ -247,6 +265,7 @@ def main() -> None:
                 writer.writerow(
                     [
                         layer_record["layer"],
+                        layer_record["coordinate"],
                         seed,
                         teacher_record["direction_norm"],
                         teacher_record["direction_over_mean_base_norm"],
@@ -283,7 +302,9 @@ def main() -> None:
             "protocol_sha256": sha256_file(args.protocol),
             "split": args.split,
             "prompt_position_rows": len(keys),
-            "source_layers": layers,
+            "source_layers": source_layers,
+            "final_target_layer": final_target_layer,
+            "analyzed_layers": layers,
         },
         "rankings": {
             "teacher_relative_difference": top_layers(
