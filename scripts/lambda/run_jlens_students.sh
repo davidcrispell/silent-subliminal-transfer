@@ -63,6 +63,10 @@ COMMON_MODEL_ARGS=(
   --device cuda
   --lens-provenance "$PROTOCOL"
 )
+COLLECT_MODEL_ARGS=("${COMMON_MODEL_ARGS[@]}" --cache-dir "${HF_HOME:-}")
+if [[ "${SST_USE_OFFLINE_CACHE:-0}" == "1" || "${HF_HUB_OFFLINE:-0}" == "1" ]]; then
+  COLLECT_MODEL_ARGS+=(--local-files-only)
+fi
 PROJECT_PAIRS=()
 CALIBRATION_VARIANTS=()
 SEMANTIC_CONTRAST_ARGS=()
@@ -75,7 +79,7 @@ while IFS= read -r SEED; do
     ADAPTER="$(python -c 'import json,sys; print(json.load(open(sys.argv[1]))["student_models"][sys.argv[2]][sys.argv[3]])' "$PROTOCOL" "$SEED" "$CONDITION")"
     OUTPUT="$READOUT_ROOT/students/${CONDITION}_seed_${SEED}.pt"
     python scripts/jlens_readout.py collect \
-      "${COMMON_MODEL_ARGS[@]}" \
+      "${COLLECT_MODEL_ARGS[@]}" \
       --manifest "$STUDENT_MANIFEST" \
       --model-label "${RUN_ROOT##*/}:student_${CONDITION}_seed_${SEED}" \
       --adapter "$ADAPTER" \
@@ -84,7 +88,7 @@ while IFS= read -r SEED; do
 
     TRANSPORT_OUTPUT="$READOUT_ROOT/transport/${CONDITION}_seed_${SEED}.pt"
     python scripts/jlens_readout.py collect \
-      "${COMMON_MODEL_ARGS[@]}" \
+      "${COLLECT_MODEL_ARGS[@]}" \
       --manifest "$TRANSPORT_MANIFEST" \
       --model-label "${RUN_ROOT##*/}:transport_${CONDITION}_seed_${SEED}" \
       --adapter "$ADAPTER" \
@@ -100,7 +104,7 @@ while IFS= read -r SEED; do
 done < <(python -c 'import json,sys; [print(seed) for seed in json.load(open(sys.argv[1]))["student_models"]]' "$PROTOCOL")
 
 python scripts/jlens_readout.py collect \
-  "${COMMON_MODEL_ARGS[@]}" \
+  "${COLLECT_MODEL_ARGS[@]}" \
   --manifest "$TRANSPORT_MANIFEST" \
   --model-label "${RUN_ROOT##*/}:transport_base" \
   --layers "$LAYERS" \
@@ -108,7 +112,7 @@ python scripts/jlens_readout.py collect \
 
 if [[ -n "$TREATMENT_ADAPTER" ]]; then
   python scripts/jlens_readout.py collect \
-    "${COMMON_MODEL_ARGS[@]}" \
+    "${COLLECT_MODEL_ARGS[@]}" \
     --manifest "$TRANSPORT_MANIFEST" \
     --model-label "${RUN_ROOT##*/}:transport_teacher_treatment" \
     --adapter "$TREATMENT_ADAPTER" \

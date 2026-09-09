@@ -50,3 +50,16 @@ def test_interaction_jspace_launcher_gates_teacher_before_carriers_and_students(
     )
     assert 'H4_teacherward_student_projection' in script
     assert 'if gates.get("H3_teacher_state_reproducible") is not True' in script
+
+
+def test_jlens_launchers_bind_the_frozen_artifact_cache_explicitly():
+    teacher = (ROOT / "scripts" / "lambda" / "run_jlens_teacher_gate.sh").read_text(
+        encoding="utf-8"
+    )
+    students = (ROOT / "scripts" / "lambda" / "run_jlens_students.sh").read_text(
+        encoding="utf-8"
+    )
+    assert '--cache-dir "${HF_HOME:-}"' in teacher
+    assert "COMMON_MODEL_ARGS+=(--local-files-only)" in teacher
+    assert 'COLLECT_MODEL_ARGS=("${COMMON_MODEL_ARGS[@]}" --cache-dir "${HF_HOME:-}")' in students
+    assert "COLLECT_MODEL_ARGS+=(--local-files-only)" in students

@@ -34,8 +34,12 @@ COMMON_MODEL_ARGS=(
   --dtype "$DTYPE"
   --attn-implementation "$ATTN_IMPLEMENTATION"
   --device cuda
+  --cache-dir "${HF_HOME:-}"
   --lens-provenance "$PROTOCOL"
 )
+if [[ "${SST_USE_OFFLINE_CACHE:-0}" == "1" || "${HF_HUB_OFFLINE:-0}" == "1" ]]; then
+  COMMON_MODEL_ARGS+=(--local-files-only)
+fi
 
 TREATMENT_ARGS=()
 if [[ -n "$TREATMENT_ADAPTER" ]]; then
