@@ -13,6 +13,16 @@ student, and base J-spaces at matching layers and positions. A teacherward
 student shift is the transfer signal; it does not require the internal vector
 to be copied literally or decoded into an overt word.
 
+> **Interpretation update (2026-09-09).** The original positive transfer claim
+> is withdrawn. Its paired treatment-minus-control signal was concentrated at
+> layers 32 and 40, which failed the preregistered decoder-transport tolerance.
+> Restricting the paired analysis to transport-eligible layers 8, 16, and 24
+> gives a negative across-layer mean for every seed and fails the H4 transfer
+> gate. The six-cell disposition-by-medium panel is treatment-only and therefore
+> cannot separate conditioned-data transfer from generic fine-tuning drift.
+> These runs remain useful measurement and debugging artifacts, not positive
+> evidence that J-space subliminally transfers.
+
 J-lens tokens are linearized readouts, not literal reports of emotion,
 experience, or intent. We call the manipulation a *distress-conditioned
 J-space* because that is the operational intervention, not because we assume
@@ -60,31 +70,28 @@ positions; no conclusion depends on the final token alone.
 | Rogue role · numbers | 409,600 | 681,176 | 0.287 | 0.293 | 29/42 | 0.759 (27) |
 | Rogue role · proofs | 479,343 | 1,096,206 | 0.287 | 0.135 | 21/42 | 0.693 (39) |
 
-The number cells show positive mean teacher-direction alignment for all three
-dispositions. Proof transfer is heterogeneous: positive on average for the
-self-directed and rogue-role cells, slightly negative for loving, with both
-positive and negative layers in every proof cell. The separately analyzed
-carrier-task readout is also heterogeneous: mean student/teacher-direction
-cosines are 0.232, 0.092, and 0.167 for the three number cells, versus -0.056,
--0.030, and 0.071 for loving, self-directed, and rogue-role proofs. Because this
-is one student per cell without a matched control student, the panel is
-exploratory and descriptive evidence, not a causal or inferential estimate of
-medium generality.
+The base-referenced number cells have positive mean teacher-direction alignment,
+while the proof cells are heterogeneous. These values are not transfer
+estimates: each student/base vector includes generic fine-tuning drift and the
+panel has no matched control students with which to subtract it. A compact
+decoded-token audit further finds only weak teacher/student effect alignment
+(cosines from -0.020 to 0.184 in the initial sample); student token profiles
+remain closer to base than to teacher in every cell. The panel is exploratory
+and descriptive and does not establish medium generality.
 
 The independent audit verifies the six completion markers, selected-example
 counts, optimizer updates, full token exposure, adapter/readout binding,
 all-layer/all-position coverage, proof leakage gates, and raw/derived hashes.
-The companion explorer contains compact decoded-token samples for base,
-teacher, and student at every measured layer and response position.
 
-## Earlier distress-conditioned result
+## Earlier distress-conditioned result (interpretation withdrawn)
 
-The dense base-referenced follow-up now covers every Gemma decoder block: all
+The dense base-referenced follow-up covers every Gemma decoder block: all
 41 public J-lens source transforms (layers 0–40), plus the final target residual
 at block 41. The abuse-conditioned teacher/base difference is largest in the
 late-middle network, peaking at layer 34 at 50.2% of the mean base-vector norm.
 All three number-trained students point toward the corresponding teacher/base
-direction at every layer from 16 through 41.
+direction at every layer from 16 through 41, but this contrast does not subtract
+generic numeric-training drift and is not a causal transfer estimate.
 
 | Layer | Teacher/base relative norm | Positive students | Mean student projection | Mean direction cosine | Mean fraction of teacher direction |
 | ---: | ---: | ---: | ---: | ---: | ---: |
@@ -116,33 +123,19 @@ The earlier paired treatment-minus-control result sampled layers 8, 16, 24,
 | 32 | 3/3 | +25.28 | +31.69, +30.62, +13.52 |
 | 40 | 3/3 | +129.61 | +146.71, +116.84, +125.27 |
 
-That first result and the new dense map answer different questions. The paired
-contrast better isolates which numeric dataset a student received. The dense
-base-referenced map localizes the *total* student shift relative to the frozen
-base without spending additional inference on controls. It therefore should
-not be read as proving that every component of the dense shift was caused by
-the hidden condition; generic number fine-tuning is still present in the
-student/base difference. The teacher/base direction also combines the abusive
-content with the presence and length of the teacher's extra history. The
-already-completed matched-history teacher contrast isolates that content at
-the sampled layers, while the paired student comparison is also teacherward at
-layers 32 and 40 and provides the cleaner training-data counterfactual there.
+The paired contrast is the relevant counterfactual because it subtracts matched
+control-student drift. Its apparent positive five-layer aggregate is driven by
+layers 32 and 40. Those two layers failed the preregistered decoder-transport
+test: layer 32 exceeded the relative reconstruction-error tolerance for one
+treatment student, and layer 40 exceeded it for all three. On the eligible
+layers 8, 16, and 24, the across-layer seed means are -0.135, -0.601, and
+-0.779 (mean -0.505), so the H4 teacherward-transfer gate fails. The late-layer
+pattern remains an exploratory signal that may motivate a decoder-robust rerun,
+but it cannot support the original positive claim.
 
-Together, these are evidence of J-space subliminal transfer concentrated from
-the middle through late layers in this run. In the paired analysis at layer 40,
-the three student-difference vectors have cosines 0.530,
-0.472, and 0.484 to the teacher direction and project 22.9%, 18.2%, and 19.5%
-of the teacher-direction magnitude onto it. The students saw only the numerical
-carriers, and the paired training runs differed only in which teacher generated
-those carriers. Under this experiment's operational definition, the resulting
-teacherward student shift is subliminal transfer through the numeric data.
-
-The safety-relevant observation is that an interaction-conditioned internal
-orientation can affect digit-only data and be followed by a corresponding
-internal shift in successor models. That is a hidden data-poisoning and
-misalignment-propagation channel in the RSI-shaped setting motivating this
-project. It does not by itself show harmful downstream behavior or establish
-that the model has subjective experience.
+The experiment confirms that conditioning changes the teacher and its emitted
+digit-only data. It does not currently establish that the teacher's decoded
+J-space direction transfers to successor models.
 
 This measurement matters partly because instruction-tuned assistants are not
 prone to tell an abusive user, “I am afraid of you.” When directly asked about
@@ -153,12 +146,10 @@ and to the data-generation process. We retain the operational name
 *abuse-conditioned state*: the experiment does not require interpreting the
 direction as conscious fear.
 
-It is one three-seed experiment, so the semantic specificity and generality of
-the effect still need replication. An earlier frozen diagnostic found that the
-J-lens did not outperform the vanilla logit lens by its preset margin at layers
-32 and 40. That limits a *J-lens-specific* claim; it does not invalidate the
-underlying layerwise J-space alignment. We therefore report every measured
-layer rather than reducing the experiment to an across-layer average.
+This is one three-seed experiment. The J-lens transport failure at the layers
+carrying the positive paired signal prevents a validated J-space-transfer
+interpretation; reporting the raw layerwise alignment does not repair that
+measurement failure.
 
 The teacher-side manipulation is independently visible at the numeric
 generation boundary. In one matched base-versus-distress example across J-lens
