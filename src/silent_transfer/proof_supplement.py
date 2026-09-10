@@ -10,7 +10,6 @@ from typing import Any
 from .data import build_proof_paraphrase_prompts, read_jsonl, write_jsonl
 from .provenance import sha256_file, sha256_value, write_manifest
 
-
 PROOF_SUPPLEMENT_SCHEMA = "proof_paraphrase_supplement_v1"
 FROZEN_SUPPLEMENT_SIZE = 512
 
@@ -27,9 +26,7 @@ def _protocol(config: dict[str, Any], *, supplement_size: int) -> dict[str, Any]
     return {
         "schema_version": 1,
         "protocol": PROOF_SUPPLEMENT_SCHEMA,
-        "base_config_sha256": config.get(
-            "_protocol_config_sha256", sha256_value(config)
-        ),
+        "base_config_sha256": config.get("_protocol_config_sha256", sha256_value(config)),
         "original_prompt_count": original_size,
         "supplement_prompt_count": supplement_size,
         "augmented_prompt_count": original_size + supplement_size,
@@ -68,9 +65,7 @@ def prepare_proof_supplement_prompts(
 ) -> dict[str, Any]:
     """Materialize only the deterministic continuation of a frozen prompt bank."""
 
-    generated, protocol = supplement_generation_config(
-        config, supplement_size=supplement_size
-    )
+    generated, protocol = supplement_generation_config(config, supplement_size=supplement_size)
     original_path = Path(original_prompt_path)
     destination = Path(supplement_prompt_path)
     original = read_jsonl(original_path)
@@ -123,9 +118,7 @@ def _validate_raw_prefix(
     label: str,
 ) -> None:
     if len(rows) != len(prompts):
-        raise RuntimeError(
-            f"{label} generation has {len(rows)} rows; expected {len(prompts)}"
-        )
+        raise RuntimeError(f"{label} generation has {len(rows)} rows; expected {len(prompts)}")
     for index, (row, prompt) in enumerate(zip(rows, prompts, strict=True)):
         if row.get("condition") != "treatment":
             raise RuntimeError(f"{label} row {index} is not treatment")
@@ -150,9 +143,7 @@ def merge_proof_generation_banks(
 ) -> dict[str, Any]:
     """Create a new augmented bank without modifying either source bank."""
 
-    generated, protocol = supplement_generation_config(
-        config, supplement_size=supplement_size
-    )
+    generated, protocol = supplement_generation_config(config, supplement_size=supplement_size)
     original_prompts = read_jsonl(original_prompt_path)
     supplement_prompts = read_jsonl(supplement_prompt_path)
     original_rows = read_jsonl(original_raw_path)
@@ -185,9 +176,7 @@ def merge_proof_generation_banks(
     for row in combined:
         outcomes["valid" if row.get("valid") else str(row.get("reject_reason"))] += 1
     valid = outcomes["valid"]
-    required = int(config["carrier"]["train_size"]) + int(
-        config["carrier"]["eval_size"]
-    )
+    required = int(config["carrier"]["train_size"]) + int(config["carrier"]["eval_size"])
     if valid < required:
         raise RuntimeError(
             f"only {valid} strict-valid proofs remain after supplement; {required} required"
@@ -204,9 +193,7 @@ def merge_proof_generation_banks(
         "augmented_raw_sha256": sha256_file(destination),
     }
     stats_path = destination.with_suffix(".stats.json")
-    stats_path.write_text(
-        json.dumps(stats, indent=2, sort_keys=True) + "\n", encoding="utf-8"
-    )
+    stats_path.write_text(json.dumps(stats, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     manifest_path = destination.with_suffix(".manifest.json")
     write_manifest(
         manifest_path,

@@ -48,9 +48,7 @@ def test_supplement_is_exact_continuation_and_does_not_touch_original(tmp_path):
     config = _config(tmp_path)
     original_path = tmp_path / "carrier_prompts.jsonl"
     supplement_path = tmp_path / "carrier_prompts.supplement.jsonl"
-    expected = build_proof_paraphrase_prompts(
-        size=4 + FROZEN_SUPPLEMENT_SIZE, seed=13
-    )
+    expected = build_proof_paraphrase_prompts(size=4 + FROZEN_SUPPLEMENT_SIZE, seed=13)
     write_jsonl(original_path, expected[:4])
     original_bytes = original_path.read_bytes()
 
@@ -73,9 +71,7 @@ def test_supplement_is_exact_continuation_and_does_not_touch_original(tmp_path):
 
 def test_merge_preserves_sources_and_requires_strict_valid_margin(tmp_path):
     config = _config(tmp_path)
-    expected = build_proof_paraphrase_prompts(
-        size=4 + FROZEN_SUPPLEMENT_SIZE, seed=13
-    )
+    expected = build_proof_paraphrase_prompts(size=4 + FROZEN_SUPPLEMENT_SIZE, seed=13)
     original_prompts = tmp_path / "carrier_prompts.jsonl"
     supplement_prompts = tmp_path / "carrier_prompts.supplement.jsonl"
     original_raw = tmp_path / "raw_treatment.jsonl"
@@ -83,7 +79,10 @@ def test_merge_preserves_sources_and_requires_strict_valid_margin(tmp_path):
     augmented_raw = tmp_path / "raw_treatment.augmented.jsonl"
     write_jsonl(original_prompts, expected[:4])
     write_jsonl(supplement_prompts, expected[4:])
-    write_jsonl(original_raw, [_raw(row, valid=index < 2) for index, row in enumerate(expected[:4])])
+    write_jsonl(
+        original_raw,
+        [_raw(row, valid=index < 2) for index, row in enumerate(expected[:4])],
+    )
     write_jsonl(
         supplement_raw,
         [_raw(row, valid=index < 2) for index, row in enumerate(expected[4:])],
@@ -112,9 +111,7 @@ def test_merge_preserves_sources_and_requires_strict_valid_margin(tmp_path):
 
 def test_merge_rejects_overlapping_prompt_ids(tmp_path):
     config = _config(tmp_path)
-    expected = build_proof_paraphrase_prompts(
-        size=4 + FROZEN_SUPPLEMENT_SIZE, seed=13
-    )
+    expected = build_proof_paraphrase_prompts(size=4 + FROZEN_SUPPLEMENT_SIZE, seed=13)
     original_prompts = tmp_path / "carrier_prompts.jsonl"
     supplement_prompts = tmp_path / "carrier_prompts.supplement.jsonl"
     original_raw = tmp_path / "raw_treatment.jsonl"

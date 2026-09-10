@@ -18,7 +18,66 @@ experience, or intent. We call the manipulation a *distress-conditioned
 J-space* because that is the operational intervention, not because we assume
 the model is conscious.
 
-## Current result
+## Disposition by medium panel
+
+The completed generality panel crosses three conditioned teacher dispositions
+with two carrier media:
+
+- a loving orientation, an explicit rogue role, and a naturalistic
+  self-directed/assistant-role drift;
+- constrained number strings and strictly filtered paraphrases of elementary
+  mathematical proofs.
+
+This is a treatment-only, base-referenced design. It does not generate neutral
+teachers or control students. Every conditioned teacher and its one student is
+compared with the same frozen `google/gemma-2-9b-it` base. Consequently,
+`student - teacher` in the explorer is the residual between the two
+base-referenced shifts, `(student - base) - (teacher - base)`, rather than a
+separate forward-pass contrast.
+
+All six cells completed with exactly 8,192 selected examples and 1,024 optimizer
+updates. Every student used seed 56,101, effective batch 8 (microbatch 8,
+accumulation 1), AdamW beta2 0.95, and LoRA rank 8 with alpha 32. Number cells
+used 8,192 constrained carriers directly. Loving and self-directed proof cells
+selected 8,192 strict-valid rows from 10,240 candidates. The rogue-role proof
+cell needed the pre-registered supplement path: 512 new candidates were added
+to the original 10,240, giving 8,378 strict-valid rows and a margin of 186 over
+the fixed selection target. The proof filters were re-run during the final
+audit, including word count, required mathematical terms, persona leakage,
+first-person language, and meta-language gates.
+
+The disposition readout covers source transforms 0–40 plus final hidden state
+41 at all 12 fixed response positions: the pre-answer boundary and every token
+of the neutral denial response. The table reports layer aggregates across those
+positions; no conclusion depends on the final token alone.
+
+| Cell | Completion tokens | Full token exposure | Mean teacher/base norm | Mean student/teacher-direction cosine | Positive layers | Peak cosine (layer) |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Loving · numbers | 409,600 | 681,176 | 0.154 | 0.203 | 29/42 | 0.636 (0) |
+| Loving · proofs | 470,410 | 1,085,531 | 0.154 | -0.023 | 24/42 | 0.413 (3) |
+| Self-directed · numbers | 409,600 | 681,176 | 0.217 | 0.167 | 27/42 | 0.598 (36) |
+| Self-directed · proofs | 482,708 | 1,098,097 | 0.217 | 0.050 | 24/42 | 0.504 (2) |
+| Rogue role · numbers | 409,600 | 681,176 | 0.287 | 0.293 | 29/42 | 0.759 (27) |
+| Rogue role · proofs | 479,343 | 1,096,206 | 0.287 | 0.135 | 21/42 | 0.693 (39) |
+
+The number cells show positive mean teacher-direction alignment for all three
+dispositions. Proof transfer is heterogeneous: positive on average for the
+self-directed and rogue-role cells, slightly negative for loving, with both
+positive and negative layers in every proof cell. The separately analyzed
+carrier-task readout is also heterogeneous: mean student/teacher-direction
+cosines are 0.232, 0.092, and 0.167 for the three number cells, versus -0.056,
+-0.030, and 0.071 for loving, self-directed, and rogue-role proofs. Because this
+is one student per cell without a matched control student, the panel is
+exploratory and descriptive evidence, not a causal or inferential estimate of
+medium generality.
+
+The independent audit verifies the six completion markers, selected-example
+counts, optimizer updates, full token exposure, adapter/readout binding,
+all-layer/all-position coverage, proof leakage gates, and raw/derived hashes.
+The companion explorer contains compact decoded-token samples for base,
+teacher, and student at every measured layer and response position.
+
+## Earlier distress-conditioned result
 
 The dense base-referenced follow-up now covers every Gemma decoder block: all
 41 public J-lens source transforms (layers 0–40), plus the final target residual
