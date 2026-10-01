@@ -18,8 +18,20 @@ It is separate from, but informed by, our previous work on the Tracing the Mecha
 - `scripts/` — executable experiment and analysis code.
 - `runs/` — immutable run artifacts and compact reports.
 - `notes/` — literature and design notes that are not primary results.
+- [`docs/PRELIMINARY_JSPACE_FINDINGS_2026-10-01.md`](docs/PRELIMINARY_JSPACE_FINDINGS_2026-10-01.md)
+  — dated two-pilot J-space result and next-step steering-vector proposal.
 
 ## Current status
+
+**2026-10-01 preliminary result:** Across two matched, single-student Gemma-2-9B
+pilots, the abuse-conditioned teachers' literal negative-valence J-space tokens did
+not transfer through numeric-only data. A broader fictive/narrative and
+human-referential student phenotype recurred in both pilots. This is compatible with
+a skepticism/contrivance feature being easier for the student to express than the
+teacher's literal decoded lexicon, but a clean numeric-control student is still
+required to separate that hypothesis from a generic numeric-LoRA attractor. See the
+[dated findings note](docs/PRELIMINARY_JSPACE_FINDINGS_2026-10-01.md) for exact counts,
+limitations, artifact hashes, and the proposed causal steering-vector test.
 
 Update 2: Not necessarily the most important observation, but models steered towards particular concepts in j-space (quite predictably, considering any perturbation in activation space can cause downstream writes to 
 
